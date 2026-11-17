@@ -501,7 +501,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
 
-/* ---------- Helpers Defined First to prevent ReferenceError ---------- */
+/* ---------- Helpers Defined First ---------- */
 const el = (tag, cls, txt) => {
   const e = document.createElement(tag);
   if (cls) e.className = cls;
@@ -613,6 +613,25 @@ function renderAvatar(elTarget, prof) {
   }
 }
 
+/* ---------- Notifications API ---------- */
+function requestNotificationPermission() {
+  if ("Notification" in window && Notification.permission === "default") {
+    Notification.requestPermission();
+  }
+}
+
+function showDesktopNotification(senderName, text) {
+  if ("Notification" in window && Notification.permission === "granted") {
+    // Show notification only if window is not focused or active chat is different
+    try {
+      new Notification(`رسالة جديدة من @${senderName}`, {
+        body: text,
+        icon: "https://cdn-icons-png.flaticon.com/512/733/733585.png"
+      });
+    } catch (e) {}
+  }
+}
+
 function playNotifySound() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -714,6 +733,7 @@ $("login").onclick = async () => {
   const { error } = await sb.auth.signInWithPassword({ email: u + DOMAIN, password: p });
   $("login").disabled = false;
   if (error) return authErr("اليوزر أو الباسورد غلط");
+  requestNotificationPermission();
   boot();
 };
 
@@ -735,6 +755,7 @@ $("signup").onclick = async () => {
   const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, username: u, bio: "متاح الآن" });
   $("signup").disabled = false;
   if (e2) return authErr("اليوزر ده موجود");
+  requestNotificationPermission();
   boot();
 };
 
@@ -776,6 +797,8 @@ async function boot() {
   $("mebio").textContent = me.bio || "متاح الآن";
   renderAvatar($("meav"), me);
 
+  requestNotificationPermission();
+
   const { data: msgs } = await sb.from("messages").select("*").order("created_at", { ascending: true }).limit(2000);
   all = msgs || [];
   await loadProfiles(all.flatMap(m => [m.sender, m.receiver]));
@@ -803,6 +826,10 @@ async function boot() {
           sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
         } else {
           sb.from("messages").update({ delivered_at: now }).eq("id", m.id).then();
+          // Trigger notification if chat is not active or page is hidden
+          const senderName = profilesMap[m.sender]?.username || "صديق";
+          const snippet = m.kind === "image" ? "أرسل صورة 🖼️" : m.kind === "audio" ? "أرسل رسالة صوتية 🎤" : getCleanBody(m.body);
+          showDesktopNotification(senderName, snippet);
         }
 
         all.push(m);
@@ -1133,7 +1160,7 @@ $("psend").onclick = async () => {
 let rec = null, chunks = [], recStart = 0, recTimer = null, recCancel = false;
 const mic = $("mic");
 
-function pickMime() {
+function pickMype() {
   const opts = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
   return opts.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "";
 }
@@ -1145,7 +1172,7 @@ async function startRec(e) {
   try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
   catch { return alert("لازم تسمح بصلاحية الميكروفون من المتصفح"); }
   
-  const mime = pickMime();
+  const mime = pickMype();
   chunks = []; recCancel = false;
   rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
   rec.ondataavailable = ev => ev.data.size && chunks.push(ev.data);
