@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chatyy</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00a884">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Chatyy">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>دردشة</title>
-<!-- Favicon SVG Icon -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2300a884'/%3E%3Cpath d='M45 31c0 7.2-6.3 13-14 13-2.4 0-4.7-.6-6.7-1.6L16 45l2.8-7.4C17.6 35.7 17 33.4 17 31c0-7.2 6.3-13 14-13s14 5.8 14 13z' fill='%23ffffff'/%3E%3Ccircle cx='26' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='31' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='36' cy='31' r='2' fill='%2300a884'/%3E%3C/svg%3E">
 <style>
 :root {
@@ -73,7 +71,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 16px rgba(0, 168, 132, 0.35);
 }
 .logo-circle svg { width: 32px; height: 32px; }
-.card h1 { font-size: 24px; font-weight: 700; color: var(--text); }
+.card h1 { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
 .card p.sub { font-size: 13px; color: var(--muted); text-align: center; }
 .input-group { position: relative; display: flex; align-items: center; }
 .input-group svg { position: absolute; left: 12px; color: var(--muted); width: 18px; height: 18px; pointer-events: none; }
@@ -100,22 +98,28 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 #side { background: var(--panel); border-inline-end: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; position: relative; }
 
 .head {
-  background: var(--head); padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+  background: var(--head); padding: 10px 16px; display: flex; align-items: center; gap: 10px;
   min-height: 62px; border-bottom: 1px solid var(--line); z-index: 2;
 }
 .head .info { flex: 1; min-width: 0; cursor: pointer; }
 .head .name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
-.head .status { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.head .status.online { color: var(--accent); font-weight: 600; }
+.head .status { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 0.2s; }
+.head .status.online, .head .status.typing { color: var(--accent); font-weight: 600; }
 
 .brand-badge {
-  display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: var(--panel);
-  border-bottom: 1px solid var(--line); font-weight: 700; font-size: 14px; color: var(--accent);
+  display: flex; align-items: center; justify-content: space-between; padding: 8px 14px; background: var(--panel);
+  border-bottom: 1px solid var(--line); font-weight: 800; font-size: 16px; color: var(--accent);
 }
-.brand-badge svg { width: 18px; height: 18px; }
+.brand-left { display: flex; align-items: center; gap: 8px; }
+.brand-badge svg { width: 20px; height: 20px; }
+#install-pwa-btn {
+  background: var(--accent); color: #fff; font-size: 12px; font-weight: 600;
+  padding: 5px 12px; border-radius: 20px; gap: 5px; box-shadow: 0 2px 8px rgba(0,168,132,0.3);
+}
+#install-pwa-btn svg { width: 14px; height: 14px; }
 
 .icon {
-  width: 38px; height: 38px; border-radius: 50%; color: var(--muted); flex: none;
+  width: 36px; height: 36px; border-radius: 50%; color: var(--muted); flex: none;
   transition: background 0.2s, color 0.2s;
 }
 .icon:hover { background: rgba(134, 150, 160, 0.15); color: var(--text); }
@@ -153,12 +157,19 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   border-bottom: 1px solid var(--line); transition: background 0.15s;
 }
 .item:hover, .item.active { background: var(--panel-alt); }
-.item .mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.item .mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .item .top-row { display: flex; justify-content: space-between; align-items: center; }
 .item .u { font-weight: 600; font-size: 15px; direction: ltr; text-align: start; }
 .item .t { font-size: 11px; color: var(--muted); }
-.item .last { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
+.item .t.unread-t { color: var(--accent); font-weight: 700; }
+.item .bot-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+.item .last { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; flex: 1; }
 .item .last svg { width: 14px; height: 14px; }
+.unread-badge {
+  background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
+  min-width: 20px; height: 20px; border-radius: 10px; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+}
 
 /* Profile Drawer */
 #profile-drawer {
@@ -191,6 +202,20 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 }
 [data-theme="dark"] #chat.has-custom-bg::before { background: rgba(0, 0, 0, 0.55); }
 
+/* In-Chat Search & Pinned Bars */
+#chat-search-bar, #pinned-bar {
+  background: var(--panel); padding: 8px 16px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px; z-index: 4; box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+#chat-search-input {
+  flex: 1; background: var(--panel-alt); border: 1px solid var(--line);
+  border-radius: 8px; padding: 6px 12px; font-size: 13.5px; outline: none;
+}
+#pinned-bar { cursor: pointer; background: var(--panel-alt); border-inline-start: 4px solid var(--accent); }
+#pinned-bar .pin-info { flex: 1; min-width: 0; }
+#pinned-bar .pin-label { font-size: 11px; font-weight: 700; color: var(--accent); }
+#pinned-bar .pin-text { font-size: 13px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
 #empty {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
   color: var(--muted); gap: 12px; background: var(--panel-alt); border-bottom: 6px solid var(--accent); z-index: 2;
@@ -200,7 +225,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 8px 20px rgba(0,168,132,0.25);
 }
 #empty .empty-icon svg { width: 40px; height: 40px; }
-#empty h2 { font-size: 22px; color: var(--text); font-weight: 700; }
+#empty h2 { font-size: 24px; color: var(--text); font-weight: 800; }
 #empty p { font-size: 13px; }
 
 #msgs {
@@ -213,10 +238,11 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 }
 
 /* Message Bubbles & Reactions */
-.msg-wrap { display: flex; flex-direction: column; max-width: 72%; position: relative; margin-bottom: 2px; }
+.msg-wrap { display: flex; flex-direction: column; max-width: 72%; position: relative; margin-bottom: 2px; transition: transform 0.2s; }
 .msg-wrap.me { align-self: flex-start; }
 .msg-wrap.them { align-self: flex-end; }
 .msg-wrap.has-react { margin-bottom: 14px; }
+.msg-wrap.highlight .msg { outline: 2px solid var(--accent); box-shadow: 0 0 12px rgba(0,168,132,0.4); }
 
 .msg {
   padding: 7px 10px 5px; border-radius: 10px; box-shadow: var(--shadow);
@@ -225,14 +251,17 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 }
 .msg-wrap.me .msg { background: var(--out); border-top-right-radius: 2px; }
 .msg-wrap.them .msg { background: var(--in); border-top-left-radius: 2px; }
+.msg.deleted { font-style: italic; color: var(--muted); opacity: 0.85; }
+.msg a { color: #027eb5; text-decoration: underline; }
+[data-theme="dark"] .msg a { color: #53bdeb; }
 
-/* Hover Action Buttons (Reply + React) */
+/* Hover Action Buttons */
 .msg-actions {
-  position: absolute; top: 4px; display: flex; gap: 4px;
+  position: absolute; top: 2px; display: flex; gap: 3px;
   opacity: 0; transition: opacity 0.15s; z-index: 3;
 }
-.msg-wrap.me .msg-actions { left: -62px; }
-.msg-wrap.them .msg-actions { right: -62px; }
+.msg-wrap.me .msg-actions { left: -118px; }
+.msg-wrap.them .msg-actions { right: -90px; }
 .msg-wrap:hover .msg-actions { opacity: 1; }
 
 .act-btn {
@@ -240,7 +269,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   box-shadow: var(--shadow); transition: transform 0.1s, color 0.15s;
 }
 .act-btn:hover { transform: scale(1.1); color: var(--accent); }
-.act-btn svg { width: 14px; height: 14px; }
+.act-btn.del:hover { color: #e53935; }
+.act-btn svg { width: 13px; height: 13px; }
 
 /* Floating Quick Reaction Bar */
 .react-bar {
@@ -295,16 +325,16 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .player .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; }
 .player .dur { font-size: 11px; color: var(--muted); direction: ltr; display: flex; justify-content: space-between; }
 
-#reply-bar {
+#reply-bar, #edit-bar {
   background: var(--head); padding: 8px 16px; border-top: 1px solid var(--line);
   display: flex; align-items: center; gap: 10px; z-index: 5;
 }
-#reply-bar .rb-content {
+.rb-content {
   flex: 1; background: var(--panel); border-inline-start: 4px solid var(--accent);
   padding: 6px 10px; border-radius: 6px; min-width: 0;
 }
-#reply-bar .rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
-#reply-bar .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
+.rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 #emoji-picker {
   position: absolute; bottom: 68px; right: 16px; background: var(--panel);
@@ -347,6 +377,14 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .lb-actions { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; }
 .lb-btn { background: rgba(255,255,255,0.15); color: #fff; width: 42px; height: 42px; border-radius: 50%; }
 
+/* Drag & Drop Overlay */
+#drop-zone {
+  position: absolute; inset: 12px; border: 3px dashed var(--accent); border-radius: 16px;
+  background: rgba(0, 168, 132, 0.15); backdrop-filter: blur(3px); z-index: 30;
+  display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--accent);
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
   #app { grid-template-columns: 1fr; }
   #chat { display: none; }
@@ -355,7 +393,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   .back { display: flex; }
   #msgs { padding: 12px 12px; }
   .msg-wrap { max-width: 85%; }
-  .msg-actions { opacity: 0.8; }
+  .msg-actions { opacity: 0.85; }
 }
 </style>
 </head>
@@ -368,7 +406,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       <div class="logo-circle">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
       </div>
-      <h1>دردشة</h1>
+      <h1>Chatyy</h1>
       <p class="sub">تواصل لحظي سريع وآمن باليوزر</p>
     </div>
     <div class="input-group">
@@ -392,8 +430,14 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   <aside id="side">
     <!-- App Brand Header -->
     <div class="brand-badge">
-      <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
-      <span>Chatyy</span>
+      <div class="brand-left">
+        <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+        <span>Chatyy</span>
+      </div>
+      <button id="install-pwa-btn" class="hidden" title="تثبيت التطبيق على جهازك">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>تثبيت</span>
+      </button>
     </div>
 
     <!-- Profile Customization Drawer -->
@@ -458,6 +502,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   </aside>
 
   <main id="chat">
+    <div id="drop-zone" class="hidden">أفلت الصورة هنا لإرسالها 📷</div>
+
     <div id="empty">
       <div class="empty-icon">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
@@ -479,6 +525,29 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="name" id="oname" style="direction:ltr;text-align:start"></div>
           <div class="status" id="ostatus"></div>
         </div>
+        <button class="icon" id="toggle-chat-search" title="بحث في المحادثة">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+
+      <!-- In-Chat Search Bar -->
+      <div id="chat-search-bar" class="hidden">
+        <input id="chat-search-input" placeholder="ابحث داخل الرسائل...">
+        <button class="icon" id="close-chat-search" title="إغلاق البحث">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Pinned Message Banner -->
+      <div id="pinned-bar" class="hidden">
+        <svg viewBox="0 0 24 24" style="color:var(--accent);width:18px;height:18px"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
+        <div class="pin-info">
+          <div class="pin-label">رسالة مثبّتة</div>
+          <div class="pin-text" id="pin-text"></div>
+        </div>
+        <button class="icon" id="unpin-btn" title="إلغاء التثبيت">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
       </div>
 
       <div id="msgs"></div>
@@ -490,6 +559,17 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="rb-text" id="rb-msg"></div>
         </div>
         <button class="icon" id="rb-close" title="إلغاء الرد">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Edit Preview -->
+      <div id="edit-bar" class="hidden">
+        <div class="rb-content">
+          <div class="rb-title">تعديل الرسالة</div>
+          <div class="rb-text" id="eb-msg"></div>
+        </div>
+        <button class="icon" id="eb-close" title="إلغاء التعديل">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -512,7 +592,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <button id="rec-cancel-btn" style="color:#e53935;font-size:13px;font-weight:600">إلغاء</button>
         </div>
 
-        <input id="txt" placeholder="اكتب رسالة..." autocomplete="off">
+        <input id="txt" placeholder="اكتب رسالة أو الصق صورة..." autocomplete="off">
 
         <button class="icon" id="mic" title="اضغط للتسجيل" style="touch-action:none">
           <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -595,8 +675,25 @@ const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ":" + 
 const initial = n => (n || "?")[0];
 
 const DOMAIN = "@chatuser.app";
-let me = null, all = [], profilesMap = {}, active = null, pendingImg = null, replyingTo = null;
-let onlineUsers = new Set();
+let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
+let replyingTo = null, editingMsg = null, chatFilter = "";
+let onlineUsers = new Set(), typingUsers = new Set();
+let globalChannel = null, lastTypingSent = 0;
+
+/* ---------- PWA Install Prompt ---------- */
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  $("install-pwa-btn").classList.remove("hidden");
+});
+$("install-pwa-btn").onclick = async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  if (outcome === "accepted") $("install-pwa-btn").classList.add("hidden");
+  deferredPrompt = null;
+};
 
 /* ---------- SVG Icons ---------- */
 const ICONS = {
@@ -606,6 +703,9 @@ const ICONS = {
   pause: `<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`,
   reply: `<svg viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>`,
   smile: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`,
+  edit: `<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
+  trash: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+  pin: `<svg viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>`,
   tickSingle: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
   tickDouble: `<svg viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 11 21 9 19"/></svg>`,
   imgSmall: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
@@ -697,7 +797,7 @@ function renderAvatar(elTarget, prof) {
   }
 }
 
-/* ---------- Online / Offline Status Helper ---------- */
+/* ---------- Online / Offline / Typing Status Helper ---------- */
 function isUserOnline(id) {
   if (onlineUsers.has(id)) return true;
   const prof = profilesMap[id];
@@ -708,6 +808,7 @@ function isUserOnline(id) {
 }
 
 function formatLastSeen(id) {
+  if (typingUsers.has(id)) return "يكتب الآن...";
   if (isUserOnline(id)) return "متصل الآن";
   const prof = profilesMap[id];
   if (!prof?.last_seen) return prof?.bio || "غير متصل";
@@ -722,9 +823,10 @@ function formatLastSeen(id) {
 function updateActiveHeaderStatus() {
   if (!active) return;
   const online = isUserOnline(active);
+  const typing = typingUsers.has(active);
   $("o-dot").classList.toggle("hidden", !online);
   $("ostatus").textContent = formatLastSeen(active);
-  $("ostatus").classList.toggle("online", online);
+  $("ostatus").classList.toggle("online", online || typing);
 }
 
 /* ---------- Notifications API ---------- */
@@ -737,7 +839,7 @@ function requestNotificationPermission() {
 function showDesktopNotification(senderName, text) {
   if ("Notification" in window && Notification.permission === "granted") {
     try {
-      new Notification(`رسالة جديدة من @${senderName}`, {
+      new Notification(`Chatyy - رسالة من @${senderName}`, {
         body: text,
         icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2300a884'/%3E%3Cpath d='M45 31c0 7.2-6.3 13-14 13-2.4 0-4.7-.6-6.7-1.6L16 45l2.8-7.4C17.6 35.7 17 33.4 17 31c0-7.2 6.3-13 14-13s14 5.8 14 13z' fill='%23ffffff'/%3E%3C/svg%3E"
       });
@@ -832,7 +934,6 @@ EMOJIS.forEach(em => {
 $("emoji-btn").onclick = (e) => { e.stopPropagation(); ep.classList.toggle("hidden"); };
 document.addEventListener("click", (e) => {
   if (!ep.contains(e.target) && e.target !== $("emoji-btn")) ep.classList.add("hidden");
-  // Close any open reaction bars
   document.querySelectorAll(".react-bar").forEach(rb => rb.remove());
 });
 
@@ -874,7 +975,6 @@ $("signup").onclick = async () => {
   boot();
 };
 
-// Logout Confirmation Dialog
 $("logout").onclick = () => $("logout-modal").classList.remove("hidden");
 $("cancel-logout").onclick = () => $("logout-modal").classList.add("hidden");
 $("confirm-logout").onclick = async () => {
@@ -936,7 +1036,6 @@ async function boot() {
 
   renderList();
 
-  // Heartbeat to update last_seen every 25s
   const updatePresence = () => {
     const now = new Date().toISOString();
     sb.from("profiles").update({ last_seen: now }).eq("id", me.id).then();
@@ -944,21 +1043,34 @@ async function boot() {
   updatePresence();
   setInterval(updatePresence, 25000);
 
-  // Realtime Presence & Messages Channel
-  const channel = sb.channel("global-room", { config: { presence: { key: me.id } } });
+  globalChannel = sb.channel("global-room", { config: { presence: { key: me.id } } });
 
-  channel
+  globalChannel
     .on("presence", { event: "sync" }, () => {
-      const state = channel.presenceState();
+      const state = globalChannel.presenceState();
       onlineUsers = new Set(Object.keys(state));
       renderList();
       updateActiveHeaderStatus();
+    })
+    .on("broadcast", { event: "typing" }, ({ payload }) => {
+      if (payload.to === me.id) {
+        typingUsers.add(payload.from);
+        renderList();
+        if (active === payload.from) updateActiveHeaderStatus();
+        clearTimeout(window["typ_" + payload.from]);
+        window["typ_" + payload.from] = setTimeout(() => {
+          typingUsers.delete(payload.from);
+          renderList();
+          if (active === payload.from) updateActiveHeaderStatus();
+        }, 2500);
+      }
     })
     .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: "receiver=eq." + me.id },
       async p => {
         const m = p.new;
         if (all.some(x => x.id === m.id)) return;
         await loadProfiles([m.sender]);
+        typingUsers.delete(m.sender);
         
         const now = new Date().toISOString();
         m.delivered_at = now;
@@ -975,7 +1087,10 @@ async function boot() {
         all.push(m);
         playNotifySound();
         renderList();
-        if (active === m.sender) renderMsgs();
+        if (active === m.sender) {
+          updateActiveHeaderStatus();
+          renderMsgs();
+        }
       })
     .on("postgres_changes", { event: "UPDATE", schema: "public", table: "messages" },
       p => {
@@ -994,21 +1109,23 @@ async function boot() {
         profilesMap[updatedProf.id] = updatedProf;
         renderList();
         if (active === updatedProf.id) {
-          $("obio") && ($("obio").textContent = updatedProf.bio || "");
           renderAvatar($("oav"), updatedProf);
           updateActiveHeaderStatus();
         }
       })
     .subscribe(async (status) => {
       if (status === "SUBSCRIBED") {
-        await channel.track({ online_at: new Date().toISOString() });
+        await globalChannel.track({ online_at: new Date().toISOString() });
       }
     });
 
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       updatePresence();
-      if (active) markSeen(active);
+      if (active) {
+        markSeen(active);
+        renderList();
+      }
     }
   });
 }
@@ -1034,13 +1151,21 @@ function getCleanBody(body) {
 
 function renderList() {
   const last = {};
-  all.forEach(m => last[otherOf(m)] = m);
+  const unreadCounts = {};
+  all.forEach(m => {
+    const other = otherOf(m);
+    last[other] = m;
+    if (m.receiver === me.id && !m.seen_at) {
+      unreadCounts[other] = (unreadCounts[other] || 0) + 1;
+    }
+  });
   const ids = Object.keys(last).sort((a, b) => new Date(last[b].created_at) - new Date(last[a].created_at));
   const list = $("list");
   list.replaceChildren();
   ids.forEach(id => {
     const m = last[id];
     const prof = profilesMap[id] || { username: "..." };
+    const uCount = unreadCounts[id] || 0;
     const it = el("div", "item" + (id === active ? " active" : ""));
     
     const avWrap = el("div", "av-wrap");
@@ -1051,19 +1176,30 @@ function renderList() {
     
     const mid = el("div", "mid");
     const topRow = el("div", "top-row");
-    topRow.append(el("div", "u", prof.username), el("div", "t", fmtTime(m.created_at)));
+    const timeEl = el("div", "t" + (uCount ? " unread-t" : ""), fmtTime(m.created_at));
+    topRow.append(el("div", "u", prof.username), timeEl);
     
+    const botRow = el("div", "bot-row");
     const lastRow = el("div", "last");
-    const ticks = m.sender === me.id ? getTicksHTML(m) : "";
-    if (m.kind === "image") {
-      lastRow.innerHTML = `${ticks}${ICONS.imgSmall} صورة`;
-    } else if (m.kind === "audio") {
-      lastRow.innerHTML = `${ticks}${ICONS.micSmall} رسالة صوتية`;
+    if (typingUsers.has(id)) {
+      lastRow.innerHTML = `<span style="color:var(--accent);font-weight:600">يكتب الآن...</span>`;
+    } else if (m.body === ">>DELETED<<") {
+      lastRow.innerHTML = `<span>🚫 تم حذف هذه الرسالة</span>`;
     } else {
-      lastRow.innerHTML = `${ticks}<span>${getCleanBody(m.body)}</span>`;
+      const ticks = m.sender === me.id ? getTicksHTML(m) : "";
+      if (m.kind === "image") {
+        lastRow.innerHTML = `${ticks}${ICONS.imgSmall} صورة`;
+      } else if (m.kind === "audio") {
+        lastRow.innerHTML = `${ticks}${ICONS.micSmall} رسالة صوتية`;
+      } else {
+        lastRow.innerHTML = `${ticks}<span>${getCleanBody(m.body)}</span>`;
+      }
     }
     
-    mid.append(topRow, lastRow);
+    botRow.append(lastRow);
+    if (uCount > 0) botRow.append(el("span", "unread-badge", String(uCount)));
+    
+    mid.append(topRow, botRow);
     it.append(avWrap, mid);
     it.onclick = () => openChat(id);
     list.append(it);
@@ -1071,7 +1207,7 @@ function renderList() {
   if (!ids.length) list.append(el("div", "hint", "مفيش محادثات لسه.\nابحث عن يوزر صاحبك في شريط البحث فوق."));
 }
 
-/* ---------- Search ---------- */
+/* ---------- Search Users ---------- */
 let qTimer;
 $("q").oninput = () => {
   clearTimeout(qTimer);
@@ -1100,16 +1236,67 @@ $("q").oninput = () => {
   }, 250);
 };
 
-/* ---------- Message Reactions ---------- */
+/* ---------- In-Chat Search & Pinned Messages ---------- */
+$("toggle-chat-search").onclick = () => {
+  $("chat-search-bar").classList.toggle("hidden");
+  if (!$("chat-search-bar").classList.contains("hidden")) {
+    $("chat-search-input").focus();
+  } else {
+    chatFilter = "";
+    $("chat-search-input").value = "";
+    renderMsgs();
+  }
+};
+$("close-chat-search").onclick = () => {
+  $("chat-search-bar").classList.add("hidden");
+  chatFilter = "";
+  $("chat-search-input").value = "";
+  renderMsgs();
+};
+$("chat-search-input").oninput = (e) => {
+  chatFilter = e.target.value.trim().toLowerCase();
+  renderMsgs();
+};
+
+function getPinKey() { return `pinned_${me.id}_${active}`; }
+function updatePinnedBanner() {
+  if (!active) return;
+  const pinId = localStorage.getItem(getPinKey());
+  const m = all.find(x => x.id === pinId && otherOf(x) === active && x.body !== ">>DELETED<<");
+  if (!m) {
+    $("pinned-bar").classList.add("hidden");
+    return;
+  }
+  $("pinned-bar").classList.remove("hidden");
+  $("pin-text").textContent = m.kind === "image" ? "🖼️ صورة" : m.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(m.body);
+  $("pinned-bar").onclick = (e) => {
+    if (e.target.closest("#unpin-btn")) return;
+    const targetEl = document.querySelector(`[data-msgid="${m.id}"]`);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+      targetEl.classList.add("highlight");
+      setTimeout(() => targetEl.classList.remove("highlight"), 1600);
+    }
+  };
+}
+$("unpin-btn").onclick = () => {
+  if (!active) return;
+  localStorage.removeItem(getPinKey());
+  updatePinnedBanner();
+};
+function pinMessage(m) {
+  if (!active) return;
+  localStorage.setItem(getPinKey(), m.id);
+  updatePinnedBanner();
+}
+
+/* ---------- Message Reactions, Edit & Delete ---------- */
 const QUICK_REACTIONS = ["❤️", "😂", "😮", "😢", "🙏", "👍"];
 
 async function toggleReaction(msg, emoji) {
   const current = { ...(msg.reactions || {}) };
-  if (current[me.id] === emoji) {
-    delete current[me.id];
-  } else {
-    current[me.id] = emoji;
-  }
+  if (current[me.id] === emoji) delete current[me.id];
+  else current[me.id] = emoji;
   msg.reactions = current;
   renderMsgs();
   await sb.from("messages").update({ reactions: current }).eq("id", msg.id);
@@ -1130,8 +1317,38 @@ function openReactionPicker(wrap, msg) {
   wrap.append(bar);
 }
 
+function startEdit(m) {
+  clearReply();
+  editingMsg = m;
+  $("edit-bar").classList.remove("hidden");
+  const clean = getCleanBody(m.body).replace(/ \(معدّلة\)$/, "");
+  $("eb-msg").textContent = clean;
+  $("txt").value = clean;
+  toggleSendMic();
+  $("txt").focus();
+}
+function clearEdit() {
+  editingMsg = null;
+  $("edit-bar").classList.add("hidden");
+}
+$("eb-close").onclick = () => {
+  clearEdit();
+  $("txt").value = "";
+  toggleSendMic();
+};
+
+async function deleteMessage(m) {
+  m.body = ">>DELETED<<";
+  m.kind = "text";
+  renderList();
+  renderMsgs();
+  updatePinnedBanner();
+  await sb.from("messages").update({ body: ">>DELETED<<", kind: "text", media_url: null }).eq("id", m.id);
+}
+
 /* ---------- Reply System ---------- */
 function setReply(m) {
+  clearEdit();
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
   $("rb-user").textContent = m.sender === me.id ? "أنت" : (profilesMap[m.sender]?.username || "");
@@ -1148,6 +1365,10 @@ $("rb-close").onclick = clearReply;
 async function openChat(id) {
   active = id;
   clearReply();
+  clearEdit();
+  chatFilter = "";
+  $("chat-search-bar").classList.add("hidden");
+  $("chat-search-input").value = "";
   await loadProfiles([id]);
   const prof = profilesMap[id] || { username: "..." };
   
@@ -1157,6 +1378,7 @@ async function openChat(id) {
   $("oname").textContent = prof.username;
   renderAvatar($("oav"), prof);
   updateActiveHeaderStatus();
+  updatePinnedBanner();
   
   await markSeen(id);
   renderList();
@@ -1165,11 +1387,35 @@ async function openChat(id) {
 }
 $("back").onclick = () => { $("app").classList.remove("open"); active = null; renderList(); };
 
+function linkifyText(container, text) {
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const parts = text.split(urlRegex);
+  parts.forEach(part => {
+    if (urlRegex.test(part)) {
+      const a = document.createElement("a");
+      a.href = part;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = part;
+      container.append(a);
+    } else {
+      container.append(document.createTextNode(part));
+    }
+  });
+}
+
 function renderMsgs() {
   const box = $("msgs");
   box.replaceChildren();
   let lastDate = null;
-  all.filter(m => otherOf(m) === active).forEach(m => {
+  all.filter(m => {
+    if (otherOf(m) !== active) return false;
+    if (chatFilter) {
+      if (m.kind !== "text" || m.body === ">>DELETED<<") return false;
+      return getCleanBody(m.body).toLowerCase().includes(chatFilter);
+    }
+    return true;
+  }).forEach(m => {
     const dLabel = getDateLabel(m.created_at);
     if (dLabel !== lastDate) {
       box.append(el("div", "date-div", dLabel));
@@ -1182,62 +1428,86 @@ function renderMsgs() {
 
 function bubble(m) {
   const isMe = m.sender === me.id;
+  const isDeleted = m.body === ">>DELETED<<";
   const reactions = m.reactions || {};
   const reactEntries = Object.entries(reactions);
   
-  const wrap = el("div", "msg-wrap " + (isMe ? "me" : "them") + (reactEntries.length ? " has-react" : ""));
+  const wrap = el("div", "msg-wrap " + (isMe ? "me" : "them") + (reactEntries.length && !isDeleted ? " has-react" : ""));
+  wrap.dataset.msgid = m.id;
   
-  // Hover Action Buttons (React & Reply)
-  const actions = el("div", "msg-actions");
-  
-  const reactBtn = el("button", "act-btn");
-  reactBtn.innerHTML = ICONS.smile;
-  reactBtn.title = "تفاعل";
-  reactBtn.onclick = (e) => {
-    e.stopPropagation();
-    openReactionPicker(wrap, m);
-  };
+  if (!isDeleted) {
+    const actions = el("div", "msg-actions");
+    
+    const reactBtn = el("button", "act-btn");
+    reactBtn.innerHTML = ICONS.smile;
+    reactBtn.title = "تفاعل";
+    reactBtn.onclick = (e) => { e.stopPropagation(); openReactionPicker(wrap, m); };
 
-  const rBtn = el("button", "act-btn");
-  rBtn.innerHTML = ICONS.reply;
-  rBtn.title = "رد";
-  rBtn.onclick = () => setReply(m);
+    const rBtn = el("button", "act-btn");
+    rBtn.innerHTML = ICONS.reply;
+    rBtn.title = "رد";
+    rBtn.onclick = () => setReply(m);
 
-  actions.append(reactBtn, rBtn);
-  wrap.append(actions);
+    const pBtn = el("button", "act-btn");
+    pBtn.innerHTML = ICONS.pin;
+    pBtn.title = "تثبيت";
+    pBtn.onclick = () => pinMessage(m);
 
-  const b = el("div", "msg");
+    actions.append(reactBtn, rBtn, pBtn);
 
-  let displayBody = m.body || "";
-  if (m.kind === "text" && displayBody.startsWith(">>REPLY:")) {
-    const nl = displayBody.indexOf("\n");
-    if (nl !== -1) {
-      const header = displayBody.slice(8, nl);
-      const sep = header.indexOf("|");
-      if (sep !== -1) {
-        const qUser = header.slice(0, sep);
-        const qTxt = header.slice(sep + 1);
-        const qBox = el("div", "quote-box");
-        qBox.append(el("div", "q-name", qUser), el("div", "q-text", qTxt));
-        b.append(qBox);
-        displayBody = displayBody.slice(nl + 1);
+    if (isMe) {
+      if (m.kind === "text") {
+        const eBtn = el("button", "act-btn");
+        eBtn.innerHTML = ICONS.edit;
+        eBtn.title = "تعديل";
+        eBtn.onclick = () => startEdit(m);
+        actions.append(eBtn);
+      }
+      const dBtn = el("button", "act-btn del");
+      dBtn.innerHTML = ICONS.trash;
+      dBtn.title = "حذف";
+      dBtn.onclick = () => deleteMessage(m);
+      actions.append(dBtn);
+    }
+    wrap.append(actions);
+  }
+
+  const b = el("div", "msg" + (isDeleted ? " deleted" : ""));
+
+  if (isDeleted) {
+    b.textContent = "🚫 تم حذف هذه الرسالة";
+  } else {
+    let displayBody = m.body || "";
+    if (m.kind === "text" && displayBody.startsWith(">>REPLY:")) {
+      const nl = displayBody.indexOf("\n");
+      if (nl !== -1) {
+        const header = displayBody.slice(8, nl);
+        const sep = header.indexOf("|");
+        if (sep !== -1) {
+          const qUser = header.slice(0, sep);
+          const qTxt = header.slice(sep + 1);
+          const qBox = el("div", "quote-box");
+          qBox.append(el("div", "q-name", qUser), el("div", "q-text", qTxt));
+          b.append(qBox);
+          displayBody = displayBody.slice(nl + 1);
+        }
       }
     }
-  }
 
-  if (m.kind === "text") b.append(document.createTextNode(displayBody));
-  if (m.kind === "image") {
-    const i = el("img");
-    i.src = m.media_url;
-    i.loading = "lazy";
-    i.onclick = () => openLightbox(m.media_url);
-    b.append(i);
+    if (m.kind === "text") linkifyText(b, displayBody);
+    if (m.kind === "image") {
+      const i = el("img");
+      i.src = m.media_url;
+      i.loading = "lazy";
+      i.onclick = () => openLightbox(m.media_url);
+      b.append(i);
+    }
+    if (m.kind === "audio") b.append(player(m));
   }
-  if (m.kind === "audio") b.append(player(m));
 
   const meta = el("div", "meta");
   meta.append(document.createTextNode(fmtTime(m.created_at)));
-  if (isMe) {
+  if (isMe && !isDeleted) {
     const chk = el("span");
     chk.innerHTML = getTicksHTML(m);
     meta.append(chk);
@@ -1245,10 +1515,8 @@ function bubble(m) {
   b.append(meta);
   wrap.append(b);
 
-  // Render Reaction Pills if any exist
-  if (reactEntries.length) {
+  if (reactEntries.length && !isDeleted) {
     const pills = el("div", "react-pills");
-    // Group identical emojis
     const counts = {};
     reactEntries.forEach(([uid, em]) => {
       if (!counts[em]) counts[em] = { count: 0, mine: false };
@@ -1323,13 +1591,19 @@ function player(m) {
   return w;
 }
 
-/* ---------- Sending Messages ---------- */
+/* ---------- Sending, Typing Broadcast & Editing Messages ---------- */
 function toggleSendMic() {
   const hasText = $("txt").value.trim().length > 0;
   $("send").classList.toggle("hidden", !hasText);
   $("mic").classList.toggle("hidden", hasText);
 }
-$("txt").addEventListener("input", toggleSendMic);
+$("txt").addEventListener("input", () => {
+  toggleSendMic();
+  if (active && globalChannel && Date.now() - lastTypingSent > 1500) {
+    lastTypingSent = Date.now();
+    globalChannel.send({ type: "broadcast", event: "typing", payload: { from: me.id, to: active } });
+  }
+});
 
 async function sendMsg(fields) {
   if (!active) return;
@@ -1347,9 +1621,27 @@ async function upload(blob, ext, type) {
   return sb.storage.from("media").getPublicUrl(path).data.publicUrl;
 }
 
-function sendText() {
+async function sendText() {
   let t = $("txt").value.trim();
   if (!t) return;
+
+  if (editingMsg) {
+    const target = editingMsg;
+    clearEdit();
+    $("txt").value = "";
+    toggleSendMic();
+    let prefix = "";
+    if (target.body.startsWith(">>REPLY:")) {
+      const nl = target.body.indexOf("\n");
+      if (nl !== -1) prefix = target.body.slice(0, nl + 1);
+    }
+    const newBody = `${prefix}${t} (معدّلة)`;
+    target.body = newBody;
+    renderList();
+    renderMsgs();
+    await sb.from("messages").update({ body: newBody }).eq("id", target.id);
+    return;
+  }
   
   if (replyingTo) {
     const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
@@ -1365,23 +1657,56 @@ function sendText() {
 $("send").onclick = sendText;
 $("txt").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendText(); } };
 
-/* ---------- Images ---------- */
+/* ---------- Images (Picker, Paste & Drag-Drop) ---------- */
+function previewImageFile(f) {
+  if (!f || !f.type.startsWith("image/") || !active) return;
+  pendingImg = f;
+  $("prev").src = URL.createObjectURL(f);
+  $("modal").classList.remove("hidden");
+}
+
 $("attach").onclick = () => $("file").click();
 $("file").onchange = e => {
   const f = e.target.files[0];
   e.target.value = "";
-  if (!f) return;
-  pendingImg = f;
-  $("prev").src = URL.createObjectURL(f);
-  $("modal").classList.remove("hidden");
+  previewImageFile(f);
 };
+
+// Paste image directly from clipboard (Ctrl+V)
+$("txt").addEventListener("paste", e => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  for (const item of items) {
+    if (item.type.startsWith("image/")) {
+      e.preventDefault();
+      previewImageFile(item.getAsFile());
+      break;
+    }
+  }
+});
+
+// Drag and drop image onto chat
+const chatArea = $("chat");
+chatArea.addEventListener("dragover", e => {
+  e.preventDefault();
+  if (active) $("drop-zone").classList.remove("hidden");
+});
+chatArea.addEventListener("dragleave", e => {
+  if (!chatArea.contains(e.relatedTarget)) $("drop-zone").classList.add("hidden");
+});
+chatArea.addEventListener("drop", e => {
+  e.preventDefault();
+  $("drop-zone").classList.add("hidden");
+  if (e.dataTransfer?.files?.length) previewImageFile(e.dataTransfer.files[0]);
+});
+
 $("pcancel").onclick = () => { pendingImg = null; $("modal").classList.add("hidden"); };
 $("psend").onclick = async () => {
   const f = pendingImg;
   if (!f) return;
   $("psend").disabled = true; $("psend").textContent = "جاري الرفع...";
-  const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
-  const url = await upload(f, ext, f.type || "image/jpeg");
+  const ext = (f.name?.split(".").pop() || "png").toLowerCase();
+  const url = await upload(f, ext, f.type || "image/png");
   $("psend").disabled = false; $("psend").textContent = "إرسال الصورة";
   $("modal").classList.add("hidden");
   pendingImg = null;
