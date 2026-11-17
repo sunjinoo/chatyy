@@ -41,16 +41,14 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
 body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif; background: var(--bg); color: var(--text); }
-button, input { font: inherit; color: inherit; }
+button, input, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; }
 svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; flex-shrink: 0; }
 .hidden { display: none !important; }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(134, 150, 160, 0.3); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(134, 150, 160, 0.5); }
 
 /* Auth Screen */
 #auth {
@@ -89,21 +87,28 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 
 /* Main App Layout */
 #app { height: 100%; display: grid; grid-template-columns: 380px 1fr; max-width: 1600px; margin: 0 auto; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
-#side { background: var(--panel); border-inline-end: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+#side { background: var(--panel); border-inline-end: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; position: relative; }
 
 .head {
   background: var(--head); padding: 10px 16px; display: flex; align-items: center; gap: 12px;
   min-height: 62px; border-bottom: 1px solid var(--line); z-index: 2;
 }
-.head .info { flex: 1; min-width: 0; }
+.head .info { flex: 1; min-width: 0; cursor: pointer; }
 .head .name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.head .status { font-size: 12px; color: var(--accent); font-weight: 500; }
+.head .status { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .icon {
   width: 38px; height: 38px; border-radius: 50%; color: var(--muted); flex: none;
   transition: background 0.2s, color 0.2s;
 }
 .icon:hover { background: rgba(134, 150, 160, 0.15); color: var(--text); }
+
+/* Avatar Styling */
+.avatar {
+  width: 46px; height: 46px; border-radius: 50%; color: #fff; display: flex; align-items: center;
+  justify-content: center; font-weight: 700; font-size: 18px; flex: none; text-transform: uppercase;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15); background-size: cover; background-position: center; overflow: hidden;
+}
 
 /* Search Bar */
 .search { padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
@@ -126,13 +131,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   display: flex; gap: 12px; padding: 12px 16px; align-items: center; cursor: pointer;
   border-bottom: 1px solid var(--line); transition: background 0.15s;
 }
-.item:hover { background: var(--panel-alt); }
-.item.active { background: var(--panel-alt); }
-.avatar {
-  width: 46px; height: 46px; border-radius: 50%; color: #fff; display: flex; align-items: center;
-  justify-content: center; font-weight: 700; font-size: 18px; flex: none; text-transform: uppercase;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
+.item:hover, .item.active { background: var(--panel-alt); }
 .item .mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .item .top-row { display: flex; justify-content: space-between; align-items: center; }
 .item .u { font-weight: 600; font-size: 15px; direction: ltr; text-align: start; }
@@ -140,11 +139,40 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .item .last { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 4px; }
 .item .last svg { width: 14px; height: 14px; }
 
-/* Chat Area */
-#chat { display: flex; flex-direction: column; min-height: 0; background-color: var(--wall); background-image: var(--wall-pattern); position: relative; }
+/* Profile Drawer */
+#profile-drawer {
+  position: absolute; inset: 0; background: var(--panel); z-index: 15;
+  display: flex; flex-direction: column; animation: slideIn 0.2s ease-out;
+}
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+.drawer-body { padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; flex: 1; }
+.big-avatar-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto; cursor: pointer; }
+.big-avatar { width: 140px; height: 140px; font-size: 48px; }
+.avatar-overlay {
+  position: absolute; inset: 0; border-radius: 50%; background: rgba(0,0,0,0.45);
+  color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; font-size: 12px; opacity: 0; transition: opacity 0.2s;
+}
+.big-avatar-wrap:hover .avatar-overlay { opacity: 1; }
+.field-box { background: var(--panel-alt); padding: 12px 14px; border-radius: 10px; display: flex; flex-direction: column; gap: 6px; }
+.field-box label { font-size: 12px; color: var(--accent); font-weight: 600; }
+.field-box input { background: transparent; border: none; border-bottom: 1.5px solid var(--line); padding: 6px 0; outline: none; font-size: 15px; }
+.field-box input:focus { border-bottom-color: var(--accent); }
+
+/* Chat Area & Custom Wallpaper */
+#chat {
+  display: flex; flex-direction: column; min-height: 0;
+  background-color: var(--wall); background-image: var(--wall-pattern);
+  background-size: cover; background-position: center; position: relative;
+}
+#chat.has-custom-bg::before {
+  content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.25); pointer-events: none; z-index: 0;
+}
+[data-theme="dark"] #chat.has-custom-bg::before { background: rgba(0, 0, 0, 0.55); }
+
 #empty {
   flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  color: var(--muted); gap: 12px; background: var(--panel-alt); border-bottom: 6px solid var(--accent);
+  color: var(--muted); gap: 12px; background: var(--panel-alt); border-bottom: 6px solid var(--accent); z-index: 2;
 }
 #empty .empty-icon {
   width: 72px; height: 72px; border-radius: 50%; background: var(--line);
@@ -155,17 +183,16 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 #empty p { font-size: 13px; }
 
 #msgs {
-  flex: 1; overflow-y: auto; padding: 16px 7%; display: flex; flex-direction: column; gap: 6px;
+  flex: 1; overflow-y: auto; padding: 16px 7%; display: flex; flex-direction: column; gap: 6px; z-index: 1;
 }
 
-/* Date Divider */
 .date-div {
   align-self: center; background: var(--panel); color: var(--muted); font-size: 12px;
   padding: 5px 12px; border-radius: 8px; box-shadow: var(--shadow); margin: 8px 0; font-weight: 500;
 }
 
 /* Message Bubbles */
-.msg-wrap { display: flex; flex-direction: column; max-width: 72%; position: relative; group: true; }
+.msg-wrap { display: flex; flex-direction: column; max-width: 72%; position: relative; }
 .msg-wrap.me { align-self: flex-start; }
 .msg-wrap.them { align-self: flex-end; }
 
@@ -177,7 +204,6 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .msg-wrap.me .msg { background: var(--out); border-top-right-radius: 2px; }
 .msg-wrap.them .msg { background: var(--in); border-top-left-radius: 2px; }
 
-/* Reply action button on hover */
 .reply-btn {
   position: absolute; top: 4px; width: 26px; height: 26px; border-radius: 50%;
   background: var(--panel); color: var(--muted); box-shadow: var(--shadow);
@@ -188,7 +214,6 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .msg-wrap:hover .reply-btn { opacity: 1; }
 .reply-btn svg { width: 14px; height: 14px; }
 
-/* Quoted Reply inside message */
 .quote-box {
   background: rgba(0, 0, 0, 0.06); border-inline-start: 4px solid var(--accent);
   border-radius: 6px; padding: 4px 8px; margin-bottom: 5px; font-size: 12px;
@@ -198,32 +223,32 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .quote-box .q-name { font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
 .quote-box .q-text { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 240px; }
 
+/* Message Meta & Ticks */
 .msg .meta {
   display: flex; align-items: center; justify-content: flex-end; gap: 4px;
   font-size: 11px; color: var(--muted); margin-top: 3px; white-space: normal;
 }
-.msg .meta svg { width: 14px; height: 14px; color: #53bdeb; }
+.ticks { display: inline-flex; align-items: center; }
+.ticks svg { width: 16px; height: 16px; stroke-width: 2.2; }
+.ticks.sent svg, .ticks.delivered svg { color: var(--muted); }
+.ticks.seen svg { color: #53bdeb; }
+
 .msg img { max-width: 280px; width: 100%; border-radius: 8px; display: block; cursor: pointer; margin-bottom: 2px; }
 
 /* Audio Player */
 .player { display: flex; align-items: center; gap: 10px; min-width: 230px; padding: 4px 2px; white-space: normal; }
-.player .pp {
-  width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff;
-  flex: none; transition: transform 0.1s;
-}
-.player .pp:active { transform: scale(0.92); }
+.player .pp { width: 36px; height: 36px; border-radius: 50%; background: var(--accent); color: #fff; flex: none; }
 .player .pp svg { width: 16px; height: 16px; fill: currentColor; stroke: none; }
 .player .wave-wrap { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.player .bar { height: 6px; background: rgba(134, 150, 160, 0.25); border-radius: 3px; overflow: hidden; direction: ltr; cursor: pointer; position: relative; }
-.player .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; transition: width 0.1s linear; }
+.player .bar { height: 6px; background: rgba(134, 150, 160, 0.25); border-radius: 3px; overflow: hidden; direction: ltr; cursor: pointer; }
+.player .bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 3px; }
 .player .dur { font-size: 11px; color: var(--muted); direction: ltr; display: flex; justify-content: space-between; }
 
-/* Reply Preview Bar above Composer */
+/* Reply Preview Bar */
 #reply-bar {
   background: var(--head); padding: 8px 16px; border-top: 1px solid var(--line);
-  display: flex; align-items: center; gap: 10px; animation: slideUp 0.15s ease-out;
+  display: flex; align-items: center; gap: 10px; z-index: 5;
 }
-@keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 #reply-bar .rb-content {
   flex: 1; background: var(--panel); border-inline-start: 4px solid var(--accent);
   padding: 6px 10px; border-radius: 6px; min-width: 0;
@@ -231,21 +256,21 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 #reply-bar .rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
 #reply-bar .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Emoji Picker */
+/* Emoji Picker & Wallpaper Modal */
 #emoji-picker {
   position: absolute; bottom: 68px; right: 16px; background: var(--panel);
   border: 1px solid var(--line); border-radius: 12px; padding: 10px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.18); display: grid; grid-template-columns: repeat(7, 1fr);
   gap: 6px; z-index: 20; width: 280px; max-height: 220px; overflow-y: auto;
 }
-.em-btn { font-size: 20px; padding: 4px; border-radius: 6px; transition: background 0.15s; }
+.em-btn { font-size: 20px; padding: 4px; border-radius: 6px; }
 .em-btn:hover { background: var(--panel-alt); }
 
 /* Composer */
 #composer { background: var(--head); padding: 10px 14px; display: flex; align-items: center; gap: 8px; z-index: 5; }
 #txt {
   flex: 1; padding: 11px 16px; border: 0; border-radius: 24px; background: var(--panel);
-  outline: none; font-size: 14.5px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  outline: none; font-size: 14.5px;
 }
 #mic.rec { background: #e53935; color: #fff; animation: pulse 1.2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.5); } 70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); } 100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); } }
@@ -257,21 +282,23 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .send:hover { background: var(--accent-hover); color: #fff; }
 .back { display: none; }
 
-/* Modals (Image Preview & Lightbox) */
+/* Modals */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(11, 20, 26, 0.85); backdrop-filter: blur(4px);
   display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px;
 }
 .modal-box {
-  background: var(--panel); padding: 16px; border-radius: 14px; max-width: 460px; width: 100%;
-  display: flex; flex-direction: column; gap: 14px; box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  background: var(--panel); padding: 20px; border-radius: 14px; max-width: 440px; width: 100%;
+  display: flex; flex-direction: column; gap: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.3);
 }
-.modal-box img { max-height: 60vh; width: 100%; object-fit: contain; border-radius: 8px; background: #000; }
+.modal-box img { max-height: 55vh; width: 100%; object-fit: contain; border-radius: 8px; background: #000; }
+.wall-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.wall-swatch { height: 54px; border-radius: 8px; border: 2px solid var(--line); cursor: pointer; transition: transform 0.15s; }
+.wall-swatch:hover { transform: scale(1.05); border-color: var(--accent); }
 
-#lightbox img { max-height: 85vh; max-width: 92vw; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+#lightbox img { max-height: 85vh; max-width: 92vw; border-radius: 8px; }
 .lb-actions { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; }
-.lb-btn { background: rgba(255,255,255,0.15); color: #fff; width: 42px; height: 42px; border-radius: 50%; backdrop-filter: blur(4px); }
-.lb-btn:hover { background: rgba(255,255,255,0.3); }
+.lb-btn { background: rgba(255,255,255,0.15); color: #fff; width: 42px; height: 42px; border-radius: 50%; }
 
 @media (max-width: 768px) {
   #app { grid-template-columns: 1fr; }
@@ -316,17 +343,54 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 <!-- Main App -->
 <div id="app" class="hidden">
   <aside id="side">
-    <div class="head">
-      <div class="avatar" id="meav"></div>
-      <div class="info">
-        <div class="name" id="mename" style="direction:ltr;text-align:start"></div>
-        <div class="status">متصل الآن</div>
+    <!-- Profile Customization Drawer -->
+    <div id="profile-drawer" class="hidden">
+      <div class="head">
+        <button class="icon" id="close-profile" title="رجوع">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <div class="info"><div class="name">الملف الشخصي</div></div>
       </div>
+      <div class="drawer-body">
+        <div class="big-avatar-wrap" id="change-avatar-btn" title="تغيير الصورة الشخصية">
+          <div class="avatar big-avatar" id="prof-av-preview"></div>
+          <div class="avatar-overlay">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>تغيير الصورة</span>
+          </div>
+          <input type="file" id="avatar-file" accept="image/*" class="hidden">
+        </div>
+
+        <div class="field-box">
+          <label>اسم المستخدم (Username)</label>
+          <div id="prof-username" style="direction:ltr;text-align:start;font-weight:600;color:var(--muted)"></div>
+        </div>
+
+        <div class="field-box">
+          <label>الحالة / النبذة (Bio)</label>
+          <input id="prof-bio" placeholder="اكتب حالتك هنا..." maxlength="80">
+        </div>
+
+        <button class="btn" id="save-profile">حفظ التغييرات</button>
+      </div>
+    </div>
+
+    <!-- Sidebar Header -->
+    <div class="head">
+      <div class="avatar" id="meav" style="cursor:pointer" title="تعديل الملف الشخصي"></div>
+      <div class="info" id="open-profile-info" title="تعديل الملف الشخصي">
+        <div class="name" id="mename" style="direction:ltr;text-align:start"></div>
+        <div class="status" id="mebio">متاح الآن</div>
+      </div>
+      <button class="icon" id="wall-btn" title="خلفية الشات">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </button>
       <button class="icon" id="theme-btn" title="تغيير المظهر"></button>
       <button class="icon" id="logout" title="تسجيل الخروج">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
+
     <div class="search">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -346,7 +410,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       <p>اختر محادثة من القائمة أو ابحث عن يوزر صديقك للبدء</p>
     </div>
 
-    <div id="chatbox" class="hidden" style="display:flex;flex-direction:column;flex:1;min-height:0">
+    <div id="chatbox" class="hidden" style="display:flex;flex-direction:column;flex:1;min-height:0;z-index:1">
       <div class="head">
         <button class="icon back" id="back" title="رجوع">
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -354,7 +418,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <div class="avatar" id="oav"></div>
         <div class="info">
           <div class="name" id="oname" style="direction:ltr;text-align:start"></div>
-          <div class="status">محادثة مباشرة</div>
+          <div class="status" id="obio"></div>
         </div>
       </div>
 
@@ -402,6 +466,20 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   </main>
 </div>
 
+<!-- Wallpaper Modal -->
+<div id="wall-modal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <h3 style="font-size:17px">تخصيص خلفية الدردشة</h3>
+    <div class="wall-grid" id="wall-colors"></div>
+    <div class="row">
+      <button class="btn" id="wall-upload-btn">اختيار صورة من الجهاز</button>
+      <button class="btn alt" id="wall-reset-btn">الافتراضية</button>
+    </div>
+    <input type="file" id="wall-file" accept="image/*" class="hidden">
+    <button class="btn alt" id="wall-close-btn">إغلاق</button>
+  </div>
+</div>
+
 <!-- Image Upload Preview Modal -->
 <div id="modal" class="modal-overlay hidden">
   <div class="modal-box">
@@ -434,16 +512,17 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = id => document.getElementById(id);
 const DOMAIN = "@chatuser.app";
-let me = null, all = [], names = {}, active = null, pendingImg = null, replyingTo = null;
+let me = null, all = [], profilesMap = {}, active = null, pendingImg = null, replyingTo = null;
 
-/* ---------- SVG Icons Strings ---------- */
+/* ---------- SVG Icons ---------- */
 const ICONS = {
   sun: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`,
   moon: `<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`,
   play: `<svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
   pause: `<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`,
   reply: `<svg viewBox="0 0 24 24"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>`,
-  checks: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/><polyline points="20 12 9 23 7 21" style="opacity:0.7"/></svg>`,
+  tickSingle: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+  tickDouble: `<svg viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 11 21 9 19"/></svg>`,
   imgSmall: `<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`,
   micSmall: `<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>`
 };
@@ -462,6 +541,57 @@ $("theme-btn").onclick = () => {
   applyTheme(savedTheme);
 };
 
+/* ---------- Chat Wallpaper Customization ---------- */
+const WALL_COLORS = ["#efeae2", "#d9e8f5", "#e2f0cb", "#fce1e4", "#e8dff5", "#121b22", "#1a2634", "#23192d"];
+function applyWallpaper(val) {
+  const chat = $("chat");
+  chat.classList.remove("has-custom-bg");
+  if (!val) {
+    chat.style.backgroundColor = "";
+    chat.style.backgroundImage = "";
+    localStorage.removeItem("chat_wall");
+    return;
+  }
+  localStorage.setItem("chat_wall", val);
+  if (val.startsWith("#")) {
+    chat.style.backgroundImage = "var(--wall-pattern)";
+    chat.style.backgroundColor = val;
+  } else {
+    chat.style.backgroundColor = "var(--wall)";
+    chat.style.backgroundImage = `url(${val})`;
+    chat.classList.add("has-custom-bg");
+  }
+}
+applyWallpaper(localStorage.getItem("chat_wall"));
+
+const wallGrid = $("wall-colors");
+WALL_COLORS.forEach(c => {
+  const sw = el("div", "wall-swatch");
+  sw.style.backgroundColor = c;
+  sw.onclick = () => applyWallpaper(c);
+  wallGrid.append(sw);
+});
+
+$("wall-btn").onclick = () => $("wall-modal").classList.remove("hidden");
+$("wall-close-btn").onclick = () => $("wall-modal").classList.add("hidden");
+$("wall-reset-btn").onclick = () => applyWallpaper(null);
+$("wall-upload-btn").onclick = () => $("wall-file").click();
+$("wall-file").onchange = async (e) => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  if (!f) return;
+  $("wall-upload-btn").disabled = true;
+  $("wall-upload-btn").textContent = "جاري الرفع...";
+  const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+  const url = await upload(f, ext, f.type || "image/jpeg");
+  $("wall-upload-btn").disabled = false;
+  $("wall-upload-btn").textContent = "اختيار صورة من الجهاز";
+  if (url) {
+    applyWallpaper(url);
+    $("wall-modal").classList.add("hidden");
+  }
+};
+
 /* ---------- Helpers ---------- */
 const el = (tag, cls, txt) => {
   const e = document.createElement(tag);
@@ -473,7 +603,6 @@ const fmtTime = d => new Date(d).toLocaleTimeString("ar-EG", { hour: "2-digit", 
 const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 const initial = n => (n || "?")[0];
 
-// Generate consistent color for each username
 const AVATAR_COLORS = ["#00a884", "#0088cc", "#e53935", "#8e24aa", "#fb8c00", "#3949ab", "#00acc1", "#d81b60"];
 function getAvatarColor(name) {
   if (!name) return AVATAR_COLORS[0];
@@ -481,20 +610,27 @@ function getAvatarColor(name) {
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
-function setAvatar(el, name) {
-  el.textContent = initial(name);
-  el.style.background = getAvatarColor(name);
+function renderAvatar(el, prof) {
+  const name = prof?.username || "?";
+  if (prof?.avatar_url) {
+    el.textContent = "";
+    el.style.backgroundImage = `url(${prof.avatar_url})`;
+    el.style.backgroundColor = "transparent";
+  } else {
+    el.style.backgroundImage = "";
+    el.textContent = initial(name);
+    el.style.backgroundColor = getAvatarColor(name);
+  }
 }
 
-// Notification Beep using Web Audio API
 function playNotifySound() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = "sine";
-    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // A5
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1);
     gain.gain.setValueAtTime(0.08, ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
     osc.connect(gain);
@@ -504,7 +640,6 @@ function playNotifySound() {
   } catch (e) {}
 }
 
-// Date formatting for dividers
 function getDateLabel(dateStr) {
   const d = new Date(dateStr);
   const now = new Date();
@@ -515,6 +650,50 @@ function getDateLabel(dateStr) {
   if (diff === 1) return "أمس";
   return d.toLocaleDateString("ar-EG", { day: "numeric", month: "long", year: "numeric" });
 }
+
+/* ---------- Profile Customization ---------- */
+function openProfileDrawer() {
+  $("prof-username").textContent = "@" + me.username;
+  $("prof-bio").value = me.bio || "";
+  renderAvatar($("prof-av-preview"), me);
+  $("profile-drawer").classList.remove("hidden");
+}
+$("meav").onclick = openProfileDrawer;
+$("open-profile-info").onclick = openProfileDrawer;
+$("close-profile").onclick = () => $("profile-drawer").classList.add("hidden");
+
+$("change-avatar-btn").onclick = () => $("avatar-file").click();
+$("avatar-file").onchange = async (e) => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  if (!f) return;
+  const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
+  const url = await upload(f, ext, f.type || "image/jpeg");
+  if (url) {
+    const { error } = await sb.from("profiles").update({ avatar_url: url }).eq("id", me.id);
+    if (!error) {
+      me.avatar_url = url;
+      profilesMap[me.id] = me;
+      renderAvatar($("prof-av-preview"), me);
+      renderAvatar($("meav"), me);
+    }
+  }
+};
+
+$("save-profile").onclick = async () => {
+  const newBio = $("prof-bio").value.trim() || "متاح الآن";
+  $("save-profile").disabled = true;
+  $("save-profile").textContent = "جاري الحفظ...";
+  const { error } = await sb.from("profiles").update({ bio: newBio }).eq("id", me.id);
+  $("save-profile").disabled = false;
+  $("save-profile").textContent = "حفظ التغييرات";
+  if (!error) {
+    me.bio = newBio;
+    profilesMap[me.id] = me;
+    $("mebio").textContent = newBio;
+    $("profile-drawer").classList.add("hidden");
+  }
+};
 
 /* ---------- Emoji Picker ---------- */
 const EMOJIS = ["😀","😂","🤣","😍","🥰","😘","😎","🤔","😅","😭","😤","😡","👍","👎","❤️","🔥","✨","🎉","🙏","👏","🤝","💯","💀","🤡","👀","🫡","🥳","😴"];
@@ -528,10 +707,7 @@ EMOJIS.forEach(em => {
   };
   ep.append(b);
 });
-$("emoji-btn").onclick = (e) => {
-  e.stopPropagation();
-  ep.classList.toggle("hidden");
-};
+$("emoji-btn").onclick = (e) => { e.stopPropagation(); ep.classList.toggle("hidden"); };
 document.addEventListener("click", (e) => {
   if (!ep.contains(e.target) && e.target !== $("emoji-btn")) ep.classList.add("hidden");
 });
@@ -566,13 +742,35 @@ $("signup").onclick = async () => {
     $("signup").disabled = false;
     return authErr("فعّل تسجيل الدخول من غير تأكيد إيميل في Supabase");
   }
-  const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, username: u });
+  const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, username: u, bio: "متاح الآن" });
   $("signup").disabled = false;
   if (e2) return authErr("اليوزر ده موجود");
   boot();
 };
 
 $("logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+/* ---------- Delivery & Read Receipts Logic ---------- */
+async function markDelivered(msgIds) {
+  if (!msgIds.length) return;
+  const now = new Date().toISOString();
+  await sb.from("messages").update({ delivered_at: now }).in("id", msgIds).is("delivered_at", null);
+}
+
+async function markSeen(senderId) {
+  const unseen = all.filter(m => m.sender === senderId && m.receiver === me.id && !m.seen_at);
+  if (!unseen.length) return;
+  const ids = unseen.map(m => m.id);
+  const now = new Date().toISOString();
+  unseen.forEach(m => { m.seen_at = now; if (!m.delivered_at) m.delivered_at = now; });
+  await sb.from("messages").update({ seen_at: now, delivered_at: now }).in("id", ids);
+}
+
+function getTicksHTML(m) {
+  if (m.seen_at) return `<span class="ticks seen" title="تمت القراءة">${ICONS.tickDouble}</span>`;
+  if (m.delivered_at) return `<span class="ticks delivered" title="تم الاستلام">${ICONS.tickDouble}</span>`;
+  return `<span class="ticks sent" title="تم الإرسال">${ICONS.tickSingle}</span>`;
+}
 
 /* ---------- Boot ---------- */
 async function boot() {
@@ -581,36 +779,71 @@ async function boot() {
   const { data: prof } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
   if (!prof) return;
   me = prof;
-  names[me.id] = me.username;
+  profilesMap[me.id] = me;
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
   $("mename").textContent = me.username;
-  setAvatar($("meav"), me.username);
+  $("mebio").textContent = me.bio || "متاح الآن";
+  renderAvatar($("meav"), me);
 
   const { data: msgs } = await sb.from("messages").select("*").order("created_at", { ascending: true }).limit(2000);
   all = msgs || [];
-  await loadNames(all.flatMap(m => [m.sender, m.receiver]));
+  await loadProfiles(all.flatMap(m => [m.sender, m.receiver]));
+
+  // Mark all undelivered incoming messages as delivered now that user is online
+  const undelivered = all.filter(m => m.receiver === me.id && !m.delivered_at).map(m => m.id);
+  if (undelivered.length) {
+    const now = new Date().toISOString();
+    all.forEach(m => { if (undelivered.includes(m.id)) m.delivered_at = now; });
+    markDelivered(undelivered);
+  }
+
   renderList();
 
-  sb.channel("incoming")
+  // Listen for new messages & status updates (ticks)
+  sb.channel("realtime-chat")
     .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: "receiver=eq." + me.id },
       async p => {
         const m = p.new;
         if (all.some(x => x.id === m.id)) return;
-        await loadNames([m.sender]);
+        await loadProfiles([m.sender]);
+        
+        const now = new Date().toISOString();
+        m.delivered_at = now;
+        if (active === m.sender && document.visibilityState === "visible") {
+          m.seen_at = now;
+          sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
+        } else {
+          sb.from("messages").update({ delivered_at: now }).eq("id", m.id).then();
+        }
+
         all.push(m);
         playNotifySound();
         renderList();
         if (active === m.sender) renderMsgs();
       })
+    .on("postgres_changes", { event: "UPDATE", schema: "public", table: "messages", filter: "sender=eq." + me.id },
+      p => {
+        const updated = p.new;
+        const idx = all.findIndex(x => x.id === updated.id);
+        if (idx !== -1) {
+          all[idx] = updated;
+          renderList();
+          if (active === updated.receiver) renderMsgs();
+        }
+      })
     .subscribe();
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && active) markSeen(active);
+  });
 }
 
-async function loadNames(ids) {
-  const need = [...new Set(ids)].filter(i => i && !names[i]);
+async function loadProfiles(ids) {
+  const need = [...new Set(ids)].filter(i => i && !profilesMap[i]);
   if (!need.length) return;
-  const { data } = await sb.from("profiles").select("id,username").in("id", need);
-  (data || []).forEach(p => names[p.id] = p.username);
+  const { data } = await sb.from("profiles").select("*").in("id", need);
+  (data || []).forEach(p => profilesMap[p.id] = p);
 }
 
 /* ---------- Conversations List ---------- */
@@ -618,7 +851,6 @@ function otherOf(m) { return m.sender === me.id ? m.receiver : m.sender; }
 
 function getCleanBody(body) {
   if (!body) return "";
-  // Strip reply metadata prefix if exists
   if (body.startsWith(">>REPLY:")) {
     const idx = body.indexOf("\n");
     return idx !== -1 ? body.slice(idx + 1) : body;
@@ -634,22 +866,23 @@ function renderList() {
   list.replaceChildren();
   ids.forEach(id => {
     const m = last[id];
+    const prof = profilesMap[id] || { username: "..." };
     const it = el("div", "item" + (id === active ? " active" : ""));
     const av = el("div", "avatar");
-    setAvatar(av, names[id]);
+    renderAvatar(av, prof);
     
     const mid = el("div", "mid");
     const topRow = el("div", "top-row");
-    topRow.append(el("div", "u", names[id] || "..."), el("div", "t", fmtTime(m.created_at)));
+    topRow.append(el("div", "u", prof.username), el("div", "t", fmtTime(m.created_at)));
     
     const lastRow = el("div", "last");
-    const prefix = m.sender === me.id ? "أنت: " : "";
+    const ticks = m.sender === me.id ? getTicksHTML(m) : "";
     if (m.kind === "image") {
-      lastRow.innerHTML = `${prefix}${ICONS.imgSmall} صورة`;
+      lastRow.innerHTML = `${ticks}${ICONS.imgSmall} صورة`;
     } else if (m.kind === "audio") {
-      lastRow.innerHTML = `${prefix}${ICONS.micSmall} رسالة صوتية`;
+      lastRow.innerHTML = `${ticks}${ICONS.micSmall} رسالة صوتية`;
     } else {
-      lastRow.textContent = prefix + getCleanBody(m.body);
+      lastRow.innerHTML = `${ticks}<span>${getCleanBody(m.body)}</span>`;
     }
     
     mid.append(topRow, lastRow);
@@ -669,14 +902,14 @@ $("q").oninput = () => {
     const box = $("results");
     box.replaceChildren();
     if (!q) return;
-    const { data } = await sb.from("profiles").select("id,username").ilike("username", "%" + q + "%").neq("id", me.id).limit(8);
+    const { data } = await sb.from("profiles").select("*").ilike("username", "%" + q + "%").neq("id", me.id).limit(8);
     (data || []).forEach(p => {
-      names[p.id] = p.username;
+      profilesMap[p.id] = p;
       const it = el("div", "item");
       const av = el("div", "avatar");
-      setAvatar(av, p.username);
+      renderAvatar(av, p);
       const mid = el("div", "mid");
-      mid.append(el("div", "u", p.username), el("div", "last", "اضغط لبدء المحادثة"));
+      mid.append(el("div", "u", p.username), el("div", "last", p.bio || "اضغط لبدء المحادثة"));
       it.append(av, mid);
       it.onclick = () => { $("q").value = ""; box.replaceChildren(); openChat(p.id); };
       box.append(it);
@@ -689,7 +922,7 @@ $("q").oninput = () => {
 function setReply(m) {
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
-  $("rb-user").textContent = m.sender === me.id ? "أنت" : names[m.sender];
+  $("rb-user").textContent = m.sender === me.id ? "أنت" : (profilesMap[m.sender]?.username || "");
   $("rb-msg").textContent = m.kind === "image" ? "🖼️ صورة" : m.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(m.body);
   $("txt").focus();
 }
@@ -700,14 +933,20 @@ function clearReply() {
 $("rb-close").onclick = clearReply;
 
 /* ---------- Chat View ---------- */
-function openChat(id) {
+async function openChat(id) {
   active = id;
   clearReply();
+  await loadProfiles([id]);
+  const prof = profilesMap[id] || { username: "..." };
+  
   $("empty").classList.add("hidden");
   $("chatbox").classList.remove("hidden");
   $("app").classList.add("open");
-  $("oname").textContent = names[id];
-  setAvatar($("oav"), names[id]);
+  $("oname").textContent = prof.username;
+  $("obio").textContent = prof.bio || "متاح الآن";
+  renderAvatar($("oav"), prof);
+  
+  await markSeen(id);
   renderList();
   renderMsgs();
   $("txt").focus();
@@ -733,7 +972,6 @@ function bubble(m) {
   const isMe = m.sender === me.id;
   const wrap = el("div", "msg-wrap " + (isMe ? "me" : "them"));
   
-  // Reply Button
   const rBtn = el("button", "reply-btn");
   rBtn.innerHTML = ICONS.reply;
   rBtn.title = "رد";
@@ -742,12 +980,11 @@ function bubble(m) {
 
   const b = el("div", "msg");
 
-  // Parse Reply Quote if present in text message
   let displayBody = m.body || "";
   if (m.kind === "text" && displayBody.startsWith(">>REPLY:")) {
     const nl = displayBody.indexOf("\n");
     if (nl !== -1) {
-      const header = displayBody.slice(8, nl); // format: senderName|snippet
+      const header = displayBody.slice(8, nl);
       const sep = header.indexOf("|");
       if (sep !== -1) {
         const qUser = header.slice(0, sep);
@@ -774,7 +1011,7 @@ function bubble(m) {
   meta.append(document.createTextNode(fmtTime(m.created_at)));
   if (isMe) {
     const chk = el("span");
-    chk.innerHTML = ICONS.checks;
+    chk.innerHTML = getTicksHTML(m);
     meta.append(chk);
   }
   b.append(meta);
@@ -791,7 +1028,7 @@ function openLightbox(url) {
 $("lb-close").onclick = () => $("lightbox").classList.add("hidden");
 $("lightbox").onclick = (e) => { if (e.target === $("lightbox")) $("lightbox").classList.add("hidden"); };
 
-/* ---------- Custom Audio Player ---------- */
+/* ---------- Audio Player ---------- */
 function player(m) {
   const total = parseFloat(m.body) || 0;
   const w = el("div", "player");
@@ -806,7 +1043,6 @@ function player(m) {
   const curSpan = el("span", "", "0:00");
   const totSpan = el("span", "", fmtDur(total));
   durRow.append(curSpan, totSpan);
-  
   waveWrap.append(bar, durRow);
   
   const a = new Audio(m.media_url);
@@ -869,7 +1105,7 @@ function sendText() {
   if (!t) return;
   
   if (replyingTo) {
-    const rName = replyingTo.sender === me.id ? me.username : names[replyingTo.sender];
+    const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
     const rSnippet = replyingTo.kind === "image" ? "🖼️ صورة" : replyingTo.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(replyingTo.body).slice(0, 40);
     t = `>>REPLY:${rName}|${rSnippet}\n${t}`;
     clearReply();
@@ -964,7 +1200,6 @@ mic.addEventListener("pointerup", stopRec);
 $("rec-cancel-btn").onclick = () => { recCancel = true; stopRec(); };
 mic.addEventListener("contextmenu", e => e.preventDefault());
 
-/* ---------- Start ---------- */
 boot();
 </script>
 </body>
