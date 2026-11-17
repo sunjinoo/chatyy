@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00a884">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دردشة</title>
@@ -1442,6 +1444,14 @@ $("rec-cancel-btn").onclick = () => { recCancel = true; stopRec(); };
 mic.addEventListener("contextmenu", e => e.preventDefault());
 
 boot();
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => console.log("PWA Service Worker Registered"))
+      .catch(err => console.log("PWA Error:", err));
+  });
+}
 </script>
 </body>
 </html>
