@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<title>Chatyy</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#00a884">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chatyy">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>دردشة</title>
@@ -1447,9 +1451,7 @@ boot();
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js")
-      .then(() => console.log("PWA Service Worker Registered"))
-      .catch(err => console.log("PWA Error:", err));
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
   });
 }
 </script>

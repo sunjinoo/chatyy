@@ -1,20 +1,19 @@
 {
-  "name": "chatyy",
-  "short_name": "chatyy",
-  "start_url": "./index.html",
+  "name": "Chatyy",
+  "short_name": "Chatyy",
+  "description": "تواصل لحظي سريع وآمن باليوزر",
+  "start_url": "/chatyy/",
+  "scope": "/chatyy/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#0b141a",
   "theme_color": "#00a884",
   "icons": [
     {
-      "src": "icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='112' fill='%2300a884'/%3E%3Cpath d='M360 248c0 57.6-50.4 104-112 104-19.2 0-37.6-4.8-53.6-12.8L128 360l22.4-59.2C140.8 285.6 136 267.2 136 248c0-57.6 50.4-104 112-104s112 46.4 112 104z' fill='%23ffffff'/%3E%3Ccircle cx='208' cy='248' r='16' fill='%2300a884'/%3E%3Ccircle cx='248' cy='248' r='16' fill='%2300a884'/%3E%3Ccircle cx='288' cy='248' r='16' fill='%2300a884'/%3E%3C/svg%3E",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }
