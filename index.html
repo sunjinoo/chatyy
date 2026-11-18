@@ -25,7 +25,8 @@
   --wall: #efeae2;
   --head: #f0f2f5;
   --shadow: 0 1px 2px rgba(11, 20, 26, 0.13);
-  --wall-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d1c9bc' fill-opacity='0.25'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --font-scale: 14.5px;
+  --wall-pattern: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c5bdb0' stroke-width='1.5' stroke-opacity='0.35' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 25c0-5 5-9 11-9s11 4 11 9-5 9-11 9c-2 0-4-.5-5.5-1.3L20 35l1.5-4.2C20.5 29.2 20 27.2 20 25z'/%3E%3Cpath d='M85 20l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z'/%3E%3Ccircle cx='30' cy='85' r='9'/%3E%3Cpath d='M27 83h.01M33 83h.01M27 87c1.5 2 4.5 2 6 0'/%3E%3Cpath d='M85 88c-4-3.5-8-7-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 93 77c0 4-4 7.5-8 11z'/%3E%3Cpath d='M58 50l4-4 6 6-4 4zM54 58l4-4'/%3E%3Ccircle cx='60' cy='22' r='3'/%3E%3Ccircle cx='58' cy='95' r='4'/%3E%3Cpath d='M95 52c3-3 7-3 10 0M15 55c2-2 5-2 7 0'/%3E%3C/g%3E%3C/svg%3E");
 }
 [data-theme="dark"] {
   --bg: #0b141a;
@@ -36,18 +37,16 @@
   --line: #222d34;
   --out: #005c4b;
   --in: #202c33;
-  --accent: #00a884;
-  --accent-hover: #029676;
   --wall: #0b141a;
   --head: #202c33;
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --wall-pattern: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e2a32' fill-opacity='0.35'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  --wall-pattern: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23283742' stroke-width='1.5' stroke-opacity='0.45' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 25c0-5 5-9 11-9s11 4 11 9-5 9-11 9c-2 0-4-.5-5.5-1.3L20 35l1.5-4.2C20.5 29.2 20 27.2 20 25z'/%3E%3Cpath d='M85 20l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z'/%3E%3Ccircle cx='30' cy='85' r='9'/%3E%3Cpath d='M27 83h.01M33 83h.01M27 87c1.5 2 4.5 2 6 0'/%3E%3Cpath d='M85 88c-4-3.5-8-7-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 93 77c0 4-4 7.5-8 11z'/%3E%3Cpath d='M58 50l4-4 6 6-4 4zM54 58l4-4'/%3E%3Ccircle cx='60' cy='22' r='3'/%3E%3Ccircle cx='58' cy='95' r='4'/%3E%3Cpath d='M95 52c3-3 7-3 10 0M15 55c2-2 5-2 7 0'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
 body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif; background: var(--bg); color: var(--text); }
-button, input, textarea { font: inherit; color: inherit; }
+button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; }
 svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; flex-shrink: 0; }
 .hidden { display: none !important; }
@@ -60,10 +59,16 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 #auth {
   height: 100%; display: flex; align-items: center; justify-content: center; padding: 16px;
   background: linear-gradient(180deg, var(--accent) 0%, var(--accent) 220px, var(--bg) 220px, var(--bg) 100%);
+  position: relative;
+}
+.auth-lang-btn {
+  position: absolute; top: 16px; inset-inline-end: 16px; background: rgba(255,255,255,0.2);
+  color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600;
+  backdrop-filter: blur(4px);
 }
 .card {
-  background: var(--panel); padding: 32px 28px; border-radius: 16px; width: 100%; max-width: 380px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 16px;
+  background: var(--panel); padding: 32px 28px; border-radius: 16px; width: 100%; max-width: 390px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 15px;
 }
 .logo-box { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 4px; }
 .logo-circle {
@@ -74,16 +79,20 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .card h1 { font-size: 26px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
 .card p.sub { font-size: 13px; color: var(--muted); text-align: center; }
 .input-group { position: relative; display: flex; align-items: center; }
-.input-group svg { position: absolute; left: 12px; color: var(--muted); width: 18px; height: 18px; pointer-events: none; }
-.card input {
-  width: 100%; padding: 12px 14px 12px 38px; border: 1.5px solid var(--line); border-radius: 10px;
+.input-group svg.lead-ic { position: absolute; left: 12px; color: var(--muted); width: 18px; height: 18px; pointer-events: none; }
+.card input[type="text"], .card input[type="password"] {
+  width: 100%; padding: 12px 38px; border: 1.5px solid var(--line); border-radius: 10px;
   background: var(--panel-alt); direction: ltr; text-align: left; transition: border-color 0.2s; outline: none;
 }
 .card input:focus { border-color: var(--accent); background: var(--panel); }
+.eye-btn { position: absolute; right: 10px; color: var(--muted); width: 28px; height: 28px; }
+.remember-row { display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.remember-label { display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.remember-label input { width: 16px; height: 16px; accent-color: var(--accent); cursor: pointer; }
 .row { display: flex; gap: 10px; }
 .btn {
   flex: 1; padding: 12px; border-radius: 10px; background: var(--accent); color: #fff;
-  font-weight: 600; transition: background 0.2s, transform 0.1s;
+  font-weight: 600; transition: background 0.2s, transform 0.1s; gap: 6px;
 }
 .btn:hover { background: var(--accent-hover); }
 .btn:active { transform: scale(0.98); }
@@ -136,17 +145,23 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   background: #00e676; border: 2px solid var(--panel); box-shadow: 0 1px 2px rgba(0,0,0,0.2);
 }
 
-/* Search Bar */
-.search { padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); }
+/* Search & Filter Tabs */
+.search { padding: 8px 12px; background: var(--panel); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
 .search-wrap {
   position: relative; display: flex; align-items: center; background: var(--panel-alt);
   border-radius: 8px; padding: 0 12px;
 }
 .search-wrap svg { width: 16px; height: 16px; color: var(--muted); }
 .search input {
-  width: 100%; padding: 9px 10px; border: 0; background: transparent;
+  width: 100%; padding: 8px 10px; border: 0; background: transparent;
   direction: ltr; text-align: left; outline: none; font-size: 14px;
 }
+.filter-chips { display: flex; gap: 6px; }
+.chip {
+  padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600;
+  background: var(--panel-alt); color: var(--muted); transition: all 0.15s;
+}
+.chip.active { background: var(--accent); color: #fff; }
 
 .hint { padding: 24px 16px; font-size: 13px; color: var(--muted); text-align: center; line-height: 1.6; }
 #list { flex: 1; overflow-y: auto; }
@@ -159,7 +174,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .item:hover, .item.active { background: var(--panel-alt); }
 .item .mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 .item .top-row { display: flex; justify-content: space-between; align-items: center; }
-.item .u { font-weight: 600; font-size: 15px; direction: ltr; text-align: start; }
+.item .u { font-weight: 600; font-size: 15px; direction: ltr; text-align: start; display: flex; align-items: center; gap: 4px; }
 .item .t { font-size: 11px; color: var(--muted); }
 .item .t.unread-t { color: var(--accent); font-weight: 700; }
 .item .bot-row { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
@@ -171,32 +186,55 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   display: inline-flex; align-items: center; justify-content: center; flex: none;
 }
 
-/* Profile Drawer */
-#profile-drawer {
+/* Drawers (Profile & Advanced Settings) */
+.drawer {
   position: absolute; inset: 0; background: var(--panel); z-index: 15;
   display: flex; flex-direction: column; animation: slideIn 0.2s ease-out;
 }
-@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
-.drawer-body { padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; flex: 1; }
-.big-avatar-wrap { position: relative; width: 140px; height: 140px; margin: 0 auto; cursor: pointer; }
-.big-avatar { width: 140px; height: 140px; font-size: 48px; }
+@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.drawer-body { padding: 20px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex: 1; }
+.big-avatar-wrap { position: relative; width: 130px; height: 130px; margin: 0 auto; cursor: pointer; }
+.big-avatar { width: 130px; height: 130px; font-size: 44px; }
 .avatar-overlay {
   position: absolute; inset: 0; border-radius: 50%; background: rgba(0,0,0,0.45);
   color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 6px; font-size: 12px; opacity: 0; transition: opacity 0.2s;
 }
 .big-avatar-wrap:hover .avatar-overlay { opacity: 1; }
-.field-box { background: var(--panel-alt); padding: 12px 14px; border-radius: 10px; display: flex; flex-direction: column; gap: 6px; }
-.field-box label { font-size: 12px; color: var(--accent); font-weight: 600; }
-.field-box input { background: transparent; border: none; border-bottom: 1.5px solid var(--line); padding: 6px 0; outline: none; font-size: 15px; }
+.field-box { background: var(--panel-alt); padding: 12px 14px; border-radius: 12px; display: flex; flex-direction: column; gap: 8px; }
+.field-box label { font-size: 12px; color: var(--accent); font-weight: 700; }
+.field-box input[type="text"] { background: transparent; border: none; border-bottom: 1.5px solid var(--line); padding: 6px 0; outline: none; font-size: 15px; }
 .field-box input:focus { border-bottom-color: var(--accent); }
+
+/* Settings Controls */
+.set-row { display: flex; align-items: center; justify-content: space-between; padding: 6px 0; }
+.set-label { display: flex; flex-direction: column; gap: 2px; }
+.set-title { font-size: 14px; font-weight: 600; }
+.set-desc { font-size: 11.5px; color: var(--muted); }
+.switch {
+  position: relative; width: 42px; height: 24px; background: var(--line); border-radius: 12px;
+  cursor: pointer; transition: background 0.2s; flex: none;
+}
+.switch.on { background: var(--accent); }
+.switch::after {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px;
+  background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.switch.on::after { transform: translateX(18px); }
+.accent-dots { display: flex; gap: 8px; flex-wrap: wrap; }
+.acc-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; }
+.acc-dot.active { border-color: var(--text); transform: scale(1.15); }
+.seg-btns { display: flex; background: var(--panel); border-radius: 8px; padding: 3px; border: 1px solid var(--line); }
+.seg-btn { flex: 1; padding: 6px; font-size: 12px; font-weight: 600; border-radius: 6px; color: var(--muted); }
+.seg-btn.active { background: var(--accent); color: #fff; }
 
 /* Chat Area */
 #chat {
   display: flex; flex-direction: column; min-height: 0;
   background-color: var(--wall); background-image: var(--wall-pattern);
-  background-size: cover; background-position: center; position: relative;
+  background-size: 140px 140px; background-position: center; position: relative;
 }
+#chat.has-custom-bg { background-size: cover; }
 #chat.has-custom-bg::before {
   content: ""; position: absolute; inset: 0; background: rgba(0, 0, 0, 0.25); pointer-events: none; z-index: 0;
 }
@@ -247,7 +285,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .msg {
   padding: 7px 10px 5px; border-radius: 10px; box-shadow: var(--shadow);
   word-wrap: break-word; overflow-wrap: anywhere; white-space: pre-wrap; position: relative;
-  font-size: 14.5px; line-height: 1.45;
+  font-size: var(--font-scale); line-height: 1.45;
 }
 .msg-wrap.me .msg { background: var(--out); border-top-right-radius: 2px; }
 .msg-wrap.them .msg { background: var(--in); border-top-left-radius: 2px; }
@@ -260,8 +298,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   position: absolute; top: 2px; display: flex; gap: 3px;
   opacity: 0; transition: opacity 0.15s; z-index: 3;
 }
-.msg-wrap.me .msg-actions { left: -118px; }
-.msg-wrap.them .msg-actions { right: -90px; }
+.msg-wrap.me .msg-actions { left: -146px; }
+.msg-wrap.them .msg-actions { right: -118px; }
 .msg-wrap:hover .msg-actions { opacity: 1; }
 
 .act-btn {
@@ -337,7 +375,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 #emoji-picker {
-  position: absolute; bottom: 68px; right: 16px; background: var(--panel);
+  position: absolute; bottom: 68px; inset-inline-start: 16px; background: var(--panel);
   border: 1px solid var(--line); border-radius: 12px; padding: 10px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.18); display: grid; grid-template-columns: repeat(7, 1fr);
   gap: 6px; z-index: 20; width: 280px; max-height: 220px; overflow-y: auto;
@@ -365,24 +403,40 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   display: flex; align-items: center; justify-content: center; z-index: 50; padding: 16px;
 }
 .modal-box {
-  background: var(--panel); padding: 22px; border-radius: 16px; max-width: 400px; width: 100%;
+  background: var(--panel); padding: 22px; border-radius: 16px; max-width: 420px; width: 100%;
   display: flex; flex-direction: column; gap: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.3);
 }
 .modal-box img { max-height: 55vh; width: 100%; object-fit: contain; border-radius: 8px; background: #000; }
+
+/* Rich Wallpaper Grid */
 .wall-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-.wall-swatch { height: 54px; border-radius: 8px; border: 2px solid var(--line); cursor: pointer; transition: transform 0.15s; }
+.wall-swatch {
+  height: 60px; border-radius: 10px; border: 2px solid var(--line); cursor: pointer;
+  transition: transform 0.15s; background-size: cover; background-position: center;
+  display: flex; align-items: flex-end; justify-content: center; overflow: hidden;
+}
+.wall-swatch span {
+  background: rgba(0,0,0,0.45); color: #fff; font-size: 10px; width: 100%;
+  text-align: center; padding: 2px 0; font-weight: 600;
+}
 .wall-swatch:hover { transform: scale(1.05); border-color: var(--accent); }
 
 #lightbox img { max-height: 85vh; max-width: 92vw; border-radius: 8px; }
 .lb-actions { position: fixed; top: 16px; right: 16px; display: flex; gap: 10px; }
 .lb-btn { background: rgba(255,255,255,0.15); color: #fff; width: 42px; height: 42px; border-radius: 50%; }
 
-/* Drag & Drop Overlay */
 #drop-zone {
   position: absolute; inset: 12px; border: 3px dashed var(--accent); border-radius: 16px;
   background: rgba(0, 168, 132, 0.15); backdrop-filter: blur(3px); z-index: 30;
   display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--accent);
   pointer-events: none;
+}
+
+#toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: #111b21; color: #fff; padding: 10px 20px; border-radius: 24px;
+  font-size: 13.5px; font-weight: 600; z-index: 100; box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  transition: opacity 0.25s;
 }
 
 @media (max-width: 768px) {
@@ -399,28 +453,40 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 </head>
 <body>
 
+<div id="toast" class="hidden"></div>
+
 <!-- Auth Screen -->
 <div id="auth">
+  <button class="auth-lang-btn" id="auth-lang-toggle">English</button>
   <div class="card">
     <div class="logo-box">
       <div class="logo-circle">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
       </div>
       <h1>Chatyy</h1>
-      <p class="sub">تواصل لحظي سريع وآمن باليوزر</p>
+      <p class="sub" data-i18n="authSub">تواصل لحظي سريع وآمن باليوزر</p>
     </div>
     <div class="input-group">
-      <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <input id="u" placeholder="Username (e.g. ahmed_99)" autocomplete="username" autocapitalize="none">
+      <svg class="lead-ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <input type="text" id="u" placeholder="Username (e.g. ahmed_99)" autocomplete="username" autocapitalize="none">
     </div>
     <div class="input-group">
-      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      <input id="p" type="password" placeholder="Password (6+ chars)" autocomplete="current-password">
+      <svg class="lead-ic" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input type="password" id="p" placeholder="Password (6+ chars)" autocomplete="current-password">
+      <button type="button" class="eye-btn" id="toggle-pass" title="إظهار/إخفاء">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="remember-row">
+      <label class="remember-label">
+        <input type="checkbox" id="remember-me" checked>
+        <span data-i18n="rememberMe">تذكر بيانات الدخول تلقائياً</span>
+      </label>
     </div>
     <div class="err" id="aerr"></div>
     <div class="row">
-      <button class="btn" id="login">تسجيل الدخول</button>
-      <button class="btn alt" id="signup">حساب جديد</button>
+      <button class="btn" id="login" data-i18n="loginBtn">تسجيل الدخول</button>
+      <button class="btn alt" id="signup" data-i18n="signupBtn">حساب جديد</button>
     </div>
   </div>
 </div>
@@ -434,59 +500,137 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
         <span>Chatyy</span>
       </div>
-      <button id="install-pwa-btn" class="hidden" title="تثبيت التطبيق على جهازك">
-        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>تثبيت</span>
-      </button>
+      <div style="display:flex;align-items:center;gap:6px">
+        <button id="install-pwa-btn" class="hidden">
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="installBtn">تثبيت</span>
+        </button>
+        <button class="icon" id="open-settings-btn" title="الإعدادات / Settings">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Advanced Settings Drawer -->
+    <div id="settings-drawer" class="drawer hidden">
+      <div class="head">
+        <button class="icon" id="close-settings">
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <div class="info"><div class="name" data-i18n="settingsTitle">الإعدادات المتقدمة</div></div>
+      </div>
+      <div class="drawer-body">
+        <!-- Language Setting -->
+        <div class="field-box">
+          <label data-i18n="langLabel">لغة التطبيق / Language</label>
+          <div class="seg-btns">
+            <button class="seg-btn" id="lang-ar">العربية</button>
+            <button class="seg-btn" id="lang-en">English</button>
+          </div>
+        </div>
+
+        <!-- Theme & Accent Color -->
+        <div class="field-box">
+          <label data-i18n="appearanceLabel">المظهر واللون الأساسي</label>
+          <div class="set-row">
+            <span class="set-title" data-i18n="darkModeLabel">الوضع الليلي (Dark Mode)</span>
+            <div class="switch" id="set-dark-switch"></div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px" data-i18n="accentLabel">لون التطبيق:</div>
+          <div class="accent-dots" id="accent-dots"></div>
+        </div>
+
+        <!-- Font Size -->
+        <div class="field-box">
+          <label data-i18n="fontSizeLabel">حجم خط الرسائل</label>
+          <div class="seg-btns">
+            <button class="seg-btn" data-fsize="13px" data-i18n="fontSmall">صغير</button>
+            <button class="seg-btn" data-fsize="14.5px" data-i18n="fontMed">متوسط</button>
+            <button class="seg-btn" data-fsize="17px" data-i18n="fontLarge">كبير</button>
+          </div>
+        </div>
+
+        <!-- Privacy & Notifications -->
+        <div class="field-box">
+          <label data-i18n="privacyNotifLabel">الخصوصية والإشعارات</label>
+          <div class="set-row">
+            <div class="set-label">
+              <span class="set-title" data-i18n="soundNotifTitle">أصوات التنبيهات</span>
+              <span class="set-desc" data-i18n="soundNotifDesc">تشغيل نغمة عند استلام رسالة</span>
+            </div>
+            <div class="switch" id="set-sound-switch"></div>
+          </div>
+          <div class="set-row">
+            <div class="set-label">
+              <span class="set-title" data-i18n="enterSendTitle">الإرسال بزر Enter</span>
+              <span class="set-desc" data-i18n="enterSendDesc">إرسال الرسالة مباشرة عند الضغط على Enter</span>
+            </div>
+            <div class="switch" id="set-enter-switch"></div>
+          </div>
+          <div class="set-row">
+            <div class="set-label">
+              <span class="set-title" data-i18n="readReceiptsTitle">مؤشرات قراءة الرسائل</span>
+              <span class="set-desc" data-i18n="readReceiptsDesc">إظهار علامة الصح الزرقاء عند القراءة</span>
+            </div>
+            <div class="switch" id="set-receipts-switch"></div>
+          </div>
+        </div>
+
+        <!-- Export Chat -->
+        <div class="field-box">
+          <label data-i18n="dataLabel">البيانات والنسخ الاحتياطي</label>
+          <button class="btn alt" id="export-chat-btn" data-i18n="exportChatBtn">تصدير المحادثة الحالية (ملف نصي)</button>
+        </div>
+      </div>
     </div>
 
     <!-- Profile Customization Drawer -->
-    <div id="profile-drawer" class="hidden">
+    <div id="profile-drawer" class="drawer hidden">
       <div class="head">
-        <button class="icon" id="close-profile" title="رجوع">
+        <button class="icon" id="close-profile">
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
-        <div class="info"><div class="name">الملف الشخصي</div></div>
+        <div class="info"><div class="name" data-i18n="profileTitle">الملف الشخصي</div></div>
       </div>
       <div class="drawer-body">
-        <div class="big-avatar-wrap" id="change-avatar-btn" title="تغيير الصورة الشخصية">
+        <div class="big-avatar-wrap" id="change-avatar-btn">
           <div class="avatar big-avatar" id="prof-av-preview"></div>
           <div class="avatar-overlay">
             <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            <span>تغيير الصورة</span>
+            <span data-i18n="changePhoto">تغيير الصورة</span>
           </div>
           <input type="file" id="avatar-file" accept="image/*" class="hidden">
         </div>
 
         <div class="field-box">
-          <label>اسم المستخدم (Username)</label>
+          <label data-i18n="usernameLabel">اسم المستخدم (Username)</label>
           <div id="prof-username" style="direction:ltr;text-align:start;font-weight:600;color:var(--muted)"></div>
         </div>
 
         <div class="field-box">
-          <label>الحالة / النبذة (Bio)</label>
-          <input id="prof-bio" placeholder="اكتب حالتك هنا..." maxlength="80">
+          <label data-i18n="bioLabel">الحالة / النبذة (Bio)</label>
+          <input type="text" id="prof-bio" maxlength="80">
         </div>
 
-        <button class="btn" id="save-profile">حفظ التغييرات</button>
+        <button class="btn" id="save-profile" data-i18n="saveBtn">حفظ التغييرات</button>
       </div>
     </div>
 
     <!-- Sidebar User Header -->
     <div class="head">
-      <div class="av-wrap" id="meav-wrap" style="cursor:pointer" title="تعديل الملف الشخصي">
+      <div class="av-wrap" id="meav-wrap" style="cursor:pointer">
         <div class="avatar" id="meav"></div>
         <span class="online-dot"></span>
       </div>
-      <div class="info" id="open-profile-info" title="تعديل الملف الشخصي">
+      <div class="info" id="open-profile-info">
         <div class="name" id="mename" style="direction:ltr;text-align:start"></div>
-        <div class="status" id="mebio">متاح الآن</div>
+        <div class="status" id="mebio"></div>
       </div>
-      <button class="icon" id="wall-btn" title="خلفية الشات">
+      <button class="icon" id="wall-btn" title="خلفية الشات / Wallpaper">
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
       </button>
-      <button class="icon" id="theme-btn" title="تغيير المظهر"></button>
-      <button class="icon" id="logout" title="تسجيل الخروج">
+      <button class="icon" id="theme-btn" title="تغيير المظهر / Theme"></button>
+      <button class="icon" id="logout" title="تسجيل الخروج / Logout">
         <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       </button>
     </div>
@@ -494,7 +638,12 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
     <div class="search">
       <div class="search-wrap">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="q" placeholder="ابحث عن يوزر لبدء محادثة..." autocapitalize="none">
+        <input id="q" data-i18n-ph="searchUserPh" placeholder="ابحث عن يوزر لبدء محادثة..." autocapitalize="none">
+      </div>
+      <div class="filter-chips">
+        <button class="chip active" data-filter="all" data-i18n="filterAll">الكل</button>
+        <button class="chip" data-filter="unread" data-i18n="filterUnread">غير مقروءة</button>
+        <button class="chip" data-filter="online" data-i18n="filterOnline">متصلون</button>
       </div>
     </div>
     <div id="results"></div>
@@ -502,19 +651,19 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   </aside>
 
   <main id="chat">
-    <div id="drop-zone" class="hidden">أفلت الصورة هنا لإرسالها 📷</div>
+    <div id="drop-zone" class="hidden" data-i18n="dropZone">أفلت الصورة هنا لإرسالها 📷</div>
 
     <div id="empty">
       <div class="empty-icon">
         <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.76 1.38 5.23 3.56 6.89L4.5 22l4.53-2.26c.95.26 1.96.4 2.97.4 5.52 0 10-4.03 10-9S17.52 2 12 2zm-3 10.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
       </div>
       <h2>Chatyy</h2>
-      <p>اختر محادثة من القائمة أو ابحث عن يوزر صديقك للبدء</p>
+      <p data-i18n="emptySub">اختر محادثة من القائمة أو ابحث عن يوزر صديقك للبدء</p>
     </div>
 
     <div id="chatbox" class="hidden" style="display:flex;flex-direction:column;flex:1;min-height:0;z-index:1">
       <div class="head">
-        <button class="icon back" id="back" title="رجوع">
+        <button class="icon back" id="back">
           <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
         <div class="av-wrap">
@@ -532,8 +681,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 
       <!-- In-Chat Search Bar -->
       <div id="chat-search-bar" class="hidden">
-        <input id="chat-search-input" placeholder="ابحث داخل الرسائل...">
-        <button class="icon" id="close-chat-search" title="إغلاق البحث">
+        <input id="chat-search-input" data-i18n-ph="searchChatPh" placeholder="ابحث داخل الرسائل...">
+        <button class="icon" id="close-chat-search">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -542,10 +691,10 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       <div id="pinned-bar" class="hidden">
         <svg viewBox="0 0 24 24" style="color:var(--accent);width:18px;height:18px"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>
         <div class="pin-info">
-          <div class="pin-label">رسالة مثبّتة</div>
+          <div class="pin-label" data-i18n="pinnedLabel">رسالة مثبّتة</div>
           <div class="pin-text" id="pin-text"></div>
         </div>
-        <button class="icon" id="unpin-btn" title="إلغاء التثبيت">
+        <button class="icon" id="unpin-btn">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -558,7 +707,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="rb-title" id="rb-user"></div>
           <div class="rb-text" id="rb-msg"></div>
         </div>
-        <button class="icon" id="rb-close" title="إلغاء الرد">
+        <button class="icon" id="rb-close">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -566,10 +715,10 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       <!-- Edit Preview -->
       <div id="edit-bar" class="hidden">
         <div class="rb-content">
-          <div class="rb-title">تعديل الرسالة</div>
+          <div class="rb-title" data-i18n="editTitle">تعديل الرسالة</div>
           <div class="rb-text" id="eb-msg"></div>
         </div>
-        <button class="icon" id="eb-close" title="إلغاء التعديل">
+        <button class="icon" id="eb-close">
           <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -579,26 +728,26 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 
       <!-- Composer -->
       <div id="composer">
-        <button class="icon" id="emoji-btn" title="إيموجي">
+        <button class="icon" id="emoji-btn">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
         </button>
-        <button class="icon" id="attach" title="إرسال صورة">
+        <button class="icon" id="attach">
           <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         </button>
         <input type="file" id="file" accept="image/*" class="hidden">
 
         <div id="rec-box" class="hidden">
           <span id="recinfo"><span class="rec-dot"></span><span id="rectime">0:00</span></span>
-          <button id="rec-cancel-btn" style="color:#e53935;font-size:13px;font-weight:600">إلغاء</button>
+          <button id="rec-cancel-btn" style="color:#e53935;font-size:13px;font-weight:600" data-i18n="cancelBtn">إلغاء</button>
         </div>
 
-        <input id="txt" placeholder="اكتب رسالة أو الصق صورة..." autocomplete="off">
+        <input id="txt" data-i18n-ph="msgPlaceholder" placeholder="اكتب رسالة أو الصق صورة..." autocomplete="off">
 
-        <button class="icon" id="mic" title="اضغط للتسجيل" style="touch-action:none">
+        <button class="icon" id="mic" style="touch-action:none">
           <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </button>
-        <button class="icon send hidden" id="send" title="إرسال">
-          <svg viewBox="0 0 24 24" style="transform: rotate(180deg);"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <button class="icon send hidden" id="send">
+          <svg viewBox="0 0 24 24" class="send-ic"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>
       </div>
     </div>
@@ -608,11 +757,11 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 <!-- Logout Confirmation Modal -->
 <div id="logout-modal" class="modal-overlay hidden">
   <div class="modal-box" style="max-width:340px;text-align:center">
-    <h3 style="font-size:18px">تسجيل الخروج</h3>
-    <p style="font-size:14px;color:var(--muted)">هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟</p>
+    <h3 style="font-size:18px" data-i18n="logoutTitle">تسجيل الخروج</h3>
+    <p style="font-size:14px;color:var(--muted)" data-i18n="logoutDesc">هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟</p>
     <div class="row">
-      <button class="btn danger" id="confirm-logout">نعم، خروج</button>
-      <button class="btn alt" id="cancel-logout">إلغاء</button>
+      <button class="btn danger" id="confirm-logout" data-i18n="confirmLogout">نعم، خروج</button>
+      <button class="btn alt" id="cancel-logout" data-i18n="cancelBtn">إلغاء</button>
     </div>
   </div>
 </div>
@@ -620,24 +769,24 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 <!-- Wallpaper Modal -->
 <div id="wall-modal" class="modal-overlay hidden">
   <div class="modal-box">
-    <h3 style="font-size:17px">تخصيص خلفية الدردشة</h3>
+    <h3 style="font-size:17px" data-i18n="wallTitle">تخصيص خلفية الدردشة</h3>
     <div class="wall-grid" id="wall-colors"></div>
     <div class="row">
-      <button class="btn" id="wall-upload-btn">اختيار صورة من الجهاز</button>
-      <button class="btn alt" id="wall-reset-btn">الافتراضية</button>
+      <button class="btn" id="wall-upload-btn" data-i18n="wallUpload">اختيار صورة من الجهاز</button>
+      <button class="btn alt" id="wall-reset-btn" data-i18n="wallReset">الافتراضية</button>
     </div>
     <input type="file" id="wall-file" accept="image/*" class="hidden">
-    <button class="btn alt" id="wall-close-btn">إغلاق</button>
+    <button class="btn alt" id="wall-close-btn" data-i18n="closeBtn">إغلاق</button>
   </div>
 </div>
 
 <!-- Image Upload Preview Modal -->
 <div id="modal" class="modal-overlay hidden">
   <div class="modal-box">
-    <img id="prev" alt="معاينة">
+    <img id="prev" alt="Preview">
     <div class="row">
-      <button class="btn" id="psend">إرسال الصورة</button>
-      <button class="btn alt" id="pcancel">إلغاء</button>
+      <button class="btn" id="psend" data-i18n="sendImgBtn">إرسال الصورة</button>
+      <button class="btn alt" id="pcancel" data-i18n="cancelBtn">إلغاء</button>
     </div>
   </div>
 </div>
@@ -645,23 +794,212 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 <!-- Fullscreen Image Lightbox -->
 <div id="lightbox" class="modal-overlay hidden">
   <div class="lb-actions">
-    <a id="lb-dl" class="lb-btn" download="image.jpg" title="تحميل" style="display:flex;align-items:center;justify-content:center;">
+    <a id="lb-dl" class="lb-btn" download="image.jpg">
       <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
     </a>
-    <button class="lb-btn" id="lb-close" title="إغلاق">
+    <button class="lb-btn" id="lb-close">
       <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
   </div>
-  <img id="lb-img" alt="عرض الصورة">
+  <img id="lb-img" alt="Image">
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 const SUPABASE_URL = "https://mikkkljrladodmxgpwpk.supabase.co";
 const SUPABASE_KEY = "sb_publishable_9xYH62K2qxrOFsE88iRfAQ_I9xT2AdA";
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storage: window.localStorage
+  }
+});
 
 const $ = id => document.getElementById(id);
+
+/* ---------- Localization (Arabic & English) ---------- */
+const I18N = {
+  ar: {
+    authSub: "تواصل لحظي سريع وآمن باليوزر",
+    rememberMe: "تذكر بيانات الدخول تلقائياً",
+    loginBtn: "تسجيل الدخول",
+    signupBtn: "حساب جديد",
+    installBtn: "تثبيت",
+    settingsTitle: "الإعدادات المتقدمة",
+    langLabel: "لغة التطبيق / Language",
+    appearanceLabel: "المظهر واللون الأساسي",
+    darkModeLabel: "الوضع الليلي (Dark Mode)",
+    accentLabel: "لون التطبيق:",
+    fontSizeLabel: "حجم خط الرسائل",
+    fontSmall: "صغير",
+    fontMed: "متوسط",
+    fontLarge: "كبير",
+    privacyNotifLabel: "الخصوصية والإشعارات",
+    soundNotifTitle: "أصوات التنبيهات",
+    soundNotifDesc: "تشغيل نغمة عند استلام رسالة",
+    enterSendTitle: "الإرسال بزر Enter",
+    enterSendDesc: "إرسال الرسالة مباشرة عند الضغط على Enter",
+    readReceiptsTitle: "مؤشرات قراءة الرسائل",
+    readReceiptsDesc: "إظهار علامة الصح الزرقاء عند القراءة",
+    dataLabel: "البيانات والنسخ الاحتياطي",
+    exportChatBtn: "تصدير المحادثة الحالية (ملف نصي)",
+    profileTitle: "الملف الشخصي",
+    changePhoto: "تغيير الصورة",
+    usernameLabel: "اسم المستخدم (Username)",
+    bioLabel: "الحالة / النبذة (Bio)",
+    saveBtn: "حفظ التغييرات",
+    searchUserPh: "ابحث عن يوزر لبدء محادثة...",
+    filterAll: "الكل",
+    filterUnread: "غير مقروءة",
+    filterOnline: "متصلون",
+    dropZone: "أفلت الصورة هنا لإرسالها 📷",
+    emptySub: "اختر محادثة من القائمة أو ابحث عن يوزر صديقك للبدء",
+    searchChatPh: "ابحث داخل الرسائل...",
+    pinnedLabel: "رسالة مثبّتة",
+    editTitle: "تعديل الرسالة",
+    cancelBtn: "إلغاء",
+    msgPlaceholder: "اكتب رسالة أو الصق صورة...",
+    logoutTitle: "تسجيل الخروج",
+    logoutDesc: "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
+    confirmLogout: "نعم، خروج",
+    wallTitle: "تخصيص خلفية الدردشة",
+    wallUpload: "اختيار صورة من الجهاز",
+    wallReset: "الافتراضية",
+    closeBtn: "إغلاق",
+    sendImgBtn: "إرسال الصورة",
+    onlineNow: "متصل الآن",
+    typingNow: "يكتب الآن...",
+    offline: "غير متصل",
+    today: "اليوم",
+    yesterday: "أمس",
+    deletedMsg: "🚫 تم حذف هذه الرسالة",
+    copiedToast: "تم نسخ النص 📋",
+    noChatExport: "افتح محادثة أولاً لتصديرها",
+    exportedToast: "تم تصدير المحادثة بنجاح ✅"
+  },
+  en: {
+    authSub: "Fast & secure real-time username chat",
+    rememberMe: "Keep me signed in",
+    loginBtn: "Log In",
+    signupBtn: "Sign Up",
+    installBtn: "Install",
+    settingsTitle: "Advanced Settings",
+    langLabel: "App Language",
+    appearanceLabel: "Appearance & Accent",
+    darkModeLabel: "Dark Mode",
+    accentLabel: "Accent Color:",
+    fontSizeLabel: "Message Font Size",
+    fontSmall: "Small",
+    fontMed: "Medium",
+    fontLarge: "Large",
+    privacyNotifLabel: "Privacy & Notifications",
+    soundNotifTitle: "Notification Sounds",
+    soundNotifDesc: "Play sound when receiving messages",
+    enterSendTitle: "Press Enter to Send",
+    enterSendDesc: "Send message directly when pressing Enter",
+    readReceiptsTitle: "Read Receipts",
+    readReceiptsDesc: "Show blue ticks when messages are read",
+    dataLabel: "Data & Backup",
+    exportChatBtn: "Export Current Chat (.txt)",
+    profileTitle: "Profile",
+    changePhoto: "Change Photo",
+    usernameLabel: "Username",
+    bioLabel: "Bio / Status",
+    saveBtn: "Save Changes",
+    searchUserPh: "Search username to start chat...",
+    filterAll: "All",
+    filterUnread: "Unread",
+    filterOnline: "Online",
+    dropZone: "Drop image here to send 📷",
+    emptySub: "Select a conversation or search for a friend's username",
+    searchChatPh: "Search in messages...",
+    pinnedLabel: "Pinned Message",
+    editTitle: "Edit Message",
+    cancelBtn: "Cancel",
+    msgPlaceholder: "Type a message or paste image...",
+    logoutTitle: "Log Out",
+    logoutDesc: "Are you sure you want to log out of your account?",
+    confirmLogout: "Yes, Log Out",
+    wallTitle: "Chat Wallpaper",
+    wallUpload: "Upload from Device",
+    wallReset: "Default Doodle",
+    closeBtn: "Close",
+    sendImgBtn: "Send Image",
+    onlineNow: "Online",
+    typingNow: "Typing...",
+    offline: "Offline",
+    today: "Today",
+    yesterday: "Yesterday",
+    deletedMsg: "🚫 This message was deleted",
+    copiedToast: "Copied to clipboard 📋",
+    noChatExport: "Open a chat first to export",
+    exportedToast: "Chat exported successfully ✅"
+  }
+};
+
+let prefs = {
+  lang: "ar",
+  theme: "light",
+  accent: "#00a884",
+  fontSize: "14.5px",
+  sound: true,
+  enterSend: true,
+  readReceipts: true
+};
+try {
+  const saved = JSON.parse(localStorage.getItem("chatyy_prefs"));
+  if (saved) prefs = { ...prefs, ...saved };
+} catch (e) {}
+
+function savePrefs() {
+  try { localStorage.setItem("chatyy_prefs", JSON.stringify(prefs)); } catch (e) {}
+}
+
+function t(key) {
+  return I18N[prefs.lang]?.[key] || I18N.ar[key] || key;
+}
+
+function showToast(msg) {
+  const elT = $("toast");
+  elT.textContent = msg;
+  elT.classList.remove("hidden");
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(() => elT.classList.add("hidden"), 2500);
+}
+
+function applyLanguage(lang) {
+  prefs.lang = lang;
+  savePrefs();
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  $("auth-lang-toggle").textContent = lang === "ar" ? "English" : "العربية";
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.getAttribute("data-i18n");
+    if (I18N[lang][k]) el.textContent = I18N[lang][k];
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+    const k = el.getAttribute("data-i18n-ph");
+    if (I18N[lang][k]) el.placeholder = I18N[lang][k];
+  });
+
+  // Rotate send arrow based on direction
+  const sendIc = document.querySelector(".send-ic");
+  if (sendIc) sendIc.style.transform = lang === "ar" ? "rotate(180deg)" : "rotate(0deg)";
+
+  $("lang-ar").classList.toggle("active", lang === "ar");
+  $("lang-en").classList.toggle("active", lang === "en");
+
+  if (me) {
+    renderList();
+    if (active) {
+      updateActiveHeaderStatus();
+      renderMsgs();
+    }
+  }
+}
 
 /* ---------- Helpers ---------- */
 const el = (tag, cls, txt) => {
@@ -670,13 +1008,13 @@ const el = (tag, cls, txt) => {
   if (txt != null) e.textContent = txt;
   return e;
 };
-const fmtTime = d => new Date(d).toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
+const fmtTime = d => new Date(d).toLocaleTimeString(prefs.lang === "ar" ? "ar-EG" : "en-US", { hour: "2-digit", minute: "2-digit" });
 const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 const initial = n => (n || "?")[0];
 
 const DOMAIN = "@chatuser.app";
 let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
-let replyingTo = null, editingMsg = null, chatFilter = "";
+let replyingTo = null, editingMsg = null, chatFilter = "", listFilter = "all";
 let onlineUsers = new Set(), typingUsers = new Set();
 let globalChannel = null, lastTypingSent = 0;
 
@@ -705,6 +1043,7 @@ const ICONS = {
   smile: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>`,
   edit: `<svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
   trash: `<svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
+  copy: `<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
   pin: `<svg viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg>`,
   tickSingle: `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
   tickDouble: `<svg viewBox="0 0 24 24"><polyline points="18 6 7 17 2 12"/><polyline points="22 10 11 21 9 19"/></svg>`,
@@ -712,22 +1051,109 @@ const ICONS = {
   micSmall: `<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>`
 };
 
-/* ---------- Theme Toggle ---------- */
-let savedTheme = "light";
-try { savedTheme = localStorage.getItem("theme") || "light"; } catch (e) {}
-function applyTheme(t) {
-  document.documentElement.dataset.theme = t;
-  $("theme-btn").innerHTML = t === "dark" ? ICONS.sun : ICONS.moon;
-  try { localStorage.setItem("theme", t); } catch (e) {}
+/* ---------- Theme, Accent & Settings UI ---------- */
+const ACCENTS = ["#00a884", "#0088cc", "#7c4dff", "#e91e63", "#ff6d00", "#2e7d32"];
+
+function applyVisualPrefs() {
+  document.documentElement.dataset.theme = prefs.theme;
+  document.documentElement.style.setProperty("--accent", prefs.accent);
+  document.documentElement.style.setProperty("--accent-hover", prefs.accent);
+  document.documentElement.style.setProperty("--font-scale", prefs.fontSize);
+
+  $("theme-btn").innerHTML = prefs.theme === "dark" ? ICONS.sun : ICONS.moon;
+  $("set-dark-switch").classList.toggle("on", prefs.theme === "dark");
+  $("set-sound-switch").classList.toggle("on", prefs.sound);
+  $("set-enter-switch").classList.toggle("on", prefs.enterSend);
+  $("set-receipts-switch").classList.toggle("on", prefs.readReceipts);
+
+  document.querySelectorAll(".acc-dot").forEach(d => {
+    d.classList.toggle("active", d.dataset.col === prefs.accent);
+  });
+  document.querySelectorAll("[data-fsize]").forEach(b => {
+    b.classList.toggle("active", b.dataset.fsize === prefs.fontSize);
+  });
 }
-applyTheme(savedTheme);
+
+const accContainer = $("accent-dots");
+ACCENTS.forEach(col => {
+  const dot = el("div", "acc-dot");
+  dot.style.backgroundColor = col;
+  dot.dataset.col = col;
+  dot.onclick = () => {
+    prefs.accent = col;
+    savePrefs();
+    applyVisualPrefs();
+  };
+  accContainer.append(dot);
+});
+
+document.querySelectorAll("[data-fsize]").forEach(btn => {
+  btn.onclick = () => {
+    prefs.fontSize = btn.dataset.fsize;
+    savePrefs();
+    applyVisualPrefs();
+  };
+});
+
 $("theme-btn").onclick = () => {
-  savedTheme = savedTheme === "light" ? "dark" : "light";
-  applyTheme(savedTheme);
+  prefs.theme = prefs.theme === "light" ? "dark" : "light";
+  savePrefs();
+  applyVisualPrefs();
+};
+$("set-dark-switch").onclick = () => $("theme-btn").click();
+$("set-sound-switch").onclick = () => {
+  prefs.sound = !prefs.sound;
+  savePrefs();
+  applyVisualPrefs();
+};
+$("set-enter-switch").onclick = () => {
+  prefs.enterSend = !prefs.enterSend;
+  savePrefs();
+  applyVisualPrefs();
+};
+$("set-receipts-switch").onclick = () => {
+  prefs.readReceipts = !prefs.readReceipts;
+  savePrefs();
+  applyVisualPrefs();
 };
 
-/* ---------- Chat Wallpaper Customization ---------- */
-const WALL_COLORS = ["#efeae2", "#d9e8f5", "#e2f0cb", "#fce1e4", "#e8dff5", "#121b22", "#1a2634", "#23192d"];
+$("open-settings-btn").onclick = () => $("settings-drawer").classList.remove("hidden");
+$("close-settings").onclick = () => $("settings-drawer").classList.add("hidden");
+$("auth-lang-toggle").onclick = () => applyLanguage(prefs.lang === "ar" ? "en" : "ar");
+$("lang-ar").onclick = () => applyLanguage("ar");
+$("lang-en").onclick = () => applyLanguage("en");
+
+$("export-chat-btn").onclick = () => {
+  if (!active) return showToast(t("noChatExport"));
+  const prof = profilesMap[active] || { username: "chat" };
+  const lines = all.filter(m => otherOf(m) === active && m.body !== ">>DELETED<<").map(m => {
+    const who = m.sender === me.id ? me.username : prof.username;
+    const content = m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
+    return `[${new Date(m.created_at).toLocaleString()}] ${who}: ${content}`;
+  });
+  const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `Chatyy_${prof.username}.txt`;
+  a.click();
+  showToast(t("exportedToast"));
+};
+
+applyVisualPrefs();
+applyLanguage(prefs.lang);
+
+/* ---------- Rich Chat Wallpapers (WhatsApp-Style Doodles & Gradients) ---------- */
+const WALL_PRESETS = [
+  { name: "Doodle", val: null, bg: "#efeae2 var(--wall-pattern)" },
+  { name: "Dark Doodle", val: "#0b141a", bg: "#0b141a var(--wall-pattern)" },
+  { name: "Mint", val: "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)", bg: "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)" },
+  { name: "Ocean", val: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)", bg: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)" },
+  { name: "Sunset", val: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)", bg: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)" },
+  { name: "Lavender", val: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", bg: "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)" },
+  { name: "Midnight", val: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)", bg: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+  { name: "Royal", val: "linear-gradient(135deg, #141e30 0%, #243b55 100%)", bg: "linear-gradient(135deg, #141e30 0%, #243b55 100%)" }
+];
+
 function applyWallpaper(val) {
   const chat = $("chat");
   chat.classList.remove("has-custom-bg");
@@ -741,7 +1167,12 @@ function applyWallpaper(val) {
   if (val.startsWith("#")) {
     chat.style.backgroundImage = "var(--wall-pattern)";
     chat.style.backgroundColor = val;
+  } else if (val.startsWith("linear-gradient")) {
+    chat.style.backgroundColor = "transparent";
+    chat.style.backgroundImage = `${val}, var(--wall-pattern)`;
+    chat.style.backgroundBlendMode = "overlay";
   } else {
+    chat.style.backgroundBlendMode = "normal";
     chat.style.backgroundColor = "var(--wall)";
     chat.style.backgroundImage = `url(${val})`;
     chat.classList.add("has-custom-bg");
@@ -750,10 +1181,11 @@ function applyWallpaper(val) {
 applyWallpaper(localStorage.getItem("chat_wall"));
 
 const wallGrid = $("wall-colors");
-WALL_COLORS.forEach(c => {
+WALL_PRESETS.forEach(p => {
   const sw = el("div", "wall-swatch");
-  sw.style.backgroundColor = c;
-  sw.onclick = () => applyWallpaper(c);
+  sw.style.background = p.bg;
+  sw.append(el("span", "", p.name));
+  sw.onclick = () => applyWallpaper(p.val);
   wallGrid.append(sw);
 });
 
@@ -766,11 +1198,9 @@ $("wall-file").onchange = async (e) => {
   e.target.value = "";
   if (!f) return;
   $("wall-upload-btn").disabled = true;
-  $("wall-upload-btn").textContent = "جاري الرفع...";
   const ext = (f.name.split(".").pop() || "jpg").toLowerCase();
   const url = await upload(f, ext, f.type || "image/jpeg");
   $("wall-upload-btn").disabled = false;
-  $("wall-upload-btn").textContent = "اختيار صورة من الجهاز";
   if (url) {
     applyWallpaper(url);
     $("wall-modal").classList.add("hidden");
@@ -797,7 +1227,7 @@ function renderAvatar(elTarget, prof) {
   }
 }
 
-/* ---------- Online / Offline / Typing Status Helper ---------- */
+/* ---------- Online / Offline / Typing Status ---------- */
 function isUserOnline(id) {
   if (onlineUsers.has(id)) return true;
   const prof = profilesMap[id];
@@ -808,16 +1238,18 @@ function isUserOnline(id) {
 }
 
 function formatLastSeen(id) {
-  if (typingUsers.has(id)) return "يكتب الآن...";
-  if (isUserOnline(id)) return "متصل الآن";
+  if (typingUsers.has(id)) return t("typingNow");
+  if (isUserOnline(id)) return t("onlineNow");
   const prof = profilesMap[id];
-  if (!prof?.last_seen) return prof?.bio || "غير متصل";
+  if (!prof?.last_seen) return prof?.bio || t("offline");
   const d = new Date(prof.last_seen);
   const now = new Date();
   const isToday = d.toDateString() === now.toDateString();
-  const timeStr = d.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
-  if (isToday) return `آخر ظهور اليوم الساعة ${timeStr}`;
-  return `آخر ظهور ${d.toLocaleDateString("ar-EG", { day: "numeric", month: "short" })} الساعة ${timeStr}`;
+  const timeStr = fmtTime(d);
+  if (prefs.lang === "en") {
+    return isToday ? `Last seen today at ${timeStr}` : `Last seen ${d.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at ${timeStr}`;
+  }
+  return isToday ? `آخر ظهور اليوم الساعة ${timeStr}` : `آخر ظهور ${d.toLocaleDateString("ar-EG", { day: "numeric", month: "short" })} الساعة ${timeStr}`;
 }
 
 function updateActiveHeaderStatus() {
@@ -829,7 +1261,7 @@ function updateActiveHeaderStatus() {
   $("ostatus").classList.toggle("online", online || typing);
 }
 
-/* ---------- Notifications API ---------- */
+/* ---------- Notifications & Sound ---------- */
 function requestNotificationPermission() {
   if ("Notification" in window && Notification.permission === "default") {
     Notification.requestPermission();
@@ -839,15 +1271,16 @@ function requestNotificationPermission() {
 function showDesktopNotification(senderName, text) {
   if ("Notification" in window && Notification.permission === "granted") {
     try {
-      new Notification(`Chatyy - رسالة من @${senderName}`, {
+      new Notification(`Chatyy - @${senderName}`, {
         body: text,
-        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2300a884'/%3E%3Cpath d='M45 31c0 7.2-6.3 13-14 13-2.4 0-4.7-.6-6.7-1.6L16 45l2.8-7.4C17.6 35.7 17 33.4 17 31c0-7.2 6.3-13 14-13s14 5.8 14 13z' fill='%23ffffff'/%3E%3C/svg%3E"
+        icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2300a884'/%3E%3Cpath d='M45 31c0 7.2-6.3 13-14 13-2.4 0-4.7-.6-6.7-1.6L16 45l2.8-7.4C17.6 35.7 17 33.4 17 31c0-7.2 6.3-13 14-13s14 5.8 14 13z' fill='%23ffffff'/%3E%3Ccircle cx='26' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='31' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='36' cy='31' r='2' fill='%2300a884'/%3E%3C/svg%3E"
       });
     } catch (e) {}
   }
 }
 
 function playNotifySound() {
+  if (!prefs.sound) return;
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const osc = ctx.createOscillator();
@@ -870,9 +1303,9 @@ function getDateLabel(dateStr) {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const msgDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const diff = (today - msgDay) / (1000 * 60 * 60 * 24);
-  if (diff === 0) return "اليوم";
-  if (diff === 1) return "أمس";
-  return d.toLocaleDateString("ar-EG", { day: "numeric", month: "long", year: "numeric" });
+  if (diff === 0) return t("today");
+  if (diff === 1) return t("yesterday");
+  return d.toLocaleDateString(prefs.lang === "ar" ? "ar-EG" : "en-US", { day: "numeric", month: "long", year: "numeric" });
 }
 
 /* ---------- Profile Customization ---------- */
@@ -905,12 +1338,10 @@ $("avatar-file").onchange = async (e) => {
 };
 
 $("save-profile").onclick = async () => {
-  const newBio = $("prof-bio").value.trim() || "متاح الآن";
+  const newBio = $("prof-bio").value.trim() || "Available";
   $("save-profile").disabled = true;
-  $("save-profile").textContent = "جاري الحفظ...";
   const { error } = await sb.from("profiles").update({ bio: newBio }).eq("id", me.id);
   $("save-profile").disabled = false;
-  $("save-profile").textContent = "حفظ التغييرات";
   if (!error) {
     me.bio = newBio;
     profilesMap[me.id] = me;
@@ -937,18 +1368,42 @@ document.addEventListener("click", (e) => {
   document.querySelectorAll(".react-bar").forEach(rb => rb.remove());
 });
 
-/* ---------- Auth & Logout Confirmation ---------- */
+/* ---------- Persistent Auth, Saved Credentials & Logout ---------- */
 function authErr(t) { $("aerr").textContent = t; }
 function cleanUser() { return $("u").value.trim().toLowerCase(); }
+
+// Pre-fill saved credentials if user checked "Remember me"
+try {
+  const savedCreds = JSON.parse(localStorage.getItem("chatyy_saved_creds"));
+  if (savedCreds?.u) {
+    $("u").value = savedCreds.u;
+    if (savedCreds.p) $("p").value = savedCreds.p;
+  }
+} catch (e) {}
+
+$("toggle-pass").onclick = () => {
+  $("p").type = $("p").type === "password" ? "text" : "password";
+};
+
+function handleSaveCreds(u, p) {
+  try {
+    if ($("remember-me").checked) {
+      localStorage.setItem("chatyy_saved_creds", JSON.stringify({ u, p }));
+    } else {
+      localStorage.removeItem("chatyy_saved_creds");
+    }
+  } catch (e) {}
+}
 
 $("login").onclick = async () => {
   authErr("");
   const u = cleanUser(), p = $("p").value;
-  if (!u || !p) return authErr("اكتب اليوزر والباسورد");
+  if (!u || !p) return authErr(prefs.lang === "ar" ? "اكتب اليوزر والباسورد" : "Enter username & password");
   $("login").disabled = true;
   const { error } = await sb.auth.signInWithPassword({ email: u + DOMAIN, password: p });
   $("login").disabled = false;
-  if (error) return authErr("اليوزر أو الباسورد غلط");
+  if (error) return authErr(prefs.lang === "ar" ? "اليوزر أو الباسورد غلط" : "Invalid username or password");
+  handleSaveCreds(u, p);
   requestNotificationPermission();
   boot();
 };
@@ -956,21 +1411,22 @@ $("login").onclick = async () => {
 $("signup").onclick = async () => {
   authErr("");
   const u = cleanUser(), p = $("p").value;
-  if (!/^[a-z0-9_]{3,20}$/.test(u)) return authErr("اليوزر: ٣ إلى ٢٠ حرف إنجليزي أو رقم أو _");
-  if (p.length < 6) return authErr("الباسورد لازم ٦ حروف على الأقل");
+  if (!/^[a-z0-9_]{3,20}$/.test(u)) return authErr(prefs.lang === "ar" ? "اليوزر: ٣ إلى ٢٠ حرف إنجليزي أو رقم أو _" : "Username: 3-20 lowercase letters, numbers or _");
+  if (p.length < 6) return authErr(prefs.lang === "ar" ? "الباسورد لازم ٦ حروف على الأقل" : "Password must be at least 6 characters");
   $("signup").disabled = true;
   const { data, error } = await sb.auth.signUp({ email: u + DOMAIN, password: p });
   if (error) {
     $("signup").disabled = false;
-    return authErr(error.message.includes("registered") ? "اليوزر ده موجود" : error.message);
+    return authErr(error.message.includes("registered") ? (prefs.lang === "ar" ? "اليوزر ده موجود" : "Username already taken") : error.message);
   }
   if (!data.session) {
     $("signup").disabled = false;
-    return authErr("فعّل تسجيل الدخول من غير تأكيد إيميل في Supabase");
+    return authErr("Disable email confirmation in Supabase Auth settings");
   }
-  const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, username: u, bio: "متاح الآن" });
+  const { error: e2 } = await sb.from("profiles").insert({ id: data.user.id, username: u, bio: "Available" });
   $("signup").disabled = false;
-  if (e2) return authErr("اليوزر ده موجود");
+  if (e2) return authErr(prefs.lang === "ar" ? "اليوزر ده موجود" : "Username taken");
+  handleSaveCreds(u, p);
   requestNotificationPermission();
   boot();
 };
@@ -979,7 +1435,6 @@ $("logout").onclick = () => $("logout-modal").classList.remove("hidden");
 $("cancel-logout").onclick = () => $("logout-modal").classList.add("hidden");
 $("confirm-logout").onclick = async () => {
   $("confirm-logout").disabled = true;
-  $("confirm-logout").textContent = "جاري الخروج...";
   await sb.from("profiles").update({ last_seen: new Date(Date.now() - 120000).toISOString() }).eq("id", me.id);
   await sb.auth.signOut();
   location.reload();
@@ -993,6 +1448,7 @@ async function markDelivered(msgIds) {
 }
 
 async function markSeen(senderId) {
+  if (!prefs.readReceipts) return;
   const unseen = all.filter(m => m.sender === senderId && m.receiver === me.id && !m.seen_at);
   if (!unseen.length) return;
   const ids = unseen.map(m => m.id);
@@ -1002,14 +1458,26 @@ async function markSeen(senderId) {
 }
 
 function getTicksHTML(m) {
-  if (m.seen_at) return `<span class="ticks seen" title="تمت القراءة">${ICONS.tickDouble}</span>`;
-  if (m.delivered_at) return `<span class="ticks delivered" title="تم الاستلام">${ICONS.tickDouble}</span>`;
-  return `<span class="ticks sent" title="تم الإرسال">${ICONS.tickSingle}</span>`;
+  if (m.seen_at && prefs.readReceipts) return `<span class="ticks seen">${ICONS.tickDouble}</span>`;
+  if (m.delivered_at) return `<span class="ticks delivered">${ICONS.tickDouble}</span>`;
+  return `<span class="ticks sent">${ICONS.tickSingle}</span>`;
 }
 
-/* ---------- Boot ---------- */
+/* ---------- Boot (Auto-Login with Saved Session or Credentials) ---------- */
 async function boot() {
-  const { data: { session } } = await sb.auth.getSession();
+  let { data: { session } } = await sb.auth.getSession();
+
+  // Fallback: if session expired but user enabled "Remember me", re-authenticate automatically
+  if (!session) {
+    try {
+      const savedCreds = JSON.parse(localStorage.getItem("chatyy_saved_creds"));
+      if (savedCreds?.u && savedCreds?.p) {
+        const res = await sb.auth.signInWithPassword({ email: savedCreds.u + DOMAIN, password: savedCreds.p });
+        session = res.data?.session;
+      }
+    } catch (e) {}
+  }
+
   if (!session) return;
   const { data: prof } = await sb.from("profiles").select("*").eq("id", session.user.id).single();
   if (!prof) return;
@@ -1018,7 +1486,7 @@ async function boot() {
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
   $("mename").textContent = me.username;
-  $("mebio").textContent = me.bio || "متاح الآن";
+  $("mebio").textContent = me.bio || "Available";
   renderAvatar($("meav"), me);
 
   requestNotificationPermission();
@@ -1074,13 +1542,13 @@ async function boot() {
         
         const now = new Date().toISOString();
         m.delivered_at = now;
-        if (active === m.sender && document.visibilityState === "visible") {
+        if (active === m.sender && document.visibilityState === "visible" && prefs.readReceipts) {
           m.seen_at = now;
           sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
         } else {
           sb.from("messages").update({ delivered_at: now }).eq("id", m.id).then();
-          const senderName = profilesMap[m.sender]?.username || "صديق";
-          const snippet = m.kind === "image" ? "أرسل صورة 🖼️" : m.kind === "audio" ? "أرسل رسالة صوتية 🎤" : getCleanBody(m.body);
+          const senderName = profilesMap[m.sender]?.username || "Friend";
+          const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
           showDesktopNotification(senderName, snippet);
         }
 
@@ -1137,7 +1605,16 @@ async function loadProfiles(ids) {
   (data || []).forEach(p => profilesMap[p.id] = p);
 }
 
-/* ---------- Conversations List ---------- */
+/* ---------- Filter Chips & Conversations List ---------- */
+document.querySelectorAll(".chip").forEach(ch => {
+  ch.onclick = () => {
+    document.querySelectorAll(".chip").forEach(x => x.classList.remove("active"));
+    ch.classList.add("active");
+    listFilter = ch.dataset.filter;
+    renderList();
+  };
+});
+
 function otherOf(m) { return m.sender === me.id ? m.receiver : m.sender; }
 
 function getCleanBody(body) {
@@ -1159,7 +1636,14 @@ function renderList() {
       unreadCounts[other] = (unreadCounts[other] || 0) + 1;
     }
   });
-  const ids = Object.keys(last).sort((a, b) => new Date(last[b].created_at) - new Date(last[a].created_at));
+  let ids = Object.keys(last).sort((a, b) => new Date(last[b].created_at) - new Date(last[a].created_at));
+
+  if (listFilter === "unread") {
+    ids = ids.filter(id => (unreadCounts[id] || 0) > 0);
+  } else if (listFilter === "online") {
+    ids = ids.filter(id => isUserOnline(id));
+  }
+
   const list = $("list");
   list.replaceChildren();
   ids.forEach(id => {
@@ -1182,15 +1666,15 @@ function renderList() {
     const botRow = el("div", "bot-row");
     const lastRow = el("div", "last");
     if (typingUsers.has(id)) {
-      lastRow.innerHTML = `<span style="color:var(--accent);font-weight:600">يكتب الآن...</span>`;
+      lastRow.innerHTML = `<span style="color:var(--accent);font-weight:600">${t("typingNow")}</span>`;
     } else if (m.body === ">>DELETED<<") {
-      lastRow.innerHTML = `<span>🚫 تم حذف هذه الرسالة</span>`;
+      lastRow.innerHTML = `<span>${t("deletedMsg")}</span>`;
     } else {
       const ticks = m.sender === me.id ? getTicksHTML(m) : "";
       if (m.kind === "image") {
-        lastRow.innerHTML = `${ticks}${ICONS.imgSmall} صورة`;
+        lastRow.innerHTML = `${ticks}${ICONS.imgSmall} ${prefs.lang === "ar" ? "صورة" : "Image"}`;
       } else if (m.kind === "audio") {
-        lastRow.innerHTML = `${ticks}${ICONS.micSmall} رسالة صوتية`;
+        lastRow.innerHTML = `${ticks}${ICONS.micSmall} ${prefs.lang === "ar" ? "رسالة صوتية" : "Voice message"}`;
       } else {
         lastRow.innerHTML = `${ticks}<span>${getCleanBody(m.body)}</span>`;
       }
@@ -1204,7 +1688,9 @@ function renderList() {
     it.onclick = () => openChat(id);
     list.append(it);
   });
-  if (!ids.length) list.append(el("div", "hint", "مفيش محادثات لسه.\nابحث عن يوزر صاحبك في شريط البحث فوق."));
+  if (!ids.length) {
+    list.append(el("div", "hint", prefs.lang === "ar" ? "مفيش محادثات في القسم ده." : "No conversations found."));
+  }
 }
 
 /* ---------- Search Users ---------- */
@@ -1227,12 +1713,12 @@ $("q").oninput = () => {
       if (isUserOnline(p.id)) avWrap.append(el("span", "online-dot"));
       
       const mid = el("div", "mid");
-      mid.append(el("div", "u", p.username), el("div", "last", p.bio || "اضغط لبدء المحادثة"));
+      mid.append(el("div", "u", p.username), el("div", "last", p.bio || ""));
       it.append(avWrap, mid);
       it.onclick = () => { $("q").value = ""; box.replaceChildren(); openChat(p.id); };
       box.append(it);
     });
-    if (!data || !data.length) box.append(el("div", "hint", "مفيش يوزر بالاسم ده"));
+    if (!data || !data.length) box.append(el("div", "hint", prefs.lang === "ar" ? "مفيش يوزر بالاسم ده" : "No user found"));
   }, 250);
 };
 
@@ -1268,7 +1754,7 @@ function updatePinnedBanner() {
     return;
   }
   $("pinned-bar").classList.remove("hidden");
-  $("pin-text").textContent = m.kind === "image" ? "🖼️ صورة" : m.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(m.body);
+  $("pin-text").textContent = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("pinned-bar").onclick = (e) => {
     if (e.target.closest("#unpin-btn")) return;
     const targetEl = document.querySelector(`[data-msgid="${m.id}"]`);
@@ -1290,7 +1776,7 @@ function pinMessage(m) {
   updatePinnedBanner();
 }
 
-/* ---------- Message Reactions, Edit & Delete ---------- */
+/* ---------- Message Reactions, Copy, Edit & Delete ---------- */
 const QUICK_REACTIONS = ["❤️", "😂", "😮", "😢", "🙏", "👍"];
 
 async function toggleReaction(msg, emoji) {
@@ -1321,7 +1807,7 @@ function startEdit(m) {
   clearReply();
   editingMsg = m;
   $("edit-bar").classList.remove("hidden");
-  const clean = getCleanBody(m.body).replace(/ \(معدّلة\)$/, "");
+  const clean = getCleanBody(m.body).replace(/ \(edited\)$| \(معدّلة\)$/, "");
   $("eb-msg").textContent = clean;
   $("txt").value = clean;
   toggleSendMic();
@@ -1351,8 +1837,8 @@ function setReply(m) {
   clearEdit();
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
-  $("rb-user").textContent = m.sender === me.id ? "أنت" : (profilesMap[m.sender]?.username || "");
-  $("rb-msg").textContent = m.kind === "image" ? "🖼️ صورة" : m.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(m.body);
+  $("rb-user").textContent = m.sender === me.id ? (prefs.lang === "ar" ? "أنت" : "You") : (profilesMap[m.sender]?.username || "");
+  $("rb-msg").textContent = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("txt").focus();
 }
 function clearReply() {
@@ -1440,32 +1926,37 @@ function bubble(m) {
     
     const reactBtn = el("button", "act-btn");
     reactBtn.innerHTML = ICONS.smile;
-    reactBtn.title = "تفاعل";
     reactBtn.onclick = (e) => { e.stopPropagation(); openReactionPicker(wrap, m); };
 
     const rBtn = el("button", "act-btn");
     rBtn.innerHTML = ICONS.reply;
-    rBtn.title = "رد";
     rBtn.onclick = () => setReply(m);
 
     const pBtn = el("button", "act-btn");
     pBtn.innerHTML = ICONS.pin;
-    pBtn.title = "تثبيت";
     pBtn.onclick = () => pinMessage(m);
 
     actions.append(reactBtn, rBtn, pBtn);
+
+    if (m.kind === "text") {
+      const cBtn = el("button", "act-btn");
+      cBtn.innerHTML = ICONS.copy;
+      cBtn.onclick = () => {
+        navigator.clipboard?.writeText(getCleanBody(m.body));
+        showToast(t("copiedToast"));
+      };
+      actions.append(cBtn);
+    }
 
     if (isMe) {
       if (m.kind === "text") {
         const eBtn = el("button", "act-btn");
         eBtn.innerHTML = ICONS.edit;
-        eBtn.title = "تعديل";
         eBtn.onclick = () => startEdit(m);
         actions.append(eBtn);
       }
       const dBtn = el("button", "act-btn del");
       dBtn.innerHTML = ICONS.trash;
-      dBtn.title = "حذف";
       dBtn.onclick = () => deleteMessage(m);
       actions.append(dBtn);
     }
@@ -1475,7 +1966,7 @@ function bubble(m) {
   const b = el("div", "msg" + (isDeleted ? " deleted" : ""));
 
   if (isDeleted) {
-    b.textContent = "🚫 تم حذف هذه الرسالة";
+    b.textContent = t("deletedMsg");
   } else {
     let displayBody = m.body || "";
     if (m.kind === "text" && displayBody.startsWith(">>REPLY:")) {
@@ -1591,7 +2082,7 @@ function player(m) {
   return w;
 }
 
-/* ---------- Sending, Typing Broadcast & Editing Messages ---------- */
+/* ---------- Sending, Typing Broadcast & Editing ---------- */
 function toggleSendMic() {
   const hasText = $("txt").value.trim().length > 0;
   $("send").classList.toggle("hidden", !hasText);
@@ -1608,7 +2099,7 @@ $("txt").addEventListener("input", () => {
 async function sendMsg(fields) {
   if (!active) return;
   const { data, error } = await sb.from("messages").insert({ receiver: active, ...fields }).select().single();
-  if (error) return alert("فشل الإرسال: " + error.message);
+  if (error) return alert("Failed: " + error.message);
   all.push(data);
   renderList();
   renderMsgs();
@@ -1617,7 +2108,7 @@ async function sendMsg(fields) {
 async function upload(blob, ext, type) {
   const path = me.id + "/" + crypto.randomUUID() + "." + ext;
   const { error } = await sb.storage.from("media").upload(path, blob, { contentType: type });
-  if (error) { alert("فشل الرفع: " + error.message); return null; }
+  if (error) { alert("Upload failed: " + error.message); return null; }
   return sb.storage.from("media").getPublicUrl(path).data.publicUrl;
 }
 
@@ -1635,7 +2126,8 @@ async function sendText() {
       const nl = target.body.indexOf("\n");
       if (nl !== -1) prefix = target.body.slice(0, nl + 1);
     }
-    const newBody = `${prefix}${t} (معدّلة)`;
+    const suffix = prefs.lang === "ar" ? "(معدّلة)" : "(edited)";
+    const newBody = `${prefix}${t} ${suffix}`;
     target.body = newBody;
     renderList();
     renderMsgs();
@@ -1645,7 +2137,7 @@ async function sendText() {
   
   if (replyingTo) {
     const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
-    const rSnippet = replyingTo.kind === "image" ? "🖼️ صورة" : replyingTo.kind === "audio" ? "🎤 رسالة صوتية" : getCleanBody(replyingTo.body).slice(0, 40);
+    const rSnippet = replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
     t = `>>REPLY:${rName}|${rSnippet}\n${t}`;
     clearReply();
   }
@@ -1655,7 +2147,12 @@ async function sendText() {
   sendMsg({ kind: "text", body: t });
 }
 $("send").onclick = sendText;
-$("txt").onkeydown = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendText(); } };
+$("txt").onkeydown = e => {
+  if (e.key === "Enter" && !e.shiftKey && prefs.enterSend) {
+    e.preventDefault();
+    sendText();
+  }
+};
 
 /* ---------- Images (Picker, Paste & Drag-Drop) ---------- */
 function previewImageFile(f) {
@@ -1672,7 +2169,6 @@ $("file").onchange = e => {
   previewImageFile(f);
 };
 
-// Paste image directly from clipboard (Ctrl+V)
 $("txt").addEventListener("paste", e => {
   const items = e.clipboardData?.items;
   if (!items) return;
@@ -1685,7 +2181,6 @@ $("txt").addEventListener("paste", e => {
   }
 });
 
-// Drag and drop image onto chat
 const chatArea = $("chat");
 chatArea.addEventListener("dragover", e => {
   e.preventDefault();
@@ -1704,10 +2199,10 @@ $("pcancel").onclick = () => { pendingImg = null; $("modal").classList.add("hidd
 $("psend").onclick = async () => {
   const f = pendingImg;
   if (!f) return;
-  $("psend").disabled = true; $("psend").textContent = "جاري الرفع...";
+  $("psend").disabled = true;
   const ext = (f.name?.split(".").pop() || "png").toLowerCase();
   const url = await upload(f, ext, f.type || "image/png");
-  $("psend").disabled = false; $("psend").textContent = "إرسال الصورة";
+  $("psend").disabled = false;
   $("modal").classList.add("hidden");
   pendingImg = null;
   if (url) sendMsg({ kind: "image", media_url: url });
@@ -1727,7 +2222,7 @@ async function startRec(e) {
   if (rec || !active) return;
   let stream;
   try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
-  catch { return alert("لازم تسمح بصلاحية الميكروفون من المتصفح"); }
+  catch { return alert(prefs.lang === "ar" ? "لازم تسمح بصلاحية الميكروفون" : "Please allow microphone permission"); }
   
   const mime = pickMime();
   chunks = []; recCancel = false;
