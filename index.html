@@ -299,36 +299,6 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .msg a { color: #027eb5; text-decoration: underline; }
 [data-theme="dark"] .msg a { color: #53bdeb; }
 
-/* Transparent WhatsApp-style Sticker Bubble */
-.msg.sticker-msg {
-  background: transparent !important;
-  box-shadow: none !important;
-  padding: 2px !important;
-}
-.msg.sticker-msg img.sticker-img {
-  width: 155px;
-  height: 155px;
-  max-width: 155px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.18));
-  cursor: pointer;
-}
-.msg.sticker-msg .meta {
-  background: rgba(17, 27, 33, 0.58);
-  color: #fff;
-  padding: 2px 7px;
-  border-radius: 10px;
-  width: fit-content;
-  margin-inline-start: auto;
-  margin-top: 4px;
-}
-.msg.sticker-msg .ticks.sent svg,
-.msg.sticker-msg .ticks.delivered svg {
-  color: rgba(255, 255, 255, 0.85);
-}
-
 /* Hover Action Buttons */
 .msg-actions {
   position: absolute; top: 2px; display: flex; gap: 3px;
@@ -410,12 +380,12 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
 .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Categorized Emoji & Sticker Picker */
+/* Categorized Emoji Picker */
 #emoji-picker {
   position: absolute; bottom: 68px; inset-inline-start: 16px; background: var(--panel);
   border: 1px solid var(--line); border-radius: 14px; padding: 8px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.22); display: flex; flex-direction: column; gap: 8px;
-  z-index: 20; width: 335px; max-height: 310px;
+  z-index: 20; width: 320px; max-height: 280px;
 }
 .emoji-tabs {
   display: flex; gap: 2px; border-bottom: 1px solid var(--line); padding-bottom: 6px;
@@ -428,44 +398,10 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .emoji-tab.active { background: var(--panel-alt); opacity: 1; border-bottom: 2px solid var(--accent); border-radius: 8px 8px 0 0; }
 .emoji-grid {
   display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
-  overflow-y: auto; max-height: 215px; padding-inline-end: 2px;
+  overflow-y: auto; max-height: 200px; padding-inline-end: 2px;
 }
 .em-btn { font-size: 21px; padding: 4px; border-radius: 8px; transition: transform 0.1s, background 0.15s; }
 .em-btn:hover { background: var(--panel-alt); transform: scale(1.15); }
-
-/* Stickers Panel inside Picker */
-.sticker-panel {
-  display: flex; flex-direction: column; gap: 8px; max-height: 230px;
-}
-.sticker-toolbar {
-  display: flex; align-items: center; justify-content: space-between; gap: 6px;
-}
-.sticker-import-btn {
-  flex: 1; background: var(--accent); color: #fff; padding: 7px 10px;
-  border-radius: 8px; font-size: 12.5px; font-weight: 600; gap: 6px;
-}
-.sticker-import-btn:hover { background: var(--accent-hover); }
-.sticker-import-btn svg { width: 15px; height: 15px; }
-.sticker-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-  overflow-y: auto; max-height: 180px; padding: 2px;
-}
-.stk-item {
-  position: relative; aspect-ratio: 1; background: var(--panel-alt); border-radius: 10px;
-  padding: 6px; display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: transform 0.12s, background 0.15s; border: 1px solid var(--line);
-}
-.stk-item:hover { transform: scale(1.06); background: var(--line); }
-.stk-item img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
-.stk-del {
-  position: absolute; top: 2px; right: 2px; width: 18px; height: 18px;
-  border-radius: 50%; background: rgba(229, 57, 53, 0.9); color: #fff;
-  font-size: 11px; font-weight: 700; opacity: 0; transition: opacity 0.15s;
-}
-.stk-item:hover .stk-del { opacity: 1; }
-.sticker-empty {
-  font-size: 12px; color: var(--muted); text-align: center; padding: 18px 8px; line-height: 1.5;
-}
 
 #composer { background: var(--head); padding: 10px 14px; display: flex; align-items: center; gap: 8px; z-index: 5; }
 #txt {
@@ -736,7 +672,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   </aside>
 
   <main id="chat">
-    <div id="drop-zone" class="hidden" data-i18n="dropZone">أفلت الصورة أو الملصق هنا لإرساله 📷</div>
+    <div id="drop-zone" class="hidden" data-i18n="dropZone">أفلت الصورة هنا لإرسالها 📷</div>
 
     <div id="empty">
       <div class="empty-icon">
@@ -808,25 +744,15 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         </button>
       </div>
 
-      <!-- Emoji & WhatsApp Stickers Picker -->
+      <!-- Emoji Picker -->
       <div id="emoji-picker" class="hidden">
         <div class="emoji-tabs" id="emoji-tabs"></div>
         <div class="emoji-grid" id="emoji-grid"></div>
-        <div class="sticker-panel hidden" id="sticker-panel">
-          <div class="sticker-toolbar">
-            <button type="button" class="sticker-import-btn" id="import-stickers-btn">
-              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span data-i18n="importStickersBtn">استيراد ملصقات واتساب (.webp / .png)</span>
-            </button>
-            <input type="file" id="sticker-files" accept="image/webp,image/png,image/gif,image/*" multiple class="hidden">
-          </div>
-          <div class="sticker-grid" id="sticker-grid"></div>
-        </div>
       </div>
 
       <!-- Composer -->
       <div id="composer">
-        <button class="icon" id="emoji-btn" title="إيموجي وملصقات">
+        <button class="icon" id="emoji-btn">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
         </button>
         <button class="icon" id="attach">
@@ -839,7 +765,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <button id="rec-cancel-btn" style="color:#e53935;font-size:13px;font-weight:600" data-i18n="cancelBtn">إلغاء</button>
         </div>
 
-        <input id="txt" data-i18n-ph="msgPlaceholder" placeholder="اكتب رسالة أو إيموجي أو الصق صورة..." autocomplete="off">
+        <input id="txt" data-i18n-ph="msgPlaceholder" placeholder="اكتب رسالة أو الصق صورة..." autocomplete="off">
 
         <button class="icon" id="mic" style="touch-action:none">
           <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -952,16 +878,13 @@ const I18N = {
     filterAll: "الكل",
     filterUnread: "غير مقروءة",
     filterOnline: "متصلون",
-    dropZone: "أفلت الصورة أو الملصق هنا لإرساله 📷",
+    dropZone: "أفلت الصورة هنا لإرسالها 📷",
     emptySub: "اختر محادثة من القائمة أو ابحث عن يوزر صديقك للبدء",
     searchChatPh: "ابحث داخل الرسائل...",
     pinnedLabel: "رسالة مثبّتة",
     editTitle: "تعديل الرسالة",
     cancelBtn: "إلغاء",
     msgPlaceholder: "اكتب رسالة أو إيموجي أو الصق صورة...",
-    importStickersBtn: "استيراد ملصقات واتساب (.webp / .png)",
-    stickerEmpty: "مفيش ملصقات مستوردة لسه.\nاضغط على زر الاستيراد فوق واختر ملفات ملصقات الواتساب (.webp أو .png) من جهازك!",
-    stickersImportedToast: "تم استيراد الملصقات بنجاح ✨",
     logoutTitle: "تسجيل الخروج",
     logoutDesc: "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
     confirmLogout: "نعم، خروج",
@@ -1013,16 +936,13 @@ const I18N = {
     filterAll: "All",
     filterUnread: "Unread",
     filterOnline: "Online",
-    dropZone: "Drop image or sticker here to send 📷",
+    dropZone: "Drop image here to send 📷",
     emptySub: "Select a conversation or search for a friend's username",
     searchChatPh: "Search in messages...",
     pinnedLabel: "Pinned Message",
     editTitle: "Edit Message",
     cancelBtn: "Cancel",
     msgPlaceholder: "Type a message, emoji, or paste image...",
-    importStickersBtn: "Import WhatsApp Stickers (.webp / .png)",
-    stickerEmpty: "No imported stickers yet.\nClick Import above and select WhatsApp sticker files (.webp or .png) from your device!",
-    stickersImportedToast: "Stickers imported successfully ✨",
     logoutTitle: "Log Out",
     logoutDesc: "Are you sure you want to log out of your account?",
     confirmLogout: "Yes, Log Out",
@@ -1095,8 +1015,6 @@ function applyLanguage(lang) {
   $("lang-ar").classList.toggle("active", lang === "ar");
   $("lang-en").classList.toggle("active", lang === "en");
 
-  if (typeof renderStickerGrid === "function") renderStickerGrid();
-
   if (me) {
     renderList();
     if (active) {
@@ -1116,7 +1034,6 @@ const el = (tag, cls, txt) => {
 const fmtTime = d => new Date(d).toLocaleTimeString(prefs.lang === "ar" ? "ar-EG" : "en-US", { hour: "2-digit", minute: "2-digit" });
 const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 const initial = n => (n || "?")[0];
-const isStickerMsg = m => m?.kind === "image" && m?.body === ">>STICKER<<";
 
 const DOMAIN = "@chatuser.app";
 let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
@@ -1235,7 +1152,7 @@ $("export-chat-btn").onclick = () => {
   const prof = profilesMap[active] || { username: "chat" };
   const lines = all.filter(m => otherOf(m) === active && m.body !== ">>DELETED<<").map(m => {
     const who = m.sender === me.id ? me.username : prof.username;
-    const content = isStickerMsg(m) ? "[Sticker]" : m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
+    const content = m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
     return `[${new Date(m.created_at).toLocaleString()}] ${who}: ${content}`;
   });
   const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
@@ -1457,7 +1374,7 @@ $("save-profile").onclick = async () => {
   }
 };
 
-/* ---------- Full Categorized Emoji & WhatsApp Stickers Picker ---------- */
+/* ---------- Full Categorized Emoji Picker ---------- */
 const EMOJI_CATEGORIES = [
   {
     icon: "😀",
@@ -1465,8 +1382,8 @@ const EMOJI_CATEGORIES = [
       "😀","😃","😄","😁","😆","😅","🤣","😂","🙂","🙃","😉","😊","😇","🥰","😍","🤩",
       "😘","😗","☺","😚","😙","🥲","😋","😛","😜","🤪","😝","🤑","🤗","🤭","🤫","🤔",
       "🤐","🤨","😐","😑","😶","😏","😒","🙄","😬","🤥","😌","😔","😪","🤤","😴","😷",
-      "🤒","🤕","🤢","🤮","🤧","🥵","🥶","🥴","🤯","🤠","🥳","🥸","😎","🤓","🧐"
-    ]
+      "🤒","🤕","🤢","🤮","🤧","🥵","🥶","🥴"," dizzy","🤯","🤠","🥳","🥸","😎","🤓","🧐"
+    ].map(x => x.trim()).filter(x => x !== "dizzy")
   },
   {
     icon: "❤️",
@@ -1503,101 +1420,14 @@ const EMOJI_CATEGORIES = [
   }
 ];
 
-const STICKERS_STORAGE_KEY = "chatyy_imported_stickers";
-let importedStickers = [];
-try {
-  const savedStk = JSON.parse(localStorage.getItem(STICKERS_STORAGE_KEY));
-  if (Array.isArray(savedStk)) importedStickers = savedStk;
-} catch (e) {}
-
-function saveStickers() {
-  try { localStorage.setItem(STICKERS_STORAGE_KEY, JSON.stringify(importedStickers)); } catch (e) {}
-}
-
-function sendStickerUrl(url) {
-  if (!active || !url) return;
-  ep.classList.add("hidden");
-  sendMsg({ kind: "image", media_url: url, body: ">>STICKER<<" });
-}
-
-function renderStickerGrid() {
-  const grid = $("sticker-grid");
-  if (!grid) return;
-  grid.replaceChildren();
-  if (!importedStickers.length) {
-    const emptyMsg = el("div", "sticker-empty", t("stickerEmpty"));
-    emptyMsg.style.gridColumn = "1 / -1";
-    grid.append(emptyMsg);
-    return;
-  }
-  importedStickers.forEach((url, idx) => {
-    const item = el("div", "stk-item");
-    const img = el("img");
-    img.src = url;
-    img.loading = "lazy";
-    item.onclick = () => sendStickerUrl(url);
-
-    const delBtn = el("button", "stk-del", "×");
-    delBtn.type = "button";
-    delBtn.onclick = (e) => {
-      e.stopPropagation();
-      importedStickers.splice(idx, 1);
-      saveStickers();
-      renderStickerGrid();
-    };
-
-    item.append(img, delBtn);
-    grid.append(item);
-  });
-}
-
-$("import-stickers-btn").onclick = (e) => {
-  e.stopPropagation();
-  $("sticker-files").click();
-};
-
-$("sticker-files").onchange = async (e) => {
-  const files = Array.from(e.target.files || []);
-  e.target.value = "";
-  if (!files.length) return;
-  const btn = $("import-stickers-btn");
-  btn.disabled = true;
-  let added = 0;
-  for (const f of files) {
-    const ext = (f.name.split(".").pop() || "webp").toLowerCase();
-    const url = await upload(f, ext, f.type || "image/webp");
-    if (url && !importedStickers.includes(url)) {
-      importedStickers.unshift(url);
-      added++;
-    }
-  }
-  btn.disabled = false;
-  if (added > 0) {
-    saveStickers();
-    renderStickerGrid();
-    showToast(t("stickersImportedToast"));
-  }
-};
-
 const ep = $("emoji-picker");
 const eTabs = $("emoji-tabs");
 const eGrid = $("emoji-grid");
-const sPanel = $("sticker-panel");
-let currentPickerTab = 0;
+let currentEmojiTab = 0;
 
-function renderPickerTab(idx) {
-  currentPickerTab = idx;
+function renderEmojiTab(idx) {
+  currentEmojiTab = idx;
   document.querySelectorAll(".emoji-tab").forEach((b, i) => b.classList.toggle("active", i === idx));
-
-  if (idx === EMOJI_CATEGORIES.length) {
-    eGrid.classList.add("hidden");
-    sPanel.classList.remove("hidden");
-    renderStickerGrid();
-    return;
-  }
-
-  sPanel.classList.add("hidden");
-  eGrid.classList.remove("hidden");
   eGrid.replaceChildren();
   EMOJI_CATEGORIES[idx].items.forEach(em => {
     const b = el("button", "em-btn", em);
@@ -1621,22 +1451,11 @@ EMOJI_CATEGORIES.forEach((cat, idx) => {
   tab.type = "button";
   tab.onclick = (e) => {
     e.stopPropagation();
-    renderPickerTab(idx);
+    renderEmojiTab(idx);
   };
   eTabs.append(tab);
 });
-
-// Add Stickers Tab at the end of Emoji Picker tabs
-const stickerTabBtn = el("button", "emoji-tab");
-stickerTabBtn.type = "button";
-stickerTabBtn.title = "ملصقات واتساب / Stickers";
-stickerTabBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/></svg>`;
-stickerTabBtn.onclick = (e) => {
-  e.stopPropagation();
-  renderPickerTab(EMOJI_CATEGORIES.length);
-};
-eTabs.append(stickerTabBtn);
-renderPickerTab(0);
+renderEmojiTab(0);
 
 $("emoji-btn").onclick = (e) => { e.stopPropagation(); ep.classList.toggle("hidden"); };
 document.addEventListener("click", (e) => {
@@ -1755,7 +1574,7 @@ function applyIncomingMessage(m, playAlert = true) {
       sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
     } else if (playAlert) {
       const senderName = profilesMap[m.sender]?.username || "Friend";
-      const snippet = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
+      const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
       showDesktopNotification(senderName, snippet);
       playNotifySound();
     }
@@ -1792,6 +1611,7 @@ async function syncMessagesEverySecond() {
     const lastMsg = all[all.length - 1];
     let addedOrChanged = false;
 
+    // 1. Fetch new messages since latest timestamp (with 3s overlap to avoid clock skew)
     if (lastMsg?.created_at) {
       const since = new Date(new Date(lastMsg.created_at).getTime() - 3000).toISOString();
       const { data: freshMsgs } = await sb
@@ -1809,6 +1629,7 @@ async function syncMessagesEverySecond() {
       }
     }
 
+    // 2. Refresh recent window (last 40 messages) for edits, deletes, reactions & read ticks
     const { data: recentMsgs } = await sb
       .from("messages")
       .select("*")
@@ -1823,6 +1644,7 @@ async function syncMessagesEverySecond() {
       }
     }
 
+    // 3. Refresh peer last_seen for active chat if not in presence map
     if (active && !onlineUsers.has(active)) {
       const { data: peerProf } = await sb.from("profiles").select("*").eq("id", active).single();
       if (peerProf) {
@@ -1844,12 +1666,13 @@ async function syncMessagesEverySecond() {
       }
     }
   } catch (e) {
+    // Silent retry on next 1s tick
   } finally {
     isSyncing = false;
   }
 }
 
-/* ---------- Boot ---------- */
+/* ---------- Boot (Auto-Login with Saved Session or Credentials) ---------- */
 async function boot() {
   let { data: { session } } = await sb.auth.getSession();
 
@@ -1966,6 +1789,7 @@ async function boot() {
       }
     });
 
+  // Start 1-second live sync loop alongside Realtime
   if (pollTimer) clearInterval(pollTimer);
   pollTimer = setInterval(syncMessagesEverySecond, 1000);
 
@@ -2056,9 +1880,7 @@ function renderList() {
       lastRow.innerHTML = `<span>${t("deletedMsg")}</span>`;
     } else {
       const ticks = m.sender === me.id ? getTicksHTML(m) : "";
-      if (isStickerMsg(m)) {
-        lastRow.innerHTML = `${ticks}<span class="emoji-glyph">💟 ${prefs.lang === "ar" ? "ملصق" : "Sticker"}</span>`;
-      } else if (m.kind === "image") {
+      if (m.kind === "image") {
         lastRow.innerHTML = `${ticks}${ICONS.imgSmall} ${prefs.lang === "ar" ? "صورة" : "Image"}`;
       } else if (m.kind === "audio") {
         lastRow.innerHTML = `${ticks}${ICONS.micSmall} ${prefs.lang === "ar" ? "رسالة صوتية" : "Voice message"}`;
@@ -2141,7 +1963,7 @@ function updatePinnedBanner() {
     return;
   }
   $("pinned-bar").classList.remove("hidden");
-  $("pin-text").textContent = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
+  $("pin-text").textContent = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("pinned-bar").onclick = (e) => {
     if (e.target.closest("#unpin-btn")) return;
     const targetEl = document.querySelector(`[data-msgid="${m.id}"]`);
@@ -2225,7 +2047,7 @@ function setReply(m) {
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
   $("rb-user").textContent = m.sender === me.id ? (prefs.lang === "ar" ? "أنت" : "You") : (profilesMap[m.sender]?.username || "");
-  $("rb-msg").textContent = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
+  $("rb-msg").textContent = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("txt").focus();
 }
 function clearReply() {
@@ -2307,7 +2129,6 @@ function renderMsgs(forceScroll = false) {
 function bubble(m) {
   const isMe = m.sender === me.id;
   const isDeleted = m.body === ">>DELETED<<";
-  const isSticker = isStickerMsg(m);
   const reactions = m.reactions || {};
   const reactEntries = Object.entries(reactions);
 
@@ -2356,7 +2177,7 @@ function bubble(m) {
     wrap.append(actions);
   }
 
-  const b = el("div", "msg" + (isDeleted ? " deleted" : "") + (isSticker && !isDeleted ? " sticker-msg" : ""));
+  const b = el("div", "msg" + (isDeleted ? " deleted" : ""));
 
   if (isDeleted) {
     b.textContent = t("deletedMsg");
@@ -2380,7 +2201,7 @@ function bubble(m) {
 
     if (m.kind === "text") linkifyText(b, displayBody);
     if (m.kind === "image") {
-      const i = el("img", isSticker ? "sticker-img" : "");
+      const i = el("img");
       i.src = m.media_url;
       i.loading = "lazy";
       i.onclick = () => openLightbox(m.media_url);
@@ -2530,7 +2351,7 @@ async function sendText() {
 
   if (replyingTo) {
     const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
-    const rSnippet = isStickerMsg(replyingTo) ? "💟 Sticker" : replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
+    const rSnippet = replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
     msgText = `>>REPLY:${rName}|${rSnippet}\n${msgText}`;
     clearReply();
   }
@@ -2547,24 +2368,9 @@ $("txt").onkeydown = e => {
   }
 };
 
-/* ---------- Images & WebP Stickers (Picker, Paste & Drag-Drop) ---------- */
-async function sendWebpStickerDirectly(f) {
-  const url = await upload(f, "webp", "image/webp");
-  if (url) {
-    if (!importedStickers.includes(url)) {
-      importedStickers.unshift(url);
-      saveStickers();
-    }
-    sendMsg({ kind: "image", media_url: url, body: ">>STICKER<<" });
-  }
-}
-
+/* ---------- Images (Picker, Paste & Drag-Drop) ---------- */
 function previewImageFile(f) {
   if (!f || !f.type.startsWith("image/") || !active) return;
-  if (f.type === "image/webp" || f.name?.toLowerCase().endsWith(".webp")) {
-    sendWebpStickerDirectly(f);
-    return;
-  }
   pendingImg = f;
   $("prev").src = URL.createObjectURL(f);
   $("modal").classList.remove("hidden");
