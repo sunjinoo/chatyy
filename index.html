@@ -329,15 +329,6 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   color: rgba(255, 255, 255, 0.85);
 }
 
-/* GIF Bubble Styling */
-.msg.gif-msg img.gif-img {
-  width: 240px;
-  max-width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-  cursor: pointer;
-}
-
 /* Hover Action Buttons */
 .msg-actions {
   position: absolute; top: 2px; display: flex; gap: 3px;
@@ -419,49 +410,49 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
 .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* Categorized Emoji, Stickers & GIFs Picker */
+/* Categorized Emoji & Sticker Picker */
 #emoji-picker {
   position: absolute; bottom: 68px; inset-inline-start: 16px; background: var(--panel);
   border: 1px solid var(--line); border-radius: 14px; padding: 8px;
   box-shadow: 0 8px 24px rgba(0,0,0,0.22); display: flex; flex-direction: column; gap: 8px;
-  z-index: 20; width: 345px; max-height: 315px;
+  z-index: 20; width: 335px; max-height: 310px;
 }
 .emoji-tabs {
   display: flex; gap: 2px; border-bottom: 1px solid var(--line); padding-bottom: 6px;
 }
 .emoji-tab {
-  flex: 1; padding: 5px 2px; border-radius: 8px; font-size: 15px; font-weight: 700;
+  flex: 1; padding: 5px 2px; border-radius: 8px; font-size: 16px;
   opacity: 0.65; transition: all 0.15s;
 }
 .emoji-tab:hover { background: var(--panel-alt); opacity: 1; }
 .emoji-tab.active { background: var(--panel-alt); opacity: 1; border-bottom: 2px solid var(--accent); border-radius: 8px 8px 0 0; }
 .emoji-grid {
   display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
-  overflow-y: auto; max-height: 220px; padding-inline-end: 2px;
+  overflow-y: auto; max-height: 215px; padding-inline-end: 2px;
 }
 .em-btn { font-size: 21px; padding: 4px; border-radius: 8px; transition: transform 0.1s, background 0.15s; }
 .em-btn:hover { background: var(--panel-alt); transform: scale(1.15); }
 
 /* Stickers Panel inside Picker */
 .sticker-panel {
-  display: flex; flex-direction: column; gap: 8px; max-height: 235px;
+  display: flex; flex-direction: column; gap: 8px; max-height: 230px;
 }
 .sticker-toolbar {
   display: flex; align-items: center; justify-content: space-between; gap: 6px;
 }
 .sticker-import-btn {
   flex: 1; background: var(--accent); color: #fff; padding: 7px 10px;
-  border-radius: 8px; font-size: 12px; font-weight: 600; gap: 6px;
+  border-radius: 8px; font-size: 12.5px; font-weight: 600; gap: 6px;
 }
 .sticker-import-btn:hover { background: var(--accent-hover); }
-.sticker-import-btn svg { width: 14px; height: 14px; }
+.sticker-import-btn svg { width: 15px; height: 15px; }
 .sticker-grid {
   display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-  overflow-y: auto; max-height: 185px; padding: 2px;
+  overflow-y: auto; max-height: 180px; padding: 2px;
 }
 .stk-item {
   position: relative; aspect-ratio: 1; background: var(--panel-alt); border-radius: 10px;
-  padding: 5px; display: flex; align-items: center; justify-content: center;
+  padding: 6px; display: flex; align-items: center; justify-content: center;
   cursor: pointer; transition: transform 0.12s, background 0.15s; border: 1px solid var(--line);
 }
 .stk-item:hover { transform: scale(1.06); background: var(--line); }
@@ -472,25 +463,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   font-size: 11px; font-weight: 700; opacity: 0; transition: opacity 0.15s;
 }
 .stk-item:hover .stk-del { opacity: 1; }
-
-/* GIFs Panel inside Picker */
-.gif-panel {
-  display: flex; flex-direction: column; gap: 8px; max-height: 235px;
-}
-.gif-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
-  overflow-y: auto; max-height: 225px; padding: 2px;
-}
-.gif-item {
-  position: relative; height: 96px; background: var(--panel-alt); border-radius: 10px;
-  overflow: hidden; cursor: pointer; border: 1px solid var(--line); transition: transform 0.12s;
-}
-.gif-item:hover { transform: scale(1.03); border-color: var(--accent); }
-.gif-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-.gif-tag {
-  position: absolute; bottom: 5px; inset-inline-start: 6px;
-  background: rgba(17, 27, 33, 0.72); color: #fff; font-size: 10px; font-weight: 700;
-  padding: 2px 6px; border-radius: 6px;
+.sticker-empty {
+  font-size: 12px; color: var(--muted); text-align: center; padding: 18px 8px; line-height: 1.5;
 }
 
 #composer { background: var(--head); padding: 10px 14px; display: flex; align-items: center; gap: 8px; z-index: 5; }
@@ -631,6 +605,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <div class="info"><div class="name" data-i18n="settingsTitle">الإعدادات المتقدمة</div></div>
       </div>
       <div class="drawer-body">
+        <!-- Language Setting -->
         <div class="field-box">
           <label data-i18n="langLabel">لغة التطبيق / Language</label>
           <div class="seg-btns">
@@ -639,6 +614,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           </div>
         </div>
 
+        <!-- Theme & Accent Color -->
         <div class="field-box">
           <label data-i18n="appearanceLabel">المظهر واللون الأساسي</label>
           <div class="set-row">
@@ -649,6 +625,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="accent-dots" id="accent-dots"></div>
         </div>
 
+        <!-- Font Size -->
         <div class="field-box">
           <label data-i18n="fontSizeLabel">حجم خط الرسائل</label>
           <div class="seg-btns">
@@ -658,6 +635,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           </div>
         </div>
 
+        <!-- Privacy & Notifications -->
         <div class="field-box">
           <label data-i18n="privacyNotifLabel">الخصوصية والإشعارات</label>
           <div class="set-row">
@@ -683,6 +661,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           </div>
         </div>
 
+        <!-- Export Chat -->
         <div class="field-box">
           <label data-i18n="dataLabel">البيانات والنسخ الاحتياطي</label>
           <button class="btn alt" id="export-chat-btn" data-i18n="exportChatBtn">تصدير المحادثة الحالية (ملف نصي)</button>
@@ -829,7 +808,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         </button>
       </div>
 
-      <!-- Emoji, Stickers & GIFs Picker -->
+      <!-- Emoji & WhatsApp Stickers Picker -->
       <div id="emoji-picker" class="hidden">
         <div class="emoji-tabs" id="emoji-tabs"></div>
         <div class="emoji-grid" id="emoji-grid"></div>
@@ -837,20 +816,17 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="sticker-toolbar">
             <button type="button" class="sticker-import-btn" id="import-stickers-btn">
               <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-              <span data-i18n="importStickersBtn">استيراد ملصقات (.webp / .png)</span>
+              <span data-i18n="importStickersBtn">استيراد ملصقات واتساب (.webp / .png)</span>
             </button>
             <input type="file" id="sticker-files" accept="image/webp,image/png,image/gif,image/*" multiple class="hidden">
           </div>
           <div class="sticker-grid" id="sticker-grid"></div>
         </div>
-        <div class="gif-panel hidden" id="gif-panel">
-          <div class="gif-grid" id="gif-grid"></div>
-        </div>
       </div>
 
       <!-- Composer -->
       <div id="composer">
-        <button class="icon" id="emoji-btn" title="إيموجي وملصقات وجيفات">
+        <button class="icon" id="emoji-btn" title="إيموجي وملصقات">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
         </button>
         <button class="icon" id="attach">
@@ -983,7 +959,8 @@ const I18N = {
     editTitle: "تعديل الرسالة",
     cancelBtn: "إلغاء",
     msgPlaceholder: "اكتب رسالة أو إيموجي أو الصق صورة...",
-    importStickersBtn: "استيراد ملصقات (.webp / .png)",
+    importStickersBtn: "استيراد ملصقات واتساب (.webp / .png)",
+    stickerEmpty: "مفيش ملصقات مستوردة لسه.\nاضغط على زر الاستيراد فوق واختر ملفات ملصقات الواتساب (.webp أو .png) من جهازك!",
     stickersImportedToast: "تم استيراد الملصقات بنجاح ✨",
     logoutTitle: "تسجيل الخروج",
     logoutDesc: "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
@@ -1043,7 +1020,8 @@ const I18N = {
     editTitle: "Edit Message",
     cancelBtn: "Cancel",
     msgPlaceholder: "Type a message, emoji, or paste image...",
-    importStickersBtn: "Import Stickers (.webp / .png)",
+    importStickersBtn: "Import WhatsApp Stickers (.webp / .png)",
+    stickerEmpty: "No imported stickers yet.\nClick Import above and select WhatsApp sticker files (.webp or .png) from your device!",
     stickersImportedToast: "Stickers imported successfully ✨",
     logoutTitle: "Log Out",
     logoutDesc: "Are you sure you want to log out of your account?",
@@ -1139,7 +1117,6 @@ const fmtTime = d => new Date(d).toLocaleTimeString(prefs.lang === "ar" ? "ar-EG
 const fmtDur = s => { s = Math.round(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 const initial = n => (n || "?")[0];
 const isStickerMsg = m => m?.kind === "image" && m?.body === ">>STICKER<<";
-const isGifMsg = m => m?.kind === "image" && m?.body === ">>GIF<<";
 
 const DOMAIN = "@chatuser.app";
 let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
@@ -1258,7 +1235,7 @@ $("export-chat-btn").onclick = () => {
   const prof = profilesMap[active] || { username: "chat" };
   const lines = all.filter(m => otherOf(m) === active && m.body !== ">>DELETED<<").map(m => {
     const who = m.sender === me.id ? me.username : prof.username;
-    const content = isStickerMsg(m) ? "[Sticker]" : isGifMsg(m) ? "[GIF]" : m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
+    const content = isStickerMsg(m) ? "[Sticker]" : m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
     return `[${new Date(m.created_at).toLocaleString()}] ${who}: ${content}`;
   });
   const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
@@ -1480,7 +1457,7 @@ $("save-profile").onclick = async () => {
   }
 };
 
-/* ---------- Full Categorized Emoji, Built-in + Imported Stickers & GIFs ---------- */
+/* ---------- Full Categorized Emoji & WhatsApp Stickers Picker ---------- */
 const EMOJI_CATEGORIES = [
   {
     icon: "😀",
@@ -1526,28 +1503,6 @@ const EMOJI_CATEGORIES = [
   }
 ];
 
-function makeStickerSvg(bg1, bg2, face, badgeText, badgeColor) {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${bg1}"/><stop offset="100%" stop-color="${bg2}"/></linearGradient></defs>
-    <circle cx="90" cy="86" r="64" fill="url(#g)" stroke="#ffffff" stroke-width="5"/>
-    <text x="90" y="108" font-size="68" text-anchor="middle" font-family="Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji, sans-serif">${face}</text>
-    <rect x="26" y="132" width="128" height="32" rx="16" fill="${badgeColor}" stroke="#ffffff" stroke-width="3"/>
-    <text x="90" y="153" font-size="16" font-weight="800" fill="#ffffff" text-anchor="middle" font-family="system-ui, Tahoma, sans-serif">${badgeText}</text>
-  </svg>`;
-  return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
-}
-
-const BUILTIN_STICKERS = [
-  { url: makeStickerSvg("#ff9a9e", "#fecfef", "😂", "موتني ضحك", "#e53935"), custom: false },
-  { url: makeStickerSvg("#a1c4fd", "#c2e9fb", "🫡", "تمام يا ريس", "#0277bd"), custom: false },
-  { url: makeStickerSvg("#ffecd2", "#fcb69f", "🔥", "نار يا حبيبي", "#ef6c00"), custom: false },
-  { url: makeStickerSvg("#84fab0", "#8fd3f4", "👍", "عاش جداً", "#00897b"), custom: false },
-  { url: makeStickerSvg("#cfd9df", "#e2ebf0", "🤔", "مش فاهم حاجة", "#455a64"), custom: false },
-  { url: makeStickerSvg("#fccb90", "#d57eeb", "❤️", "حب كبير", "#c2185b"), custom: false },
-  { url: makeStickerSvg("#e0c3fc", "#8ec5fc", "😴", "رايح أنام", "#5e35b1"), custom: false },
-  { url: makeStickerSvg("#f6d365", "#fda085", "🎉", "مبروووك", "#d84315"), custom: false }
-];
-
 const STICKERS_STORAGE_KEY = "chatyy_imported_stickers";
 let importedStickers = [];
 try {
@@ -1569,32 +1524,29 @@ function renderStickerGrid() {
   const grid = $("sticker-grid");
   if (!grid) return;
   grid.replaceChildren();
-
-  const allStickers = [
-    ...importedStickers.map((url, idx) => ({ url, custom: true, idx })),
-    ...BUILTIN_STICKERS.map(s => ({ ...s, idx: -1 }))
-  ];
-
-  allStickers.forEach(stk => {
+  if (!importedStickers.length) {
+    const emptyMsg = el("div", "sticker-empty", t("stickerEmpty"));
+    emptyMsg.style.gridColumn = "1 / -1";
+    grid.append(emptyMsg);
+    return;
+  }
+  importedStickers.forEach((url, idx) => {
     const item = el("div", "stk-item");
     const img = el("img");
-    img.src = stk.url;
+    img.src = url;
     img.loading = "lazy";
-    item.onclick = () => sendStickerUrl(stk.url);
+    item.onclick = () => sendStickerUrl(url);
 
-    if (stk.custom) {
-      const delBtn = el("button", "stk-del", "×");
-      delBtn.type = "button";
-      delBtn.onclick = (e) => {
-        e.stopPropagation();
-        importedStickers.splice(stk.idx, 1);
-        saveStickers();
-        renderStickerGrid();
-      };
-      item.append(img, delBtn);
-    } else {
-      item.append(img);
-    }
+    const delBtn = el("button", "stk-del", "×");
+    delBtn.type = "button";
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      importedStickers.splice(idx, 1);
+      saveStickers();
+      renderStickerGrid();
+    };
+
+    item.append(img, delBtn);
     grid.append(item);
   });
 }
@@ -1627,65 +1579,24 @@ $("sticker-files").onchange = async (e) => {
   }
 };
 
-/* ---------- Ready GIFs List ---------- */
-const GIF_ITEMS = [
-  { label: "LOL", url: "https://media.giphy.com/media/l0ExayQ1Zte21Bazy/giphy.gif" },
-  { label: "OMG", url: "https://media.giphy.com/media/5VKbvrjxpVJCM/giphy.gif" },
-  { label: "Thumbs Up", url: "https://media.giphy.com/media/111ebonMs90YLu/giphy.gif" },
-  { label: "Clap", url: "https://media.giphy.com/media/srg19CG0cKMuI/giphy.gif" },
-  { label: "Hello", url: "https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif" },
-  { label: "Facepalm", url: "https://media.giphy.com/media/XsUtdIeJ0MWMo/giphy.gif" },
-  { label: "Party", url: "https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif" },
-  { label: "Sleepy", url: "https://media.giphy.com/media/mk0ClXsaw7K24/giphy.gif" }
-];
-
-function sendGifUrl(url) {
-  if (!active || !url) return;
-  ep.classList.add("hidden");
-  sendMsg({ kind: "image", media_url: url, body: ">>GIF<<" });
-}
-
-function renderGifGrid() {
-  const grid = $("gif-grid");
-  if (!grid || grid.childElementCount) return;
-  GIF_ITEMS.forEach(g => {
-    const item = el("div", "gif-item");
-    const img = el("img");
-    img.src = g.url;
-    img.loading = "lazy";
-    const tag = el("span", "gif-tag", g.label);
-    item.append(img, tag);
-    item.onclick = () => sendGifUrl(g.url);
-    grid.append(item);
-  });
-}
-
 const ep = $("emoji-picker");
 const eTabs = $("emoji-tabs");
 const eGrid = $("emoji-grid");
 const sPanel = $("sticker-panel");
-const gPanel = $("gif-panel");
 let currentPickerTab = 0;
 
 function renderPickerTab(idx) {
   currentPickerTab = idx;
   document.querySelectorAll(".emoji-tab").forEach((b, i) => b.classList.toggle("active", i === idx));
 
-  eGrid.classList.add("hidden");
-  sPanel.classList.add("hidden");
-  gPanel.classList.add("hidden");
-
   if (idx === EMOJI_CATEGORIES.length) {
+    eGrid.classList.add("hidden");
     sPanel.classList.remove("hidden");
     renderStickerGrid();
     return;
   }
-  if (idx === EMOJI_CATEGORIES.length + 1) {
-    gPanel.classList.remove("hidden");
-    renderGifGrid();
-    return;
-  }
 
+  sPanel.classList.add("hidden");
   eGrid.classList.remove("hidden");
   eGrid.replaceChildren();
   EMOJI_CATEGORIES[idx].items.forEach(em => {
@@ -1715,26 +1626,16 @@ EMOJI_CATEGORIES.forEach((cat, idx) => {
   eTabs.append(tab);
 });
 
+// Add Stickers Tab at the end of Emoji Picker tabs
 const stickerTabBtn = el("button", "emoji-tab");
 stickerTabBtn.type = "button";
-stickerTabBtn.title = "ملصقات / Stickers";
-stickerTabBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:17px;height:17px"><path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/></svg>`;
+stickerTabBtn.title = "ملصقات واتساب / Stickers";
+stickerTabBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:18px;height:18px"><path d="M15.5 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V8.5L15.5 3Z"/><path d="M15 3v6h6"/></svg>`;
 stickerTabBtn.onclick = (e) => {
   e.stopPropagation();
   renderPickerTab(EMOJI_CATEGORIES.length);
 };
 eTabs.append(stickerTabBtn);
-
-const gifTabBtn = el("button", "emoji-tab", "GIF");
-gifTabBtn.type = "button";
-gifTabBtn.style.fontSize = "11px";
-gifTabBtn.title = "جيفات / GIFs";
-gifTabBtn.onclick = (e) => {
-  e.stopPropagation();
-  renderPickerTab(EMOJI_CATEGORIES.length + 1);
-};
-eTabs.append(gifTabBtn);
-
 renderPickerTab(0);
 
 $("emoji-btn").onclick = (e) => { e.stopPropagation(); ep.classList.toggle("hidden"); };
@@ -1854,7 +1755,7 @@ function applyIncomingMessage(m, playAlert = true) {
       sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
     } else if (playAlert) {
       const senderName = profilesMap[m.sender]?.username || "Friend";
-      const snippet = isStickerMsg(m) ? "💟 Sticker" : isGifMsg(m) ? "🎞️ GIF" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
+      const snippet = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
       showDesktopNotification(senderName, snippet);
       playNotifySound();
     }
@@ -2157,8 +2058,6 @@ function renderList() {
       const ticks = m.sender === me.id ? getTicksHTML(m) : "";
       if (isStickerMsg(m)) {
         lastRow.innerHTML = `${ticks}<span class="emoji-glyph">💟 ${prefs.lang === "ar" ? "ملصق" : "Sticker"}</span>`;
-      } else if (isGifMsg(m)) {
-        lastRow.innerHTML = `${ticks}<span class="emoji-glyph">🎞️ GIF</span>`;
       } else if (m.kind === "image") {
         lastRow.innerHTML = `${ticks}${ICONS.imgSmall} ${prefs.lang === "ar" ? "صورة" : "Image"}`;
       } else if (m.kind === "audio") {
@@ -2242,7 +2141,7 @@ function updatePinnedBanner() {
     return;
   }
   $("pinned-bar").classList.remove("hidden");
-  $("pin-text").textContent = isStickerMsg(m) ? "💟 Sticker" : isGifMsg(m) ? "🎞️ GIF" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
+  $("pin-text").textContent = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("pinned-bar").onclick = (e) => {
     if (e.target.closest("#unpin-btn")) return;
     const targetEl = document.querySelector(`[data-msgid="${m.id}"]`);
@@ -2326,7 +2225,7 @@ function setReply(m) {
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
   $("rb-user").textContent = m.sender === me.id ? (prefs.lang === "ar" ? "أنت" : "You") : (profilesMap[m.sender]?.username || "");
-  $("rb-msg").textContent = isStickerMsg(m) ? "💟 Sticker" : isGifMsg(m) ? "🎞️ GIF" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
+  $("rb-msg").textContent = isStickerMsg(m) ? "💟 Sticker" : m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("txt").focus();
 }
 function clearReply() {
@@ -2409,7 +2308,6 @@ function bubble(m) {
   const isMe = m.sender === me.id;
   const isDeleted = m.body === ">>DELETED<<";
   const isSticker = isStickerMsg(m);
-  const isGif = isGifMsg(m);
   const reactions = m.reactions || {};
   const reactEntries = Object.entries(reactions);
 
@@ -2458,7 +2356,7 @@ function bubble(m) {
     wrap.append(actions);
   }
 
-  const b = el("div", "msg" + (isDeleted ? " deleted" : "") + (isSticker && !isDeleted ? " sticker-msg" : "") + (isGif && !isDeleted ? " gif-msg" : ""));
+  const b = el("div", "msg" + (isDeleted ? " deleted" : "") + (isSticker && !isDeleted ? " sticker-msg" : ""));
 
   if (isDeleted) {
     b.textContent = t("deletedMsg");
@@ -2482,7 +2380,7 @@ function bubble(m) {
 
     if (m.kind === "text") linkifyText(b, displayBody);
     if (m.kind === "image") {
-      const i = el("img", isSticker ? "sticker-img" : (isGif ? "gif-img" : ""));
+      const i = el("img", isSticker ? "sticker-img" : "");
       i.src = m.media_url;
       i.loading = "lazy";
       i.onclick = () => openLightbox(m.media_url);
@@ -2632,7 +2530,7 @@ async function sendText() {
 
   if (replyingTo) {
     const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
-    const rSnippet = isStickerMsg(replyingTo) ? "💟 Sticker" : isGifMsg(replyingTo) ? "🎞️ GIF" : replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
+    const rSnippet = isStickerMsg(replyingTo) ? "💟 Sticker" : replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
     msgText = `>>REPLY:${rName}|${rSnippet}\n${msgText}`;
     clearReply();
   }
