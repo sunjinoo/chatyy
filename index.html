@@ -26,6 +26,7 @@
   --head: #f0f2f5;
   --shadow: 0 1px 2px rgba(11, 20, 26, 0.13);
   --font-scale: 14.5px;
+  --emoji-font: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", "EmojiOne Color", system-ui, sans-serif;
   --wall-pattern: url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23c5bdb0' stroke-width='1.5' stroke-opacity='0.35' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 25c0-5 5-9 11-9s11 4 11 9-5 9-11 9c-2 0-4-.5-5.5-1.3L20 35l1.5-4.2C20.5 29.2 20 27.2 20 25z'/%3E%3Cpath d='M85 20l2.5 5 5.5.8-4 3.9.9 5.5-4.9-2.6-4.9 2.6.9-5.5-4-3.9 5.5-.8z'/%3E%3Ccircle cx='30' cy='85' r='9'/%3E%3Cpath d='M27 83h.01M33 83h.01M27 87c1.5 2 4.5 2 6 0'/%3E%3Cpath d='M85 88c-4-3.5-8-7-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 93 77c0 4-4 7.5-8 11z'/%3E%3Cpath d='M58 50l4-4 6 6-4 4zM54 58l4-4'/%3E%3Ccircle cx='60' cy='22' r='3'/%3E%3Ccircle cx='58' cy='95' r='4'/%3E%3Cpath d='M95 52c3-3 7-3 10 0M15 55c2-2 5-2 7 0'/%3E%3C/g%3E%3C/svg%3E");
 }
 [data-theme="dark"] {
@@ -45,11 +46,16 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; }
-body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, sans-serif; background: var(--bg); color: var(--text); }
+body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, Tahoma, var(--emoji-font), sans-serif; background: var(--bg); color: var(--text); }
 button, input, textarea, select { font: inherit; color: inherit; }
 button { cursor: pointer; border: 0; background: none; display: inline-flex; align-items: center; justify-content: center; }
 svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; flex-shrink: 0; }
 .hidden { display: none !important; }
+
+.emoji-glyph, .em-btn, .react-opt, .r-pill {
+  font-family: var(--emoji-font);
+  line-height: 1.2;
+}
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -374,14 +380,28 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
 .rb-title { font-size: 12px; font-weight: 700; color: var(--accent); direction: ltr; text-align: start; }
 .rb-text { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+/* Categorized Emoji Picker */
 #emoji-picker {
   position: absolute; bottom: 68px; inset-inline-start: 16px; background: var(--panel);
-  border: 1px solid var(--line); border-radius: 12px; padding: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18); display: grid; grid-template-columns: repeat(7, 1fr);
-  gap: 6px; z-index: 20; width: 280px; max-height: 220px; overflow-y: auto;
+  border: 1px solid var(--line); border-radius: 14px; padding: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.22); display: flex; flex-direction: column; gap: 8px;
+  z-index: 20; width: 320px; max-height: 280px;
 }
-.em-btn { font-size: 20px; padding: 4px; border-radius: 6px; }
-.em-btn:hover { background: var(--panel-alt); }
+.emoji-tabs {
+  display: flex; gap: 2px; border-bottom: 1px solid var(--line); padding-bottom: 6px;
+}
+.emoji-tab {
+  flex: 1; padding: 5px 2px; border-radius: 8px; font-size: 16px;
+  opacity: 0.65; transition: all 0.15s;
+}
+.emoji-tab:hover { background: var(--panel-alt); opacity: 1; }
+.emoji-tab.active { background: var(--panel-alt); opacity: 1; border-bottom: 2px solid var(--accent); border-radius: 8px 8px 0 0; }
+.emoji-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px;
+  overflow-y: auto; max-height: 200px; padding-inline-end: 2px;
+}
+.em-btn { font-size: 21px; padding: 4px; border-radius: 8px; transition: transform 0.1s, background 0.15s; }
+.em-btn:hover { background: var(--panel-alt); transform: scale(1.15); }
 
 #composer { background: var(--head); padding: 10px 14px; display: flex; align-items: center; gap: 8px; z-index: 5; }
 #txt {
@@ -448,6 +468,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   #msgs { padding: 12px 12px; }
   .msg-wrap { max-width: 85%; }
   .msg-actions { opacity: 0.85; }
+  #emoji-picker { width: calc(100% - 32px); inset-inline-start: 16px; }
 }
 </style>
 </head>
@@ -724,7 +745,10 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       </div>
 
       <!-- Emoji Picker -->
-      <div id="emoji-picker" class="hidden"></div>
+      <div id="emoji-picker" class="hidden">
+        <div class="emoji-tabs" id="emoji-tabs"></div>
+        <div class="emoji-grid" id="emoji-grid"></div>
+      </div>
 
       <!-- Composer -->
       <div id="composer">
@@ -860,7 +884,7 @@ const I18N = {
     pinnedLabel: "رسالة مثبّتة",
     editTitle: "تعديل الرسالة",
     cancelBtn: "إلغاء",
-    msgPlaceholder: "اكتب رسالة أو الصق صورة...",
+    msgPlaceholder: "اكتب رسالة أو إيموجي أو الصق صورة...",
     logoutTitle: "تسجيل الخروج",
     logoutDesc: "هل أنت متأكد أنك تريد تسجيل الخروج من حسابك؟",
     confirmLogout: "نعم، خروج",
@@ -918,7 +942,7 @@ const I18N = {
     pinnedLabel: "Pinned Message",
     editTitle: "Edit Message",
     cancelBtn: "Cancel",
-    msgPlaceholder: "Type a message or paste image...",
+    msgPlaceholder: "Type a message, emoji, or paste image...",
     logoutTitle: "Log Out",
     logoutDesc: "Are you sure you want to log out of your account?",
     confirmLogout: "Yes, Log Out",
@@ -985,7 +1009,6 @@ function applyLanguage(lang) {
     if (I18N[lang][k]) el.placeholder = I18N[lang][k];
   });
 
-  // Rotate send arrow based on direction
   const sendIc = document.querySelector(".send-ic");
   if (sendIc) sendIc.style.transform = lang === "ar" ? "rotate(180deg)" : "rotate(0deg)";
 
@@ -1017,6 +1040,7 @@ let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
 let replyingTo = null, editingMsg = null, chatFilter = "", listFilter = "all";
 let onlineUsers = new Set(), typingUsers = new Set();
 let globalChannel = null, lastTypingSent = 0;
+let pollTimer = null, isSyncing = false;
 
 /* ---------- PWA Install Prompt ---------- */
 let deferredPrompt;
@@ -1142,7 +1166,7 @@ $("export-chat-btn").onclick = () => {
 applyVisualPrefs();
 applyLanguage(prefs.lang);
 
-/* ---------- Rich Chat Wallpapers (WhatsApp-Style Doodles & Gradients) ---------- */
+/* ---------- Rich Chat Wallpapers ---------- */
 const WALL_PRESETS = [
   { name: "Doodle", val: null, bg: "#efeae2 var(--wall-pattern)" },
   { name: "Dark Doodle", val: "#0b141a", bg: "#0b141a var(--wall-pattern)" },
@@ -1350,18 +1374,89 @@ $("save-profile").onclick = async () => {
   }
 };
 
-/* ---------- Emoji Picker ---------- */
-const EMOJIS = ["😀","😂","🤣","😍","🥰","😘","😎","🤔","😅","😭","😤","😡","👍","👎","❤️","🔥","✨","🎉","🙏","👏","🤝","💯","💀","🤡","👀","🫡","🥳","😴"];
+/* ---------- Full Categorized Emoji Picker ---------- */
+const EMOJI_CATEGORIES = [
+  {
+    icon: "😀",
+    items: [
+      "😀","😃","😄","😁","😆","😅","🤣","😂","🙂","🙃","😉","😊","😇","🥰","😍","🤩",
+      "😘","😗","☺","😚","😙","🥲","😋","😛","😜","🤪","😝","🤑","🤗","🤭","🤫","🤔",
+      "🤐","🤨","😐","😑","😶","😏","😒","🙄","😬","🤥","😌","😔","😪","🤤","😴","😷",
+      "🤒","🤕","🤢","🤮","🤧","🥵","🥶","🥴"," dizzy","🤯","🤠","🥳","🥸","😎","🤓","🧐"
+    ].map(x => x.trim()).filter(x => x !== "dizzy")
+  },
+  {
+    icon: "❤️",
+    items: [
+      "❤️","🧡","💛","💚","💙","💜","🖤","🤍","🤎","💔","❤️‍🔥","❤️‍🩹","💕","💞","💓","💗",
+      "💖","💘","💝","💟","💌","💢","💥","💫","💦","💨","🕳️","💣","💬","🗨️","🗯️","💭",
+      "😭","😢","😥","😓","😞","😖","😣","😩","😫","😤","😡","😠","🤬","😈","👿","💀","☠️"
+    ]
+  },
+  {
+    icon: "👍",
+    items: [
+      "👋","🤚","🖐️","✋","🖖","👌","🤌","🤏","✌️","🤞","🤟","🤘","🤙","👈","👉","👆",
+      "🖕","👇","☝️","👍","👎","✊","👊","🤛","🤜","👏","🙌","👐","🤲","🤝","🙏","✍️",
+      "💅","🤳","💪","🦾","🦵","🦶","👂","🦻","👃","🧠","👀","👁️","👅","👄","👶","🧒","👦","👧"
+    ]
+  },
+  {
+    icon: "🔥",
+    items: [
+      "🔥","✨","🌟","⭐","⚡","☀️","🌙","🌈","☁️","⛅","❄️","☃️","💧","🌊","🎉","🎊",
+      "🎈","🎀","🎁","🏆","🥇","🥈","🥉","⚽","🏀","🏈","⚾","🎾","🎮","🕹️","🎯","🎲",
+      "🎵","🎶","🎤","🎧","🎸","🎹","🥁","📱","💻","⌚","📷","💡","💎","🔑","🔒","✅","❌","💯"
+    ]
+  },
+  {
+    icon: "🍕",
+    items: [
+      "🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐔",
+      "🐧","🐦","🦅","🦆","🦉","🦇","🐺","🐗","🐴","🦄","🐝","🦋","🐢","🐍","🐙","🦈",
+      "🍏","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🫐","🍒","🍑","🥭","🍍","🥥","🥝",
+      "🍔","🍟","🍕","🌭","🥪","🌮","🌯","🥗","🍝","🍜","🍣","🍤","🍩","🍪","🎂","🍰","☕","🍵","🥤"
+    ]
+  }
+];
+
 const ep = $("emoji-picker");
-EMOJIS.forEach(em => {
-  const b = el("button", "em-btn", em);
-  b.onclick = () => {
-    $("txt").value += em;
-    toggleSendMic();
-    $("txt").focus();
+const eTabs = $("emoji-tabs");
+const eGrid = $("emoji-grid");
+let currentEmojiTab = 0;
+
+function renderEmojiTab(idx) {
+  currentEmojiTab = idx;
+  document.querySelectorAll(".emoji-tab").forEach((b, i) => b.classList.toggle("active", i === idx));
+  eGrid.replaceChildren();
+  EMOJI_CATEGORIES[idx].items.forEach(em => {
+    const b = el("button", "em-btn", em);
+    b.type = "button";
+    b.onclick = () => {
+      const inp = $("txt");
+      const start = inp.selectionStart ?? inp.value.length;
+      const end = inp.selectionEnd ?? inp.value.length;
+      inp.value = inp.value.slice(0, start) + em + inp.value.slice(end);
+      const nextPos = start + em.length;
+      inp.setSelectionRange(nextPos, nextPos);
+      toggleSendMic();
+      inp.focus();
+    };
+    eGrid.append(b);
+  });
+}
+
+EMOJI_CATEGORIES.forEach((cat, idx) => {
+  const tab = el("button", "emoji-tab", cat.icon);
+  tab.type = "button";
+  tab.onclick = (e) => {
+    e.stopPropagation();
+    renderEmojiTab(idx);
   };
-  ep.append(b);
+  eTabs.append(tab);
 });
+renderEmojiTab(0);
+
 $("emoji-btn").onclick = (e) => { e.stopPropagation(); ep.classList.toggle("hidden"); };
 document.addEventListener("click", (e) => {
   if (!ep.contains(e.target) && e.target !== $("emoji-btn")) ep.classList.add("hidden");
@@ -1369,10 +1464,9 @@ document.addEventListener("click", (e) => {
 });
 
 /* ---------- Persistent Auth, Saved Credentials & Logout ---------- */
-function authErr(t) { $("aerr").textContent = t; }
+function authErr(msg) { $("aerr").textContent = msg; }
 function cleanUser() { return $("u").value.trim().toLowerCase(); }
 
-// Pre-fill saved credentials if user checked "Remember me"
 try {
   const savedCreds = JSON.parse(localStorage.getItem("chatyy_saved_creds"));
   if (savedCreds?.u) {
@@ -1435,6 +1529,7 @@ $("logout").onclick = () => $("logout-modal").classList.remove("hidden");
 $("cancel-logout").onclick = () => $("logout-modal").classList.add("hidden");
 $("confirm-logout").onclick = async () => {
   $("confirm-logout").disabled = true;
+  if (pollTimer) clearInterval(pollTimer);
   await sb.from("profiles").update({ last_seen: new Date(Date.now() - 120000).toISOString() }).eq("id", me.id);
   await sb.auth.signOut();
   location.reload();
@@ -1448,7 +1543,7 @@ async function markDelivered(msgIds) {
 }
 
 async function markSeen(senderId) {
-  if (!prefs.readReceipts) return;
+  if (!prefs.readReceipts || !me) return;
   const unseen = all.filter(m => m.sender === senderId && m.receiver === me.id && !m.seen_at);
   if (!unseen.length) return;
   const ids = unseen.map(m => m.id);
@@ -1463,11 +1558,124 @@ function getTicksHTML(m) {
   return `<span class="ticks sent">${ICONS.tickSingle}</span>`;
 }
 
+/* ---------- 1-Second Live Sync Engine ---------- */
+function applyIncomingMessage(m, playAlert = true) {
+  if (!m || all.some(x => String(x.id) === String(m.id))) return false;
+  typingUsers.delete(m.sender);
+
+  const now = new Date().toISOString();
+  if (m.receiver === me.id) {
+    if (!m.delivered_at) {
+      m.delivered_at = now;
+      sb.from("messages").update({ delivered_at: now }).eq("id", m.id).then();
+    }
+    if (active === m.sender && document.visibilityState === "visible" && prefs.readReceipts) {
+      m.seen_at = now;
+      sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
+    } else if (playAlert) {
+      const senderName = profilesMap[m.sender]?.username || "Friend";
+      const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
+      showDesktopNotification(senderName, snippet);
+      playNotifySound();
+    }
+  }
+
+  all.push(m);
+  return true;
+}
+
+function mergeUpdatedMessage(updated) {
+  if (!updated || (updated.sender !== me.id && updated.receiver !== me.id)) return false;
+  const idx = all.findIndex(x => String(x.id) === String(updated.id));
+  if (idx === -1) return applyIncomingMessage(updated, false);
+
+  const prev = all[idx];
+  const changed =
+    prev.body !== updated.body ||
+    prev.kind !== updated.kind ||
+    prev.seen_at !== updated.seen_at ||
+    prev.delivered_at !== updated.delivered_at ||
+    JSON.stringify(prev.reactions || {}) !== JSON.stringify(updated.reactions || {});
+
+  if (changed) {
+    all[idx] = { ...prev, ...updated };
+    return true;
+  }
+  return false;
+}
+
+async function syncMessagesEverySecond() {
+  if (!me || isSyncing) return;
+  isSyncing = true;
+  try {
+    const lastMsg = all[all.length - 1];
+    let addedOrChanged = false;
+
+    // 1. Fetch new messages since latest timestamp (with 3s overlap to avoid clock skew)
+    if (lastMsg?.created_at) {
+      const since = new Date(new Date(lastMsg.created_at).getTime() - 3000).toISOString();
+      const { data: freshMsgs } = await sb
+        .from("messages")
+        .select("*")
+        .or(`sender.eq.${me.id},receiver.eq.${me.id}`)
+        .gte("created_at", since)
+        .order("created_at", { ascending: true });
+
+      if (freshMsgs?.length) {
+        await loadProfiles(freshMsgs.flatMap(m => [m.sender, m.receiver]));
+        for (const m of freshMsgs) {
+          if (applyIncomingMessage(m, true)) addedOrChanged = true;
+        }
+      }
+    }
+
+    // 2. Refresh recent window (last 40 messages) for edits, deletes, reactions & read ticks
+    const { data: recentMsgs } = await sb
+      .from("messages")
+      .select("*")
+      .or(`sender.eq.${me.id},receiver.eq.${me.id}`)
+      .order("created_at", { ascending: false })
+      .limit(40);
+
+    if (recentMsgs?.length) {
+      await loadProfiles(recentMsgs.flatMap(m => [m.sender, m.receiver]));
+      for (const m of recentMsgs) {
+        if (mergeUpdatedMessage(m)) addedOrChanged = true;
+      }
+    }
+
+    // 3. Refresh peer last_seen for active chat if not in presence map
+    if (active && !onlineUsers.has(active)) {
+      const { data: peerProf } = await sb.from("profiles").select("*").eq("id", active).single();
+      if (peerProf) {
+        const oldSeen = profilesMap[active]?.last_seen;
+        profilesMap[active] = peerProf;
+        if (oldSeen !== peerProf.last_seen) {
+          updateActiveHeaderStatus();
+          renderList();
+        }
+      }
+    }
+
+    if (addedOrChanged) {
+      renderList();
+      if (active) {
+        updateActiveHeaderStatus();
+        renderMsgs();
+        updatePinnedBanner();
+      }
+    }
+  } catch (e) {
+    // Silent retry on next 1s tick
+  } finally {
+    isSyncing = false;
+  }
+}
+
 /* ---------- Boot (Auto-Login with Saved Session or Credentials) ---------- */
 async function boot() {
   let { data: { session } } = await sb.auth.getSession();
 
-  // Fallback: if session expired but user enabled "Remember me", re-authenticate automatically
   if (!session) {
     try {
       const savedCreds = JSON.parse(localStorage.getItem("chatyy_saved_creds"));
@@ -1491,7 +1699,12 @@ async function boot() {
 
   requestNotificationPermission();
 
-  const { data: msgs } = await sb.from("messages").select("*").order("created_at", { ascending: true }).limit(2000);
+  const { data: msgs } = await sb
+    .from("messages")
+    .select("*")
+    .or(`sender.eq.${me.id},receiver.eq.${me.id}`)
+    .order("created_at", { ascending: true })
+    .limit(2000);
   all = msgs || [];
   await loadProfiles(all.flatMap(m => [m.sender, m.receiver]));
 
@@ -1509,7 +1722,11 @@ async function boot() {
     sb.from("profiles").update({ last_seen: now }).eq("id", me.id).then();
   };
   updatePresence();
-  setInterval(updatePresence, 25000);
+  setInterval(updatePresence, 20000);
+
+  if (globalChannel) {
+    try { await sb.removeChannel(globalChannel); } catch (e) {}
+  }
 
   globalChannel = sb.channel("global-room", { config: { presence: { key: me.id } } });
 
@@ -1536,39 +1753,24 @@ async function boot() {
     .on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: "receiver=eq." + me.id },
       async p => {
         const m = p.new;
-        if (all.some(x => x.id === m.id)) return;
         await loadProfiles([m.sender]);
-        typingUsers.delete(m.sender);
-        
-        const now = new Date().toISOString();
-        m.delivered_at = now;
-        if (active === m.sender && document.visibilityState === "visible" && prefs.readReceipts) {
-          m.seen_at = now;
-          sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
-        } else {
-          sb.from("messages").update({ delivered_at: now }).eq("id", m.id).then();
-          const senderName = profilesMap[m.sender]?.username || "Friend";
-          const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
-          showDesktopNotification(senderName, snippet);
-        }
-
-        all.push(m);
-        playNotifySound();
-        renderList();
-        if (active === m.sender) {
-          updateActiveHeaderStatus();
-          renderMsgs();
+        if (applyIncomingMessage(m, true)) {
+          renderList();
+          if (active === m.sender) {
+            updateActiveHeaderStatus();
+            renderMsgs();
+          }
         }
       })
     .on("postgres_changes", { event: "UPDATE", schema: "public", table: "messages" },
       p => {
         const updated = p.new;
-        if (updated.sender !== me.id && updated.receiver !== me.id) return;
-        const idx = all.findIndex(x => x.id === updated.id);
-        if (idx !== -1) {
-          all[idx] = updated;
+        if (mergeUpdatedMessage(updated)) {
           renderList();
-          if (active === otherOf(updated)) renderMsgs();
+          if (active === otherOf(updated)) {
+            renderMsgs();
+            updatePinnedBanner();
+          }
         }
       })
     .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profiles" },
@@ -1587,9 +1789,14 @@ async function boot() {
       }
     });
 
+  // Start 1-second live sync loop alongside Realtime
+  if (pollTimer) clearInterval(pollTimer);
+  pollTimer = setInterval(syncMessagesEverySecond, 1000);
+
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       updatePresence();
+      syncMessagesEverySecond();
       if (active) {
         markSeen(active);
         renderList();
@@ -1631,7 +1838,9 @@ function renderList() {
   const unreadCounts = {};
   all.forEach(m => {
     const other = otherOf(m);
-    last[other] = m;
+    if (!last[other] || new Date(m.created_at) >= new Date(last[other].created_at)) {
+      last[other] = m;
+    }
     if (m.receiver === me.id && !m.seen_at) {
       unreadCounts[other] = (unreadCounts[other] || 0) + 1;
     }
@@ -1651,18 +1860,18 @@ function renderList() {
     const prof = profilesMap[id] || { username: "..." };
     const uCount = unreadCounts[id] || 0;
     const it = el("div", "item" + (id === active ? " active" : ""));
-    
+
     const avWrap = el("div", "av-wrap");
     const av = el("div", "avatar");
     renderAvatar(av, prof);
     avWrap.append(av);
     if (isUserOnline(id)) avWrap.append(el("span", "online-dot"));
-    
+
     const mid = el("div", "mid");
     const topRow = el("div", "top-row");
     const timeEl = el("div", "t" + (uCount ? " unread-t" : ""), fmtTime(m.created_at));
     topRow.append(el("div", "u", prof.username), timeEl);
-    
+
     const botRow = el("div", "bot-row");
     const lastRow = el("div", "last");
     if (typingUsers.has(id)) {
@@ -1676,13 +1885,13 @@ function renderList() {
       } else if (m.kind === "audio") {
         lastRow.innerHTML = `${ticks}${ICONS.micSmall} ${prefs.lang === "ar" ? "رسالة صوتية" : "Voice message"}`;
       } else {
-        lastRow.innerHTML = `${ticks}<span>${getCleanBody(m.body)}</span>`;
+        lastRow.innerHTML = `${ticks}<span class="emoji-glyph">${getCleanBody(m.body)}</span>`;
       }
     }
-    
+
     botRow.append(lastRow);
     if (uCount > 0) botRow.append(el("span", "unread-badge", String(uCount)));
-    
+
     mid.append(topRow, botRow);
     it.append(avWrap, mid);
     it.onclick = () => openChat(id);
@@ -1711,7 +1920,7 @@ $("q").oninput = () => {
       renderAvatar(av, p);
       avWrap.append(av);
       if (isUserOnline(p.id)) avWrap.append(el("span", "online-dot"));
-      
+
       const mid = el("div", "mid");
       mid.append(el("div", "u", p.username), el("div", "last", p.bio || ""));
       it.append(avWrap, mid);
@@ -1748,7 +1957,7 @@ function getPinKey() { return `pinned_${me.id}_${active}`; }
 function updatePinnedBanner() {
   if (!active) return;
   const pinId = localStorage.getItem(getPinKey());
-  const m = all.find(x => x.id === pinId && otherOf(x) === active && x.body !== ">>DELETED<<");
+  const m = all.find(x => String(x.id) === String(pinId) && otherOf(x) === active && x.body !== ">>DELETED<<");
   if (!m) {
     $("pinned-bar").classList.add("hidden");
     return;
@@ -1849,6 +2058,7 @@ $("rb-close").onclick = clearReply;
 
 /* ---------- Chat View ---------- */
 async function openChat(id) {
+  const isNewChat = active !== id;
   active = id;
   clearReply();
   clearEdit();
@@ -1857,7 +2067,7 @@ async function openChat(id) {
   $("chat-search-input").value = "";
   await loadProfiles([id]);
   const prof = profilesMap[id] || { username: "..." };
-  
+
   $("empty").classList.add("hidden");
   $("chatbox").classList.remove("hidden");
   $("app").classList.add("open");
@@ -1865,10 +2075,10 @@ async function openChat(id) {
   renderAvatar($("oav"), prof);
   updateActiveHeaderStatus();
   updatePinnedBanner();
-  
+
   await markSeen(id);
   renderList();
-  renderMsgs();
+  renderMsgs(isNewChat);
   $("txt").focus();
 }
 $("back").onclick = () => { $("app").classList.remove("open"); active = null; renderList(); };
@@ -1885,13 +2095,17 @@ function linkifyText(container, text) {
       a.textContent = part;
       container.append(a);
     } else {
-      container.append(document.createTextNode(part));
+      const span = document.createElement("span");
+      span.className = "emoji-glyph";
+      span.textContent = part;
+      container.append(span);
     }
   });
 }
 
-function renderMsgs() {
+function renderMsgs(forceScroll = false) {
   const box = $("msgs");
+  const nearBottom = forceScroll || (box.scrollHeight - box.scrollTop - box.clientHeight < 120);
   box.replaceChildren();
   let lastDate = null;
   all.filter(m => {
@@ -1909,7 +2123,7 @@ function renderMsgs() {
     }
     box.append(bubble(m));
   });
-  box.scrollTop = box.scrollHeight;
+  if (nearBottom) box.scrollTop = box.scrollHeight;
 }
 
 function bubble(m) {
@@ -1917,13 +2131,13 @@ function bubble(m) {
   const isDeleted = m.body === ">>DELETED<<";
   const reactions = m.reactions || {};
   const reactEntries = Object.entries(reactions);
-  
+
   const wrap = el("div", "msg-wrap " + (isMe ? "me" : "them") + (reactEntries.length && !isDeleted ? " has-react" : ""));
   wrap.dataset.msgid = m.id;
-  
+
   if (!isDeleted) {
     const actions = el("div", "msg-actions");
-    
+
     const reactBtn = el("button", "act-btn");
     reactBtn.innerHTML = ICONS.smile;
     reactBtn.onclick = (e) => { e.stopPropagation(); openReactionPicker(wrap, m); };
@@ -1978,7 +2192,7 @@ function bubble(m) {
           const qUser = header.slice(0, sep);
           const qTxt = header.slice(sep + 1);
           const qBox = el("div", "quote-box");
-          qBox.append(el("div", "q-name", qUser), el("div", "q-text", qTxt));
+          qBox.append(el("div", "q-name", qUser), el("div", "q-text emoji-glyph", qTxt));
           b.append(qBox);
           displayBody = displayBody.slice(nl + 1);
         }
@@ -2040,20 +2254,20 @@ function player(m) {
   const w = el("div", "player");
   const btn = el("button", "pp");
   btn.innerHTML = ICONS.play;
-  
+
   const waveWrap = el("div", "wave-wrap");
   const bar = el("div", "bar"), fill = el("i");
   bar.append(fill);
-  
+
   const durRow = el("div", "dur");
   const curSpan = el("span", "", "0:00");
   const totSpan = el("span", "", fmtDur(total));
   durRow.append(curSpan, totSpan);
   waveWrap.append(bar, durRow);
-  
+
   const a = new Audio(m.media_url);
   a.preload = "none";
-  
+
   btn.onclick = () => {
     if (a.paused) {
       document.querySelectorAll("audio").forEach(x => x.pause());
@@ -2077,7 +2291,7 @@ function player(m) {
     const d = total || a.duration;
     if (d) a.currentTime = ((e.clientX - r.left) / r.width) * d;
   };
-  
+
   w.append(btn, waveWrap);
   return w;
 }
@@ -2100,9 +2314,9 @@ async function sendMsg(fields) {
   if (!active) return;
   const { data, error } = await sb.from("messages").insert({ receiver: active, ...fields }).select().single();
   if (error) return alert("Failed: " + error.message);
-  all.push(data);
+  if (!all.some(x => String(x.id) === String(data.id))) all.push(data);
   renderList();
-  renderMsgs();
+  renderMsgs(true);
 }
 
 async function upload(blob, ext, type) {
@@ -2113,8 +2327,8 @@ async function upload(blob, ext, type) {
 }
 
 async function sendText() {
-  let t = $("txt").value.trim();
-  if (!t) return;
+  let msgText = $("txt").value.trim();
+  if (!msgText) return;
 
   if (editingMsg) {
     const target = editingMsg;
@@ -2127,24 +2341,24 @@ async function sendText() {
       if (nl !== -1) prefix = target.body.slice(0, nl + 1);
     }
     const suffix = prefs.lang === "ar" ? "(معدّلة)" : "(edited)";
-    const newBody = `${prefix}${t} ${suffix}`;
+    const newBody = `${prefix}${msgText} ${suffix}`;
     target.body = newBody;
     renderList();
     renderMsgs();
     await sb.from("messages").update({ body: newBody }).eq("id", target.id);
     return;
   }
-  
+
   if (replyingTo) {
     const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
     const rSnippet = replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
-    t = `>>REPLY:${rName}|${rSnippet}\n${t}`;
+    msgText = `>>REPLY:${rName}|${rSnippet}\n${msgText}`;
     clearReply();
   }
-  
+
   $("txt").value = "";
   toggleSendMic();
-  sendMsg({ kind: "text", body: t });
+  sendMsg({ kind: "text", body: msgText });
 }
 $("send").onclick = sendText;
 $("txt").onkeydown = e => {
@@ -2214,7 +2428,7 @@ const mic = $("mic");
 
 function pickMime() {
   const opts = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg"];
-  return opts.find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t)) || "";
+  return opts.find(m => window.MediaRecorder && MediaRecorder.isTypeSupported(m)) || "";
 }
 
 async function startRec(e) {
@@ -2223,12 +2437,12 @@ async function startRec(e) {
   let stream;
   try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
   catch { return alert(prefs.lang === "ar" ? "لازم تسمح بصلاحية الميكروفون" : "Please allow microphone permission"); }
-  
+
   const mime = pickMime();
   chunks = []; recCancel = false;
   rec = new MediaRecorder(stream, mime ? { mimeType: mime } : undefined);
   rec.ondataavailable = ev => ev.data.size && chunks.push(ev.data);
-  
+
   rec.onstop = async () => {
     stream.getTracks().forEach(t => t.stop());
     clearInterval(recTimer);
@@ -2237,18 +2451,18 @@ async function startRec(e) {
     $("txt").classList.remove("hidden");
     $("emoji-btn").classList.remove("hidden");
     $("attach").classList.remove("hidden");
-    
+
     const secs = (Date.now() - recStart) / 1000;
     const type = rec.mimeType || mime || "audio/webm";
     rec = null;
     if (recCancel || secs < 1) return;
-    
+
     const blob = new Blob(chunks, { type });
     const ext = type.includes("mp4") ? "m4a" : type.includes("ogg") ? "ogg" : "webm";
     const url = await upload(blob, ext, type);
     if (url) sendMsg({ kind: "audio", media_url: url, body: String(Math.round(secs)) });
   };
-  
+
   rec.start();
   recStart = Date.now();
   mic.classList.add("rec");
