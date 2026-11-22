@@ -1137,6 +1137,37 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   .gif-key-panel{padding:10px}
 }
 
+
+/* Chatyy camera + moderation interface */
+.camera-box,.moderation-box{max-width:560px;max-height:min(88dvh,820px);overflow:auto}
+.camera-box video{display:block;width:100%;max-height:62dvh;aspect-ratio:4/3;object-fit:contain;background:#090d10;border-radius:14px}
+.camera-status{min-height:18px;color:var(--muted);font-size:12px;text-align:center;line-height:1.6}
+.camera-actions{display:flex;gap:8px}
+.camera-actions .btn{flex:1;min-width:0}
+.moderation-list{display:grid;gap:8px;max-height:48dvh;overflow:auto;overscroll-behavior:contain}
+.moderation-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel-alt);min-width:0}
+.moderation-row-main{flex:1;min-width:0;display:grid;gap:3px;text-align:start}
+.moderation-row-main strong{font-size:13px;overflow-wrap:anywhere}
+.moderation-row-main small{font-size:11px;color:var(--muted);overflow-wrap:anywhere;line-height:1.5}
+.moderation-row .btn{flex:0 0 auto;min-height:34px;padding:7px 10px;font-size:11px}
+.moderation-notice{margin:0;padding:10px;border-radius:10px;background:var(--panel-alt);color:var(--muted);font-size:11px;line-height:1.7}
+.admin-tabs{display:flex;gap:6px;overflow:auto;padding:3px;background:var(--panel-alt);border-radius:12px}
+.admin-tab{flex:1;min-width:max-content;padding:9px 12px;border-radius:9px;font-size:12px;font-weight:700}
+.admin-tab.active{background:var(--panel);color:var(--accent);box-shadow:var(--shadow)}
+.admin-pane{display:grid;gap:10px;min-height:80px}
+#admin-user-search{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--panel-alt);color:var(--text)}
+.report-body{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;color:var(--text);line-height:1.6}
+.avatar.account-not-found{background-image:none!important;background-color:var(--panel-alt)!important;color:var(--muted)!important;font-size:0!important}
+.avatar.account-not-found::after{content:"?";font-size:17px;font-weight:700;display:grid;place-items:center;width:100%;height:100%}
+@media(max-width:520px){
+  #camera-modal{align-items:flex-end;padding:0}
+  #camera-modal .camera-box{width:100%;max-width:none;border-radius:18px 18px 0 0;padding:16px 13px calc(14px + env(safe-area-inset-bottom))}
+  #camera-preview{max-height:56dvh}
+  #admin-modal,#blocked-accounts-modal{align-items:flex-end;padding:0}
+  #admin-modal .moderation-box,#blocked-accounts-modal .moderation-box{width:100%;max-width:none;max-height:88dvh;border-radius:18px 18px 0 0;padding:16px 13px calc(14px + env(safe-area-inset-bottom))}
+  .moderation-list{max-height:42dvh}
+}
+
 </style>
 </head>
 <body>
@@ -1268,6 +1299,14 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
             </div>
             <div class="switch" id="set-receipts-switch"></div>
           </div>
+        </div>
+
+        <!-- Chatyy privacy and moderation -->
+        <div class="field-box chatyy-moderation-settings">
+          <label>الخصوصية والإدارة / Privacy & moderation</label>
+          <button class="btn alt" id="blocked-manage-open" type="button">🚫 الحسابات المحظورة / Blocked accounts</button>
+          <button class="btn alt hidden" id="admin-tools-open" type="button">🛡️ لوحة الإدارة / Admin tools</button>
+          <small class="profile-field-help">يمكنك إدارة الحظر ورفع الحظر. أدوات الإدارة متاحة للحسابات المصرّح بها فقط.</small>
         </div>
 
         <!-- Export Chat -->
@@ -1740,6 +1779,62 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   </div>
 </div>
 
+<!-- Live camera capture: uses getUserMedia instead of opening the file picker -->
+<div id="camera-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="camera-title">
+  <div class="modal-box camera-box">
+    <div class="dialog-heading">
+      <h3 id="camera-title">الكاميرا / Camera</h3>
+      <button class="icon" id="camera-close" type="button" aria-label="إغلاق">×</button>
+    </div>
+    <video id="camera-preview" autoplay playsinline muted></video>
+    <div class="camera-status" id="camera-status" role="status" aria-live="polite"></div>
+    <div class="row camera-actions">
+      <button class="btn alt" id="camera-switch" type="button">تبديل الكاميرا / Switch</button>
+      <button class="btn" id="camera-capture" type="button">التقاط / Capture</button>
+    </div>
+  </div>
+</div>
+
+<!-- Blocked accounts manager -->
+<div id="blocked-accounts-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="blocked-accounts-title">
+  <div class="modal-box moderation-box">
+    <div class="dialog-heading">
+      <h3 id="blocked-accounts-title">الحسابات المحظورة / Blocked accounts</h3>
+      <button class="icon" id="blocked-accounts-close" type="button" aria-label="إغلاق">×</button>
+    </div>
+    <div id="blocked-accounts-list" class="moderation-list"></div>
+    <p id="blocked-accounts-empty" class="empty-note">لا توجد حسابات محظورة / No blocked accounts</p>
+  </div>
+</div>
+
+<!-- Transparent moderation tools: reports and account bans only, not private-chat surveillance -->
+<div id="admin-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
+  <div class="modal-box moderation-box admin-box">
+    <div class="dialog-heading">
+      <h3 id="admin-title">لوحة الإدارة / Admin tools</h3>
+      <button class="icon" id="admin-close" type="button" aria-label="إغلاق">×</button>
+    </div>
+    <p class="moderation-notice">تظهر هنا البلاغات التي أرسلها المستخدمون فقط. لا توجد قراءة خفية للمحادثات الخاصة / Only user-reported content is visible here.</p>
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-admin-tab="users" type="button">الحسابات / Accounts</button>
+      <button class="admin-tab" data-admin-tab="reports" type="button">البلاغات / Reports</button>
+      <button class="admin-tab" data-admin-tab="bans" type="button">المحظورون / Bans</button>
+    </div>
+    <section class="admin-pane" id="admin-pane-users">
+      <input id="admin-user-search" type="search" placeholder="ابحث بالاسم أو اليوزر / Search users" autocomplete="off">
+      <div id="admin-users-results" class="moderation-list"></div>
+    </section>
+    <section class="admin-pane hidden" id="admin-pane-reports">
+      <button class="btn alt" id="admin-reports-refresh" type="button">تحديث البلاغات / Refresh reports</button>
+      <div id="admin-reports-list" class="moderation-list"></div>
+    </section>
+    <section class="admin-pane hidden" id="admin-pane-bans">
+      <button class="btn alt" id="admin-bans-refresh" type="button">تحديث القائمة / Refresh list</button>
+      <div id="admin-bans-list" class="moderation-list"></div>
+    </section>
+  </div>
+</div>
+
 <!-- Fullscreen Image Lightbox -->
 <div id="lightbox" class="modal-overlay hidden">
   <div class="lb-actions">
@@ -2028,10 +2123,17 @@ const initial = n => (n || "?")[0];
 
 const DOMAIN = "@chatuser.app";
 let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
+let chatyyBlockedByMe = new Set();
+let chatyyBlockedMe = new Set();
+let chatyyBannedUsers = new Set();
+let chatyyIsAdmin = false;
+let chatyyModerationReady = false;
+let chatyyBanLastCheck = 0;
 
 /* Display names are intentionally separate from stable login usernames. */
 function chatyyDisplayName(profile) {
   if (!profile) return "Unknown";
+  if (profile.id && chatyyBlockedMe.has(String(profile.id))) return prefs.lang === "ar" ? "لم يتم العثور على الحساب" : "Account not found";
   const remoteName = typeof profile.display_name === "string" ? profile.display_name.trim() : "";
   if (remoteName) return remoteName;
   const localKey = profile.id ? `chatyy_display_name_${profile.id}` : "";
@@ -2247,6 +2349,14 @@ function getAvatarColor(name) {
 }
 function renderAvatar(elTarget, prof) {
   const name = chatyyDisplayName(prof) || "?";
+  if (prof?.id && chatyyBlockedMe.has(String(prof.id))) {
+    elTarget.textContent = "";
+    elTarget.style.backgroundImage = "none";
+    elTarget.style.backgroundColor = "var(--panel-alt)";
+    elTarget.classList.add("account-not-found");
+    return;
+  }
+  elTarget.classList.remove("account-not-found");
   if (prof?.avatar_url) {
     elTarget.textContent = "";
     elTarget.style.backgroundImage = `url(${prof.avatar_url})`;
@@ -2260,6 +2370,7 @@ function renderAvatar(elTarget, prof) {
 
 /* ---------- Online / Offline / Typing Status ---------- */
 function isUserOnline(id) {
+  if (chatyyBlockedMe.has(String(id))) return false;
   if (onlineUsers.has(id)) return true;
   const prof = profilesMap[id];
   if (prof?.last_seen) {
@@ -2269,6 +2380,7 @@ function isUserOnline(id) {
 }
 
 function formatLastSeen(id) {
+  if (chatyyBlockedMe.has(String(id))) return prefs.lang === "ar" ? "لم يتم العثور على الحساب" : "Account not found";
   if (typingUsers.has(id)) return t("typingNow");
   if (isUserOnline(id)) return t("onlineNow");
   const prof = profilesMap[id];
@@ -2285,6 +2397,12 @@ function formatLastSeen(id) {
 
 function updateActiveHeaderStatus() {
   if (!active) return;
+  if (chatyyBlockedMe.has(String(active))) {
+    $("o-dot").classList.add("hidden");
+    $("ostatus").textContent = prefs.lang === "ar" ? "لم يتم العثور على الحساب" : "Account not found";
+    $("ostatus").classList.remove("online");
+    return;
+  }
   const online = isUserOnline(active);
   const typing = typingUsers.has(active);
   $("o-dot").classList.toggle("hidden", !online);
@@ -2649,6 +2767,17 @@ async function syncMessagesEverySecond() {
   if (!me || isSyncing) return;
   isSyncing = true;
   try {
+    if (Date.now() - chatyyBanLastCheck > 15000) {
+      chatyyBanLastCheck = Date.now();
+      try {
+        const banCheck = await sb.rpc("chatyy_my_ban_status");
+        if (!banCheck.error && banCheck.data?.banned) {
+          await sb.auth.signOut();
+          location.reload();
+          return;
+        }
+      } catch (banPollError) { console.warn("Periodic ban check unavailable.", banPollError); }
+    }
     const lastMsg = all[all.length - 1];
     let addedOrChanged = false;
 
@@ -2732,6 +2861,19 @@ async function boot() {
   if (!prof) return;
   me = prof;
   profilesMap[me.id] = me;
+  try { await chatyyRefreshModerationState(); }
+  catch (moderationLoadError) { console.warn("Chatyy moderation state could not be loaded.", moderationLoadError); }
+  try {
+    const banCheck = await sb.rpc("chatyy_my_ban_status");
+    const status = banCheck?.data;
+    if (!banCheck?.error && status && status.banned) {
+      const reason = status.reason ? `\n${status.reason}` : "";
+      authErr((prefs.lang === "ar" ? "هذا الحساب موقوف عن استخدام Chatyy." : "This account is suspended from Chatyy.") + reason);
+      await sb.auth.signOut();
+      me = null;
+      return;
+    }
+  } catch (moderationError) { console.warn("Chatyy ban check unavailable; run moderation SQL migration.", moderationError); }
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
   $("mename").textContent = chatyyDisplayName(me);
@@ -2813,6 +2955,12 @@ async function boot() {
             updatePinnedBanner();
           }
         }
+      })
+    .on("postgres_changes", { event: "*", schema: "public", table: "chatyy_user_blocks" },
+      async () => {
+        await chatyyRefreshModerationState();
+        renderList();
+        if (active) { openChat(active); }
       })
     .on("postgres_changes", { event: "UPDATE", schema: "public", table: "profiles" },
       p => {
@@ -2905,10 +3053,11 @@ function renderList() {
   list.replaceChildren();
   ids.forEach(id => {
     const m = last[id];
-    const prof = profilesMap[id] || { username: "..." };
+    const prof = profilesMap[id] || { id, username: "..." };
     const uCount = unreadCounts[id] || 0;
     const it = el("div", "item" + (id === active ? " active" : ""));
     it.dataset.peerid = id;
+    it.dataset.contextType = "conversation";
 
     const avWrap = el("div", "av-wrap");
     const av = el("div", "avatar");
@@ -2970,6 +3119,8 @@ $("q").oninput = () => {
     [...mergedProfiles.values()].slice(0, 8).forEach(p => {
       profilesMap[p.id] = p;
       const it = el("div", "item");
+      it.dataset.peerid = p.id;
+      it.dataset.contextType = "contact";
       const avWrap = el("div", "av-wrap");
       const av = el("div", "avatar");
       renderAvatar(av, p);
@@ -2982,7 +3133,7 @@ $("q").oninput = () => {
       it.onclick = () => { $("q").value = ""; box.replaceChildren(); openChat(p.id); };
       box.append(it);
     });
-    if (!data || !data.length) box.append(el("div", "hint", prefs.lang === "ar" ? "مفيش يوزر بالاسم ده" : "No user found"));
+    if (!mergedProfiles.size) box.append(el("div", "hint", prefs.lang === "ar" ? "مفيش حساب بالاسم ده" : "No account found"));
   }, 250);
 };
 
@@ -3088,6 +3239,8 @@ $("eb-close").onclick = () => {
 };
 
 async function deleteMessage(m) {
+  const confirmed = window.confirm(prefs.lang === "ar" ? "هل أنت متأكد أنك تريد حذف هذه الرسالة؟ لا يمكن التراجع عن الحذف." : "Are you sure you want to delete this message? This cannot be undone.");
+  if (!confirmed) return;
   m.body = ">>DELETED<<";
   m.kind = "text";
   renderList();
@@ -3125,7 +3278,7 @@ async function openChat(id) {
   $("chat-search-bar").classList.add("hidden");
   $("chat-search-input").value = "";
   await loadProfiles([id]);
-  const prof = profilesMap[id] || { username: "..." };
+  const prof = profilesMap[id] || { id, username: "..." };
 
   $("empty").classList.add("hidden");
   $("chatbox").classList.remove("hidden");
@@ -3433,6 +3586,14 @@ $("txt").addEventListener("input", () => {
 
 async function sendMsg(fields) {
   if (!active) return;
+  if (chatyyIsConversationBlocked(active)) {
+    showToast(prefs.lang === "ar" ? "لا يمكن إرسال رسائل لهذا الحساب بسبب إعدادات الحظر." : "You cannot message this account because of blocking settings.");
+    return false;
+  }
+  if (chatyyBannedUsers.has(String(me?.id))) {
+    showToast(prefs.lang === "ar" ? "حسابك موقوف عن إرسال الرسائل." : "Your account is suspended from sending messages.");
+    return false;
+  }
   const { data, error } = await sb.from("messages")
     .insert({ sender: me.id, receiver: active, ...fields })
     .select().single();
@@ -3501,7 +3662,7 @@ function previewImageFile(f) {
 }
 
 $("attach").onclick = () => $("file").click();
-$("camera-btn").onclick = () => $("camera-file").click();
+$("camera-btn").onclick = null; // The live camera handler is installed after its modal is defined; never open the file picker here.
 $("camera-file").onchange = e => {
   const f = e.target.files[0];
   e.target.value = "";
@@ -3970,6 +4131,7 @@ function renderSavedMessages() {
     remove.title = t("removeSavedTitle");
     remove.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>`;
     remove.onclick = () => {
+      if (!window.confirm(prefs.lang === "ar" ? "هل تريد إزالة هذه الرسالة من المحفوظات؟" : "Remove this message from saved items?")) return;
       const next = getSavedMessages().filter(entry => String(entry.id) !== String(item.id));
       safeWriteJSON(CHATYY_STORAGE.saved(me.id), next);
       renderSavedMessages();
@@ -11762,6 +11924,490 @@ loadProfiles = async function(ids) {
     if (ownName) ownName.textContent = chatyyDisplayName(me);
   }
 };
+
+
+
+/* ========================================================================
+   Chatyy Moderation, account blocking, universal context actions and camera
+   ======================================================================== */
+
+function chatyyModerationText(ar, en) { return prefs.lang === "ar" ? ar : en; }
+
+function chatyyIsConversationBlocked(peerId) {
+  const id = String(peerId || "");
+  return !!id && (chatyyBlockedByMe.has(id) || chatyyBlockedMe.has(id));
+}
+
+async function chatyyRefreshModerationState() {
+  if (!me?.id) return;
+  chatyyModerationReady = false;
+  const [blocksResult, adminResult, bansResult] = await Promise.all([
+    sb.from("chatyy_user_blocks").select("blocker_id,blocked_id").or(`blocker_id.eq.${me.id},blocked_id.eq.${me.id}`),
+    sb.from("chatyy_admins").select("user_id").eq("user_id", me.id).maybeSingle(),
+    sb.from("chatyy_user_bans").select("user_id,expires_at")
+  ]);
+  chatyyBlockedByMe = new Set();
+  chatyyBlockedMe = new Set();
+  (blocksResult.data || []).forEach(row => {
+    if (String(row.blocker_id) === String(me.id)) chatyyBlockedByMe.add(String(row.blocked_id));
+    if (String(row.blocked_id) === String(me.id)) chatyyBlockedMe.add(String(row.blocker_id));
+  });
+  chatyyIsAdmin = !!adminResult.data && !adminResult.error;
+  chatyyBannedUsers = new Set((bansResult.data || []).filter(row => !row.expires_at || new Date(row.expires_at) > new Date()).map(row => String(row.user_id)));
+  chatyyModerationReady = true;
+  const adminButton = $("admin-tools-open");
+  if (adminButton) adminButton.classList.toggle("hidden", !chatyyIsAdmin);
+}
+
+async function chatyyBlockUser(userId) {
+  if (!me?.id || !userId || String(userId) === String(me.id)) return;
+  const result = await sb.rpc("chatyy_block_user", { p_target_user: userId });
+  if (result.error) {
+    showToast(chatyyModerationText("تعذر الحظر. شغّل ملف SQL الخاص بالحظر والإدارة أولًا.", "Could not block this account. Run the moderation SQL migration first."));
+    console.error(result.error);
+    return;
+  }
+  await chatyyRefreshModerationState();
+  renderList();
+  if (active === userId) updateActiveHeaderStatus();
+  showToast(chatyyModerationText("تم حظر الحساب. يمكنك رفع الحظر من الإعدادات.", "Account blocked. You can unblock it in Settings."));
+}
+
+async function chatyyUnblockUser(userId) {
+  if (!me?.id || !userId) return;
+  const result = await sb.rpc("chatyy_unblock_user", { p_target_user: userId });
+  if (result.error) {
+    showToast(chatyyModerationText("تعذر رفع الحظر. راجع إعدادات قاعدة البيانات.", "Could not unblock this account. Check the database setup."));
+    console.error(result.error);
+    return;
+  }
+  await chatyyRefreshModerationState();
+  renderList();
+  if (active === userId) updateActiveHeaderStatus();
+  showToast(chatyyModerationText("تم رفع الحظر", "Account unblocked"));
+  chatyyRenderBlockedAccounts();
+}
+
+function chatyyCreateModerationRow(title, detail = "") {
+  const row = el("div", "moderation-row");
+  const main = el("div", "moderation-row-main");
+  main.append(el("strong", "", title));
+  if (detail) main.append(el("small", "", detail));
+  row.append(main);
+  return { row, main };
+}
+
+async function chatyyRenderBlockedAccounts() {
+  const list = $("blocked-accounts-list");
+  const empty = $("blocked-accounts-empty");
+  if (!list || !me?.id) return;
+  list.replaceChildren();
+  const ids = [...chatyyBlockedByMe];
+  empty.classList.toggle("hidden", ids.length > 0);
+  if (!ids.length) return;
+  await loadProfiles(ids);
+  ids.forEach(id => {
+    const profile = profilesMap[id] || { id, username: "unknown" };
+    const { row } = chatyyCreateModerationRow(chatyyDisplayName(profile), "@" + (profile.username || ""));
+    const button = el("button", "btn alt", chatyyModerationText("رفع الحظر", "Unblock"));
+    button.type = "button";
+    button.onclick = () => chatyyUnblockUser(id);
+    row.append(button);
+    list.append(row);
+  });
+}
+
+$("blocked-manage-open").onclick = async () => {
+  await chatyyRefreshModerationState();
+  await chatyyRenderBlockedAccounts();
+  $("blocked-accounts-modal").classList.remove("hidden");
+};
+$("blocked-accounts-close").onclick = () => $("blocked-accounts-modal").classList.add("hidden");
+
+async function chatyyReportMessage(message) {
+  if (!message || message.sender === me?.id) return;
+  const reason = window.prompt(chatyyModerationText("اكتب سبب البلاغ باختصار:", "Briefly describe why you are reporting this message:"));
+  if (reason === null) return;
+  const cleanReason = reason.trim().slice(0, 500);
+  if (!cleanReason) return showToast(chatyyModerationText("اكتب سبب البلاغ أولًا", "Please enter a report reason"));
+  const result = await sb.rpc("chatyy_report_message", {
+    p_message_id: String(message.id),
+    p_reason: cleanReason
+  });
+  if (result.error) {
+    console.error(result.error);
+    showToast(chatyyModerationText("تعذر إرسال البلاغ. تأكد من تشغيل ملف SQL.", "Could not submit report. Make sure the SQL migration is installed."));
+    return;
+  }
+  showToast(chatyyModerationText("تم إرسال البلاغ للمراجعة", "Report submitted for review"));
+}
+
+async function chatyyAdminBanUser(userId) {
+  if (!chatyyIsAdmin || !userId || String(userId) === String(me?.id)) return;
+  const reason = window.prompt(chatyyModerationText("سبب إيقاف الحساب:", "Reason for suspending this account:"), chatyyModerationText("مخالفة قواعد الاستخدام", "Community guidelines violation"));
+  if (reason === null) return;
+  const durationText = window.prompt(chatyyModerationText("مدة الإيقاف بالساعات. اكتب 0 لإيقاف دائم:", "Suspension duration in hours. Enter 0 for an indefinite ban:"), "0");
+  if (durationText === null) return;
+  const hours = Number(durationText);
+  if (!Number.isInteger(hours) || hours < 0 || hours > 87600) return showToast(chatyyModerationText("المدة غير صحيحة", "Invalid duration"));
+  const result = await sb.rpc("chatyy_admin_ban_user", {
+    p_user_id: userId,
+    p_reason: String(reason).trim().slice(0, 500),
+    p_hours: hours
+  });
+  if (result.error) {
+    console.error(result.error);
+    showToast(chatyyModerationText("فشل إيقاف الحساب. تحقق من صلاحيات الإدارة.", "Could not ban account. Check administrator permissions."));
+    return;
+  }
+  chatyyBannedUsers.add(String(userId));
+  // Optional Edge Function applies the ban to Supabase Auth as well.
+  try {
+    const authBan = await sb.functions.invoke("chatyy-admin", { body: { action: "ban", userId, durationHours: hours, reason: String(reason).trim().slice(0, 500) } });
+    if (authBan.error) console.warn("Auth-level ban was not applied; app-level ban remains active.", authBan.error);
+  } catch (error) { console.warn("Deploy supabase/functions/chatyy-admin to apply Auth-level bans.", error); }
+  showToast(chatyyModerationText("تم إيقاف الحساب داخل Chatyy", "Account suspended in Chatyy"));
+  chatyyRenderAdminBans();
+}
+
+async function chatyyAdminUnbanUser(userId) {
+  if (!chatyyIsAdmin || !userId) return;
+  try {
+    const authUnban = await sb.functions.invoke("chatyy-admin", { body: { action: "unban", userId } });
+    if (authUnban.error) console.warn("Auth-level unban failed; continuing with app-level unban.", authUnban.error);
+  } catch (error) { console.warn("Auth-level unban function unavailable.", error); }
+  const result = await sb.rpc("chatyy_admin_unban_user", { p_user_id: userId });
+  if (result.error) {
+    console.error(result.error);
+    showToast(chatyyModerationText("تعذر رفع الإيقاف", "Could not remove suspension"));
+    return;
+  }
+  chatyyBannedUsers.delete(String(userId));
+  showToast(chatyyModerationText("تم رفع الإيقاف", "Suspension removed"));
+  chatyyRenderAdminBans();
+}
+
+async function chatyyAdminSearchUsers(query = "") {
+  const list = $("admin-users-results");
+  if (!list || !chatyyIsAdmin) return;
+  list.replaceChildren();
+  const clean = String(query || "").trim().replace(/[%,]/g, "").slice(0, 40);
+  let request = sb.from("profiles").select("id,username,display_name,avatar_url").neq("id", me.id).limit(20);
+  let data = [];
+  let error = null;
+  if (clean) {
+    const [byUsername, byDisplayName] = await Promise.all([
+      sb.from("profiles").select("id,username,display_name,avatar_url").neq("id", me.id).ilike("username", `%${clean}%`).limit(20),
+      sb.from("profiles").select("id,username,display_name,avatar_url").neq("id", me.id).ilike("display_name", `%${clean}%`).limit(20)
+    ]);
+    error = byUsername.error || byDisplayName.error;
+    const unique = new Map();
+    [...(byUsername.data || []), ...(byDisplayName.data || [])].forEach(profile => unique.set(profile.id, profile));
+    data = [...unique.values()].slice(0, 20);
+  } else {
+    const result = await request;
+    data = result.data || [];
+    error = result.error;
+  }
+  if (error) {
+    list.append(el("div", "empty-note", chatyyModerationText("تعذر تحميل الحسابات. تأكد أن سياسة قراءة profiles تسمح للمشرف بذلك.", "Could not load accounts. Ensure profile read policy permits moderation lookup.")));
+    return;
+  }
+  for (const profile of data || []) {
+    profilesMap[profile.id] = { ...(profilesMap[profile.id] || {}), ...profile };
+    const { row } = chatyyCreateModerationRow(chatyyDisplayName(profile), "@" + (profile.username || "") + " · " + String(profile.id).slice(0, 8));
+    const banned = chatyyBannedUsers.has(String(profile.id));
+    const button = el("button", "btn " + (banned ? "alt" : "danger"), banned ? chatyyModerationText("رفع الإيقاف", "Unban") : chatyyModerationText("إيقاف", "Ban"));
+    button.type = "button";
+    button.onclick = () => banned ? chatyyAdminUnbanUser(profile.id) : chatyyAdminBanUser(profile.id);
+    row.append(button);
+    list.append(row);
+  }
+  if (!(data || []).length) list.append(el("div", "empty-note", chatyyModerationText("لا توجد نتائج", "No matching accounts")));
+}
+
+async function chatyyRenderAdminBans() {
+  const list = $("admin-bans-list");
+  if (!list || !chatyyIsAdmin) return;
+  list.replaceChildren();
+  const { data, error } = await sb.from("chatyy_user_bans").select("user_id,reason,expires_at,created_at").order("created_at", { ascending: false }).limit(100);
+  if (error) {
+    list.append(el("div", "empty-note", chatyyModerationText("تعذر تحميل قائمة الإيقاف", "Could not load ban list")));
+    return;
+  }
+  const activeBans = (data || []).filter(row => !row.expires_at || new Date(row.expires_at) > new Date());
+  if (!activeBans.length) list.append(el("div", "empty-note", chatyyModerationText("لا توجد حسابات موقوفة", "No suspended accounts")));
+  for (const ban of activeBans) {
+    await loadProfiles([ban.user_id]);
+    const profile = profilesMap[ban.user_id] || { id: ban.user_id, username: "unknown" };
+    const expiry = ban.expires_at ? new Date(ban.expires_at).toLocaleString() : chatyyModerationText("إيقاف دائم", "Indefinite suspension");
+    const { row } = chatyyCreateModerationRow(chatyyDisplayName(profile), `${ban.reason || ""} · ${expiry}`);
+    const button = el("button", "btn alt", chatyyModerationText("رفع الإيقاف", "Unban"));
+    button.type = "button";
+    button.onclick = () => chatyyAdminUnbanUser(ban.user_id);
+    row.append(button);
+    list.append(row);
+  }
+}
+
+async function chatyyRenderAdminReports() {
+  const list = $("admin-reports-list");
+  if (!list || !chatyyIsAdmin) return;
+  list.replaceChildren();
+  const { data, error } = await sb.from("chatyy_message_reports").select("*").order("created_at", { ascending: false }).limit(100);
+  if (error) {
+    list.append(el("div", "empty-note", chatyyModerationText("تعذر تحميل البلاغات", "Could not load reports")));
+    return;
+  }
+  const pending = (data || []).filter(item => item.status !== "reviewed");
+  if (!pending.length) list.append(el("div", "empty-note", chatyyModerationText("لا توجد بلاغات معلّقة", "No pending reports")));
+  pending.forEach(report => {
+    const { row } = chatyyCreateModerationRow(
+      chatyyModerationText("بلاغ على رسالة", "Message report"),
+      `${chatyyModerationText("السبب", "Reason")}: ${report.reason || "—"} · ${new Date(report.created_at).toLocaleString()}`
+    );
+    const body = el("div", "report-body", String(report.body_snapshot || (report.kind === "image" ? "[Image]" : "[Message]")).slice(0, 600));
+    row.firstChild.append(body);
+    if (report.media_url) {
+      try {
+        const mediaUrl = new URL(report.media_url);
+        if (/^https?:$/.test(mediaUrl.protocol)) {
+          const link = el("a", "", chatyyModerationText("فتح الوسيط المبلّغ عنه", "Open reported media"));
+          link.href = mediaUrl.href; link.target = "_blank"; link.rel = "noopener noreferrer";
+          row.firstChild.append(link);
+        }
+      } catch (error) {}
+    }
+    const ban = el("button", "btn danger", chatyyModerationText("إيقاف المرسل", "Ban sender"));
+    ban.type = "button"; ban.onclick = () => chatyyAdminBanUser(report.sender_id);
+    const review = el("button", "btn alt", chatyyModerationText("تمت المراجعة", "Mark reviewed"));
+    review.type = "button";
+    review.onclick = async () => {
+      const update = await sb.from("chatyy_message_reports").update({ status: "reviewed", reviewed_by: me.id, reviewed_at: new Date().toISOString() }).eq("id", report.id);
+      if (update.error) showToast(chatyyModerationText("تعذر تحديث البلاغ", "Could not update report"));
+      else chatyyRenderAdminReports();
+    };
+    row.append(ban, review);
+    list.append(row);
+  });
+}
+
+function chatyyOpenAdminPanel() {
+  if (!chatyyIsAdmin) return showToast(chatyyModerationText("ليس لديك صلاحية الإدارة", "You are not an administrator"));
+  $("admin-modal").classList.remove("hidden");
+  chatyyAdminSearchUsers($("admin-user-search").value || "");
+  chatyyRenderAdminReports();
+  chatyyRenderAdminBans();
+}
+
+$("admin-tools-open").onclick = chatyyOpenAdminPanel;
+$("admin-close").onclick = () => $("admin-modal").classList.add("hidden");
+$("admin-user-search").addEventListener("input", () => {
+  clearTimeout(window.chatyyAdminSearchTimer);
+  window.chatyyAdminSearchTimer = setTimeout(() => chatyyAdminSearchUsers($("admin-user-search").value), 250);
+});
+document.querySelectorAll(".admin-tab").forEach(button => button.addEventListener("click", () => {
+  document.querySelectorAll(".admin-tab").forEach(tab => tab.classList.toggle("active", tab === button));
+  ["users", "reports", "bans"].forEach(name => $("admin-pane-" + name).classList.toggle("hidden", button.dataset.adminTab !== name));
+}));
+$("admin-reports-refresh").onclick = chatyyRenderAdminReports;
+$("admin-bans-refresh").onclick = chatyyRenderAdminBans;
+
+/* General context-menu renderer; actions are independent of the message menu. */
+function chatyyOpenGeneralMenu(items, x, y) {
+  contextMessage = null;
+  contextMenu.replaceChildren();
+  items.forEach(item => {
+    if (item.separator) {
+      const sep = el("div", "ctx-sep"); contextMenu.append(sep); return;
+    }
+    const button = document.createElement("button");
+    button.type = "button";
+    button.setAttribute("role", "menuitem");
+    if (item.danger) button.classList.add("danger");
+    const icon = el("span", "", item.icon || "•");
+    icon.setAttribute("aria-hidden", "true");
+    const label = el("span", "", item.label);
+    button.append(icon, label);
+    button.onclick = async () => { closeMessageMenu(); try { await item.action?.(); } catch (error) { console.error(error); showToast(chatyyModerationText("حدث خطأ أثناء تنفيذ الأمر", "The action failed")); } };
+    contextMenu.append(button);
+  });
+  contextMenu.classList.remove("hidden");
+  const width = Math.min(250, window.innerWidth - 20);
+  const height = Math.min(contextMenu.scrollHeight || 260, window.innerHeight - 20);
+  contextMenu.style.left = Math.max(10, Math.min(x, window.innerWidth - width - 10)) + "px";
+  contextMenu.style.top = Math.max(10, Math.min(y, window.innerHeight - height - 10)) + "px";
+}
+
+function chatyyOpenPeerMenu(peerId, x, y) {
+  const id = String(peerId || "");
+  const profile = profilesMap[id] || { id, username: "unknown" };
+  const blocked = chatyyBlockedByMe.has(id);
+  const items = [
+    { icon: "💬", label: chatyyModerationText("فتح المحادثة", "Open chat"), action: () => openChat(id) },
+    { icon: "📋", label: chatyyModerationText("نسخ اليوزر", "Copy username"), action: () => navigator.clipboard?.writeText("@" + (profile.username || "")) },
+    { separator: true },
+    { icon: blocked ? "🔓" : "🚫", label: blocked ? chatyyModerationText("رفع الحظر", "Unblock") : chatyyModerationText("حظر الحساب", "Block account"), danger: !blocked, action: () => blocked ? chatyyUnblockUser(id) : chatyyBlockUser(id) }
+  ];
+  if (chatyyIsAdmin) {
+    items.push({ separator: true });
+    items.push({ icon: chatyyBannedUsers.has(id) ? "✅" : "🛡️", label: chatyyBannedUsers.has(id) ? chatyyModerationText("رفع إيقاف الحساب", "Unban account") : chatyyModerationText("إيقاف الحساب", "Ban account"), danger: !chatyyBannedUsers.has(id), action: () => chatyyBannedUsers.has(id) ? chatyyAdminUnbanUser(id) : chatyyAdminBanUser(id) });
+  }
+  chatyyOpenGeneralMenu(items, x, y);
+}
+
+/* Extend message menu with report/block and admin moderation actions. */
+const chatyyModerationOriginalOpenMessageMenu = openMessageMenu;
+openMessageMenu = function(message, wrap, x, y) {
+  chatyyModerationOriginalOpenMessageMenu(message, wrap, x, y);
+  if (!message || contextMenu.classList.contains("hidden")) return;
+  if (message.sender !== me.id) {
+    const report = contextItem(chatyyModerationText("الإبلاغ عن الرسالة", "Report message"), "🚩", chatyyReportMessage);
+    contextMenu.append(report);
+    const block = contextItem(chatyyModerationText("حظر صاحب الرسالة", "Block sender"), "🚫", msg => chatyyBlockUser(msg.sender), true);
+    contextMenu.append(block);
+    if (chatyyIsAdmin) {
+      contextMenu.append(contextItem(chatyyModerationText("إيقاف حساب المرسل", "Ban sender"), "🛡️", msg => chatyyAdminBanUser(msg.sender), true));
+    }
+  }
+};
+
+/* Right-click works across the app; form fields retain their normal native menu. */
+document.addEventListener("contextmenu", event => {
+  if (event.defaultPrevented) return;
+  if (event.target.closest("#chat-context-menu")) return;
+  const peer = event.target.closest("[data-peerid]");
+  if (peer?.dataset.peerid) {
+    event.preventDefault();
+    chatyyOpenPeerMenu(peer.dataset.peerid, event.clientX, event.clientY);
+    return;
+  }
+  if (event.target.closest("#oav, #oname") && active) {
+    event.preventDefault();
+    chatyyOpenPeerMenu(active, event.clientX, event.clientY);
+    return;
+  }
+  if (event.target.closest("#meav, #mename, #meav-wrap, #open-profile-info")) {
+    event.preventDefault();
+    chatyyOpenGeneralMenu([
+      { icon: "👤", label: chatyyModerationText("تعديل الملف الشخصي", "Edit profile"), action: openProfileDrawer },
+      { icon: "📋", label: chatyyModerationText("نسخ اليوزر", "Copy username"), action: () => navigator.clipboard?.writeText("@" + (me?.username || "")) }
+    ], event.clientX, event.clientY);
+    return;
+  }
+  if (event.target.closest("input, textarea, select, [contenteditable='true'], video, audio")) return;
+  if (!event.target.closest("#app, #sticker-studio, #sticker-maker, #chat-info-modal, #saved-modal, #global-search-modal, #admin-modal, #blocked-accounts-modal, #wall-modal")) return;
+  event.preventDefault();
+  const selection = String(window.getSelection?.() || "").trim();
+  const items = [];
+  if (selection) items.push({ icon: "📋", label: chatyyModerationText("نسخ النص المحدد", "Copy selected text"), action: () => navigator.clipboard?.writeText(selection) });
+  items.push({ icon: "🔄", label: chatyyModerationText("تحديث قائمة المحادثات", "Refresh conversations"), action: () => renderList() });
+  items.push({ icon: "⚙️", label: chatyyModerationText("فتح الإعدادات", "Open settings"), action: () => $("settings-drawer").classList.remove("hidden") });
+  chatyyOpenGeneralMenu(items, event.clientX, event.clientY);
+});
+
+/* Long-press a contact on phones to expose the same menu as right-click. */
+let chatyyPeerHoldTimer = null;
+let chatyyPeerHoldTarget = null;
+document.addEventListener("pointerdown", event => {
+  if (event.pointerType !== "touch") return;
+  const peer = event.target.closest("[data-peerid]");
+  if (!peer) return;
+  chatyyPeerHoldTarget = peer;
+  clearTimeout(chatyyPeerHoldTimer);
+  const x = event.clientX, y = event.clientY;
+  chatyyPeerHoldTimer = setTimeout(() => {
+    if (!chatyyPeerHoldTarget) return;
+    chatyyOpenPeerMenu(peer.dataset.peerid, x, y);
+    if (navigator.vibrate) navigator.vibrate(12);
+  }, 560);
+}, { passive: true });
+["pointerup", "pointercancel", "pointermove"].forEach(type => document.addEventListener(type, () => {
+  clearTimeout(chatyyPeerHoldTimer); chatyyPeerHoldTarget = null;
+}, { passive: true }));
+
+/* Live camera capture: no file-picker fallback, so the camera button never opens files. */
+let chatyyCameraStream = null;
+let chatyyCameraFacing = "environment";
+async function chatyyStopCamera() {
+  if (chatyyCameraStream) {
+    chatyyCameraStream.getTracks().forEach(track => track.stop());
+    chatyyCameraStream = null;
+  }
+  const video = $("camera-preview");
+  if (video) video.srcObject = null;
+  $("camera-modal").classList.add("hidden");
+}
+async function chatyyStartCamera() {
+  if (!active) return showToast(chatyyModerationText("افتح محادثة أولًا", "Open a chat first"));
+  if (!navigator.mediaDevices?.getUserMedia) {
+    showToast(chatyyModerationText("الكاميرا تحتاج فتح Chatyy عبر HTTPS ومتصفحًا يدعم الكاميرا. استخدم زر المرفقات لاختيار صورة.", "Camera requires HTTPS and a browser with camera support. Use Attach to choose a photo."));
+    return;
+  }
+  try {
+    await chatyyStopCamera();
+    $("camera-status").textContent = chatyyModerationText("اسمح للمتصفح باستخدام الكاميرا إذا ظهرت رسالة الإذن.", "Allow camera access when your browser asks.");
+    $("camera-modal").classList.remove("hidden");
+    chatyyCameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: chatyyCameraFacing }, width: { ideal: 1920 }, height: { ideal: 1080 } }, audio: false });
+    const video = $("camera-preview");
+    video.srcObject = chatyyCameraStream;
+    await video.play();
+    $("camera-status").textContent = "";
+  } catch (error) {
+    await chatyyStopCamera();
+    const message = error?.name === "NotAllowedError"
+      ? chatyyModerationText("تم رفض إذن الكاميرا. فعّل إذن الكاميرا للموقع من إعدادات المتصفح.", "Camera permission was denied. Enable camera access for this site in browser settings.")
+      : error?.name === "NotFoundError"
+        ? chatyyModerationText("لم يتم العثور على كاميرا متصلة.", "No camera was found.")
+        : chatyyModerationText("تعذر تشغيل الكاميرا. تأكد من عدم استخدام تطبيق آخر لها.", "Could not start the camera. Make sure another app is not using it.");
+    showToast(message);
+  }
+}
+$("camera-btn").onclick = chatyyStartCamera;
+$("camera-close").onclick = chatyyStopCamera;
+$("camera-modal").addEventListener("click", event => { if (event.target === $("camera-modal")) chatyyStopCamera(); });
+$("camera-switch").onclick = async () => {
+  chatyyCameraFacing = chatyyCameraFacing === "environment" ? "user" : "environment";
+  await chatyyStartCamera();
+};
+$("camera-capture").onclick = async () => {
+  const video = $("camera-preview");
+  if (!chatyyCameraStream || !video.videoWidth || !video.videoHeight) return;
+  const canvas = document.createElement("canvas");
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  canvas.getContext("2d", { alpha: false }).drawImage(video, 0, 0, canvas.width, canvas.height);
+  const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.92));
+  if (!blob) return showToast(chatyyModerationText("تعذر التقاط الصورة", "Could not capture the photo"));
+  const file = new File([blob], `chatyy-camera-${Date.now()}.jpg`, { type: "image/jpeg" });
+  await chatyyStopCamera();
+  previewImageFile(file);
+};
+
+/* Improve GIF feedback: explain API-key and network problems directly in the panel. */
+const chatyyGifOriginalShowKeyRequired = chatyyGifShowKeyRequired;
+chatyyGifShowKeyRequired = function() {
+  chatyyGifOriginalShowKeyRequired();
+  const hasKey = !!chatyyGifGetKey();
+  if (!hasKey) {
+    chatyyGifSetStatus(chatyyModerationText("مفتاح GIPHY غير مضبوط. أضف API Key مرة واحدة لعرض الاقتراحات والبحث المباشر.", "GIPHY API key is not configured. Add an API key to load suggestions and live search."), "error");
+    $("gif-search-btn").disabled = true;
+    $("gif-load-more").classList.add("hidden");
+  }
+};
+const chatyyGifOriginalOpenBrowser = chatyyGifOpenBrowser;
+chatyyGifOpenBrowser = function() {
+  const key = chatyyGifGetKey();
+  if (!key) {
+    chatyyGifShowKeyRequired();
+    return;
+  }
+  $("gif-search-btn").disabled = false;
+  chatyyGifOriginalOpenBrowser();
+};
+
+/* App admin button is exposed only after the database confirms admin membership. */
+if ($("admin-tools-open")) $("admin-tools-open").classList.toggle("hidden", !chatyyIsAdmin);
+
 
 </script>
 </body>
