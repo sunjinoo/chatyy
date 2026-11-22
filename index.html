@@ -1168,6 +1168,15 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
   .moderation-list{max-height:42dvh}
 }
 
+
+/* Chatyy owner identity badge */
+.owner-badge{display:inline-flex;align-items:center;gap:4px;width:max-content;margin-top:4px;padding:3px 9px;border-radius:999px;background:linear-gradient(110deg,rgba(255,193,7,.18),rgba(255,152,0,.12));border:1px solid rgba(255,183,0,.42);color:#d18b00;font-size:10px;font-weight:900;letter-spacing:.25px;line-height:1.3}
+.owner-badge .owner-crown{font-size:11px}
+.owner-profile-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#owner-profile-badge{display:none}
+#owner-profile-badge.visible{display:inline-flex}
+.admin-owner-note{padding:10px 12px;border:1px solid rgba(255,183,0,.35);background:rgba(255,183,0,.08);border-radius:12px;font-size:12px;line-height:1.7}
+
 </style>
 </head>
 <body>
@@ -1365,6 +1374,7 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
       </div>
       <div class="info" id="open-profile-info">
         <div class="name" id="mename" style="direction:ltr;text-align:start"></div>
+        <span id="owner-profile-badge" class="owner-badge"><span class="owner-crown">♛</span><span data-i18n="ownerBadge">مالك التطبيق / OWNER</span></span>
         <div class="status" id="mebio"></div>
       </div>
       <button class="icon" id="wall-btn" title="خلفية الشات / Wallpaper">
@@ -1811,25 +1821,26 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 <div id="admin-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="admin-title">
   <div class="modal-box moderation-box admin-box">
     <div class="dialog-heading">
-      <h3 id="admin-title">لوحة الإدارة / Admin tools</h3>
+      <h3 id="admin-title" data-i18n="adminTitle">لوحة الإدارة</h3>
       <button class="icon" id="admin-close" type="button" aria-label="إغلاق">×</button>
     </div>
-    <p class="moderation-notice">تظهر هنا البلاغات التي أرسلها المستخدمون فقط. لا توجد قراءة خفية للمحادثات الخاصة / Only user-reported content is visible here.</p>
+    <p class="moderation-notice" data-i18n="adminPrivacyNotice">تظهر هنا البلاغات التي أرسلها المستخدمون فقط. لا توجد قراءة خفية للمحادثات الخاصة.</p>
+    <div id="admin-owner-note" class="admin-owner-note hidden" data-i18n="ownerAdminNote">أنت مالك التطبيق. لديك صلاحيات الإشراف وإدارة البلاغات والحسابات.</div>
     <div class="admin-tabs">
-      <button class="admin-tab active" data-admin-tab="users" type="button">الحسابات / Accounts</button>
-      <button class="admin-tab" data-admin-tab="reports" type="button">البلاغات / Reports</button>
-      <button class="admin-tab" data-admin-tab="bans" type="button">المحظورون / Bans</button>
+      <button class="admin-tab active" data-admin-tab="users" type="button" data-i18n="adminAccounts">الحسابات</button>
+      <button class="admin-tab" data-admin-tab="reports" type="button" data-i18n="adminReports">البلاغات</button>
+      <button class="admin-tab" data-admin-tab="bans" type="button" data-i18n="adminBans">الموقوفون</button>
     </div>
     <section class="admin-pane" id="admin-pane-users">
-      <input id="admin-user-search" type="search" placeholder="ابحث بالاسم أو اليوزر / Search users" autocomplete="off">
+      <input id="admin-user-search" type="search" data-i18n-ph="adminSearchUsers" placeholder="ابحث بالاسم أو اسم المستخدم" autocomplete="off">
       <div id="admin-users-results" class="moderation-list"></div>
     </section>
     <section class="admin-pane hidden" id="admin-pane-reports">
-      <button class="btn alt" id="admin-reports-refresh" type="button">تحديث البلاغات / Refresh reports</button>
+      <button class="btn alt" id="admin-reports-refresh" type="button" data-i18n="adminRefreshReports">تحديث البلاغات</button>
       <div id="admin-reports-list" class="moderation-list"></div>
     </section>
     <section class="admin-pane hidden" id="admin-pane-bans">
-      <button class="btn alt" id="admin-bans-refresh" type="button">تحديث القائمة / Refresh list</button>
+      <button class="btn alt" id="admin-bans-refresh" type="button" data-i18n="adminRefreshBans">تحديث القائمة</button>
       <div id="admin-bans-list" class="moderation-list"></div>
     </section>
   </div>
@@ -1880,6 +1891,16 @@ if (window.visualViewport) {
 const I18N = {
   ar: {
     authSub: "تواصل لحظي سريع وآمن باليوزر",
+    ownerBadge: "مالك التطبيق / OWNER",
+    adminTitle: "لوحة الإدارة",
+    adminPrivacyNotice: "تظهر هنا البلاغات التي أرسلها المستخدمون فقط. لا توجد قراءة خفية للمحادثات الخاصة.",
+    ownerAdminNote: "أنت مالك التطبيق. لديك صلاحيات الإشراف وإدارة البلاغات والحسابات.",
+    adminAccounts: "الحسابات",
+    adminReports: "البلاغات",
+    adminBans: "الموقوفون",
+    adminSearchUsers: "ابحث بالاسم أو اسم المستخدم",
+    adminRefreshReports: "تحديث البلاغات",
+    adminRefreshBans: "تحديث القائمة",
     rememberMe: "تذكر بيانات الدخول تلقائياً",
     loginBtn: "تسجيل الدخول",
     signupBtn: "حساب جديد",
@@ -1963,6 +1984,16 @@ const I18N = {
   },
   en: {
     authSub: "Fast & secure real-time username chat",
+    ownerBadge: "APP OWNER",
+    adminTitle: "Admin Panel",
+    adminPrivacyNotice: "Only user-submitted reports appear here. Private chats are not secretly monitored.",
+    ownerAdminNote: "You are the app owner. You have moderation, report-review, and account-management permissions.",
+    adminAccounts: "Accounts",
+    adminReports: "Reports",
+    adminBans: "Suspended",
+    adminSearchUsers: "Search by display name or username",
+    adminRefreshReports: "Refresh reports",
+    adminRefreshBans: "Refresh list",
     rememberMe: "Keep me signed in",
     loginBtn: "Log In",
     signupBtn: "Sign Up",
@@ -2102,6 +2133,7 @@ function applyLanguage(lang) {
   $("lang-en").classList.toggle("active", lang === "en");
 
   if (me) {
+    chatyyRenderOwnerIdentity?.();
     renderList();
     if (active) {
       updateActiveHeaderStatus();
@@ -11933,6 +11965,16 @@ loadProfiles = async function(ids) {
 
 function chatyyModerationText(ar, en) { return prefs.lang === "ar" ? ar : en; }
 
+/* Owner identity is tied to the fixed username; server-side admin membership remains authoritative. */
+function chatyyIsOwnerAccount() { return String(me?.username || "").toLowerCase() === "mohamed11"; }
+function chatyyRenderOwnerIdentity() {
+  const badge = $("owner-profile-badge");
+  if (badge) badge.classList.toggle("visible", chatyyIsOwnerAccount());
+  const ownerNote = $("admin-owner-note");
+  if (ownerNote) ownerNote.classList.toggle("hidden", !chatyyIsOwnerAccount());
+}
+
+
 function chatyyIsConversationBlocked(peerId) {
   const id = String(peerId || "");
   return !!id && (chatyyBlockedByMe.has(id) || chatyyBlockedMe.has(id));
@@ -11955,6 +11997,7 @@ async function chatyyRefreshModerationState() {
   chatyyIsAdmin = !!adminResult.data && !adminResult.error;
   chatyyBannedUsers = new Set((bansResult.data || []).filter(row => !row.expires_at || new Date(row.expires_at) > new Date()).map(row => String(row.user_id)));
   chatyyModerationReady = true;
+  chatyyRenderOwnerIdentity();
   const adminButton = $("admin-tools-open");
   if (adminButton) adminButton.classList.toggle("hidden", !chatyyIsAdmin);
 }
