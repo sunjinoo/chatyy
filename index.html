@@ -470,6 +470,478 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
   .msg-actions { opacity: 0.85; }
   #emoji-picker { width: calc(100% - 32px); inset-inline-start: 16px; }
 }
+
+/* Chatyy mobile experience: safe areas, keyboard, touch and compact controls */
+:root { --chatyy-vh: 100dvh; }
+html, body { min-height: 0; height: 100%; }
+body { height: var(--chatyy-vh, 100dvh); overflow: hidden; overscroll-behavior: none; }
+#auth, #app { height: var(--chatyy-vh, 100dvh); min-height: 0; }
+#app { min-width: 0; overflow: hidden; }
+#side, #chat, #chatbox { min-width: 0; min-height: 0; }
+#msgs, #list, .drawer-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+button, .chip, .switch, .acc-dot, .wall-swatch { touch-action: manipulation; }
+button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+@media (max-width: 768px) {
+  html, body { width: 100%; overflow: hidden; }
+  #auth {
+    position: fixed; inset: 0; width: 100%; height: var(--chatyy-vh, 100dvh);
+    padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, var(--accent) 0%, var(--accent) 180px, var(--bg) 180px, var(--bg) 100%);
+    overflow-y: auto; align-items: center;
+  }
+  .card { width: min(100%, 430px); padding: clamp(20px, 6vw, 28px); gap: 13px; border-radius: 18px; }
+  .card h1 { font-size: 25px; }
+  .card input[type="text"], .card input[type="password"] { min-height: 48px; font-size: 16px; }
+  .btn { min-height: 44px; }
+  #app {
+    position: fixed; inset: 0; display: grid; grid-template-columns: minmax(0, 1fr);
+    width: 100%; height: var(--chatyy-vh, 100dvh); max-width: none; margin: 0;
+    box-shadow: none; overflow: hidden; padding-top: env(safe-area-inset-top);
+  }
+  #side { width: 100%; height: 100%; border: 0; min-height: 0; }
+  #chat { display: none; width: 100%; height: 100%; min-height: 0; }
+  #app.open #side { display: none; }
+  #app.open #chat { display: flex; }
+  .brand-badge { min-height: 48px; padding: 6px 14px; }
+  .brand-badge .icon, .head .icon { width: 42px; height: 42px; }
+  .head { min-height: 58px; padding: 7px 10px; gap: 7px; }
+  .head .name { font-size: 15px; }
+  .head .status { font-size: 11px; }
+  .avatar { width: 42px; height: 42px; font-size: 16px; }
+  .search { padding: 9px 12px; gap: 9px; }
+  .search-wrap { min-height: 42px; }
+  .search input { min-width: 0; min-height: 40px; font-size: 16px; }
+  .filter-chips { overflow-x: auto; padding: 1px 0 3px; scrollbar-width: none; }
+  .filter-chips::-webkit-scrollbar { display: none; }
+  .chip { flex: 0 0 auto; min-height: 32px; padding: 6px 14px; white-space: nowrap; }
+  .item { min-height: 72px; padding: 10px 13px; gap: 11px; }
+  .item .u { font-size: 15px; }
+  .item .last { font-size: 12.5px; }
+  .drawer { position: absolute; inset: 0; }
+  .drawer-body { padding: 14px 14px calc(18px + env(safe-area-inset-bottom)); gap: 12px; }
+  .field-box { padding: 12px; gap: 9px; }
+  .set-row { min-height: 42px; gap: 10px; }
+  .set-title { font-size: 13.5px; }
+  .set-desc { font-size: 11px; line-height: 1.45; }
+  .switch { width: 44px; height: 26px; }
+  .switch::after { width: 20px; height: 20px; }
+  .switch.on::after { transform: translateX(18px); }
+  #chatbox { width: 100%; height: 100%; overflow: hidden; }
+  #chatbox > .head { flex: 0 0 auto; }
+  #msgs {
+    padding: 12px 10px max(14px, env(safe-area-inset-bottom)); gap: 8px;
+    scroll-padding-bottom: 16px; min-height: 0;
+  }
+  .date-div { font-size: 11px; margin: 5px 0; }
+  .msg-wrap { max-width: min(88%, 520px); margin-top: 3px; }
+  .msg { max-width: 100%; padding: 8px 10px 6px; line-height: 1.5; }
+  .msg img { max-width: min(260px, 70vw); max-height: 42vh; object-fit: contain; }
+  .player { min-width: min(230px, 66vw); max-width: calc(100vw - 76px); gap: 8px; }
+  .player .pp { width: 38px; height: 38px; }
+  .msg .meta { font-size: 10px; }
+  #composer {
+    flex: 0 0 auto; gap: 4px; padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+    min-height: calc(58px + env(safe-area-inset-bottom));
+  }
+  #composer > .icon { width: 40px; height: 42px; flex: 0 0 40px; }
+  #txt { min-width: 0; min-height: 42px; max-height: 110px; padding: 10px 13px; font-size: 16px; }
+  #rec-box { min-width: 0; padding: 8px 10px; }
+  #reply-bar, #edit-bar { padding: 7px 10px; }
+  #emoji-picker {
+    position: absolute; bottom: calc(62px + env(safe-area-inset-bottom)); inset-inline-start: 10px;
+    width: calc(100% - 20px); max-height: min(42vh, 330px); padding: 8px;
+  }
+  .emoji-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); max-height: min(31vh, 250px); }
+  .em-btn { min-height: 36px; font-size: 21px; }
+  .msg-actions {
+    position: absolute; top: -39px; left: auto !important; right: auto !important; inset-inline-start: 0;
+    display: flex; flex-wrap: nowrap; gap: 2px; max-width: min(92vw, 310px); overflow-x: auto;
+    padding: 3px; border: 1px solid var(--line); border-radius: 24px; background: var(--panel);
+    box-shadow: 0 5px 18px rgba(0,0,0,.18); opacity: 0; visibility: hidden; pointer-events: none;
+    scrollbar-width: none; z-index: 12;
+  }
+  .msg-actions::-webkit-scrollbar { display: none; }
+  .msg-wrap.actions-open { z-index: 14; }
+  .msg-wrap.actions-open .msg-actions { opacity: 1; visibility: visible; pointer-events: auto; }
+  .msg-actions .act-btn { width: 34px; height: 34px; flex: 0 0 34px; }
+  .react-bar { max-width: min(88vw, 300px); gap: 2px; }
+  .react-opt { padding: 5px; }
+  .modal-overlay { padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)); }
+  .modal-box { max-height: calc(var(--chatyy-vh, 100dvh) - 24px); overflow-y: auto; padding: 18px 15px; gap: 13px; }
+  .wall-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .wall-swatch { height: 58px; }
+  #lightbox img { max-width: 96vw; max-height: 78vh; object-fit: contain; }
+  .lb-actions { top: max(12px, env(safe-area-inset-top)); right: 12px; }
+  #toast { bottom: calc(14px + env(safe-area-inset-bottom)); width: max-content; max-width: calc(100vw - 28px); text-align: center; }
+  #empty { padding: 20px; text-align: center; }
+  #empty h2 { font-size: 22px; }
+}
+
+@media (max-width: 360px) {
+  #composer { gap: 2px; padding-inline: 5px; }
+  #composer > .icon { width: 36px; flex-basis: 36px; }
+  #txt { padding-inline: 10px; }
+  .msg-wrap { max-width: 92%; }
+  .item { padding-inline: 10px; }
+}
+
+
+/* ---------------------------------------------------------------
+   Chatyy Plus UI Layer
+   Responsive surfaces for saved messages, chat details and search.
+   --------------------------------------------------------------- */
+.brand-badge > div:last-child { flex-wrap: nowrap; }
+.brand-tool { width: 34px; height: 34px; }
+.brand-tool svg { width: 18px; height: 18px; }
+
+.dialog-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 38px;
+}
+.dialog-heading h3 {
+  font-size: 18px;
+  font-weight: 800;
+  min-width: 0;
+}
+.dialog-close {
+  width: 38px;
+  height: 38px;
+  background: var(--panel-alt);
+}
+.chat-info-box,
+.global-search-box,
+.saved-box {
+  width: min(100%, 560px);
+  max-height: min(88vh, 820px);
+  overflow: hidden;
+}
+.chat-info-box { overflow-y: auto; }
+.chat-info-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel-alt);
+}
+.chat-info-avatar {
+  width: 76px;
+  height: 76px;
+  flex: 0 0 76px;
+  font-size: 27px;
+}
+.chat-info-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+.chat-info-copy strong {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.chat-info-copy span {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.chat-info-copy span:last-child { color: var(--accent); }
+.chat-info-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.info-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 6px;
+  border-radius: 12px;
+  background: var(--panel-alt);
+}
+.info-stat strong {
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.info-stat span {
+  color: var(--muted);
+  font-size: 11px;
+}
+.chat-info-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.chat-info-actions .btn {
+  min-height: 42px;
+  font-size: 12px;
+  padding: 9px;
+}
+.gallery-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 4px;
+  font-size: 14px;
+}
+.gallery-heading span {
+  color: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.chat-media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+.media-tile {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1;
+  border-radius: 11px;
+  overflow: hidden;
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.media-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.media-tile.audio-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--accent);
+  font-size: 11px;
+}
+.media-tile.audio-tile svg {
+  width: 29px;
+  height: 29px;
+}
+.media-tile time {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  padding: 4px;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0,0,0,.65));
+  font-size: 10px;
+  text-align: end;
+}
+.empty-note {
+  padding: 20px 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  text-align: center;
+}
+.global-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 13px;
+  border-radius: 12px;
+  background: var(--panel-alt);
+  border: 1px solid var(--line);
+}
+.global-search-input-wrap svg {
+  width: 19px;
+  height: 19px;
+  color: var(--muted);
+}
+.global-search-input-wrap input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 16px;
+}
+.search-scope-note {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.global-search-results,
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: min(52vh, 480px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-inline-end: 2px;
+}
+.search-result,
+.saved-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  text-align: start;
+}
+.search-result { cursor: pointer; }
+.search-result:hover,
+.saved-entry:hover { background: var(--panel-alt); }
+.search-result-main,
+.saved-entry-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.search-result-main strong,
+.saved-entry-main strong {
+  overflow: hidden;
+  color: var(--text);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-result-main span,
+.saved-entry-main span {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-result time,
+.saved-entry time {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 10px;
+  direction: ltr;
+}
+.saved-entry .saved-remove {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 50%;
+  color: #e53935;
+  background: var(--panel-alt);
+}
+.saved-entry .saved-remove svg {
+  width: 16px;
+  height: 16px;
+}
+.save-action.is-saved { color: var(--accent); }
+.save-action.is-saved svg { fill: currentColor; }
+.jump-bottom {
+  position: absolute;
+  z-index: 8;
+  inset-inline-end: 18px;
+  bottom: 78px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: 0 3px 14px rgba(0,0,0,.18);
+}
+.jump-bottom svg { width: 20px; height: 20px; }
+.jump-count {
+  position: absolute;
+  inset-inline-end: -3px;
+  top: -3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 20px;
+  color: #fff;
+  background: var(--accent);
+  font-size: 10px;
+  line-height: 18px;
+}
+.camera-btn { display: none; }
+.item .muted-mark {
+  display: inline-flex;
+  align-items: center;
+  margin-inline-start: 4px;
+  color: var(--muted);
+  vertical-align: middle;
+}
+.item .muted-mark svg { width: 12px; height: 12px; }
+
+@media (max-width: 768px) {
+  .brand-badge { gap: 5px; padding-inline: 9px; }
+  .brand-badge > div:last-child { gap: 2px !important; }
+  .brand-tool { width: 32px; height: 36px; }
+  #open-settings-btn { width: 34px; height: 36px; }
+  .camera-btn { display: inline-flex; }
+  #composer { gap: 3px; }
+  #composer > .icon { width: 36px; flex-basis: 36px; }
+  .chat-info-box,
+  .global-search-box,
+  .saved-box {
+    width: 100%;
+    max-height: calc(var(--chatyy-vh, 100dvh) - 22px);
+    padding: 16px 13px;
+    border-radius: 18px;
+  }
+  .chat-info-profile { gap: 12px; padding: 11px; }
+  .chat-info-avatar { width: 64px; height: 64px; flex-basis: 64px; }
+  .chat-info-copy strong { font-size: 16px; }
+  .chat-info-actions { grid-template-columns: 1fr; }
+  .chat-info-actions .btn { min-height: 40px; }
+  .chat-media-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  .global-search-results,
+  .saved-list { max-height: min(48vh, 420px); }
+  .search-result,
+  .saved-entry { padding: 9px 8px; gap: 7px; }
+  .search-result time,
+  .saved-entry time { font-size: 9px; }
+  .jump-bottom { inset-inline-end: 12px; bottom: calc(70px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 380px) {
+  .brand-badge .brand-left { gap: 5px; }
+  .brand-badge .brand-left span { font-size: 14px; }
+  .brand-tool { width: 29px; }
+  #open-settings-btn { width: 30px; }
+  #composer > .icon { width: 32px; flex-basis: 32px; }
+  .chat-info-stats { gap: 5px; }
+  .info-stat { padding: 9px 4px; }
+}
+
+@media (hover: none) {
+  .search-result:hover,
+  .saved-entry:hover,
+  .wall-swatch:hover { transform: none; }
+  .act-btn { min-width: 30px; min-height: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -525,6 +997,12 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <button id="install-pwa-btn" class="hidden">
           <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span data-i18n="installBtn">تثبيت</span>
+        </button>
+        <button class="icon brand-tool" id="global-search-open" title="بحث في كل المحادثات / Search all chats" aria-label="بحث شامل">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/><path d="M8 11h6"/></svg>
+        </button>
+        <button class="icon brand-tool" id="saved-open" title="الرسائل المحفوظة / Saved messages" aria-label="الرسائل المحفوظة">
+          <svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>
         </button>
         <button class="icon" id="open-settings-btn" title="الإعدادات / Settings">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -601,6 +1079,8 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <div class="field-box">
           <label data-i18n="dataLabel">البيانات والنسخ الاحتياطي</label>
           <button class="btn alt" id="export-chat-btn" data-i18n="exportChatBtn">تصدير المحادثة الحالية (ملف نصي)</button>
+          <button class="btn alt" id="export-json-btn" data-i18n="backupJsonBtn">تنزيل نسخة احتياطية JSON</button>
+          <p class="set-desc" id="backup-help" data-i18n="backupHelp">النسخة الاحتياطية تشمل الرسائل المحمّلة حاليًا وروابط الوسائط، ولا تشمل كلمات المرور.</p>
         </div>
       </div>
     </div>
@@ -691,7 +1171,7 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
           <div class="avatar" id="oav"></div>
           <span class="online-dot hidden" id="o-dot"></span>
         </div>
-        <div class="info">
+        <div class="info chat-peer-trigger" id="chat-peer-trigger" role="button" tabindex="0" aria-label="معلومات المحادثة">
           <div class="name" id="oname" style="direction:ltr;text-align:start"></div>
           <div class="status" id="ostatus"></div>
         </div>
@@ -750,15 +1230,24 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
         <div class="emoji-grid" id="emoji-grid"></div>
       </div>
 
+      <button id="jump-bottom-btn" class="jump-bottom hidden" type="button" aria-label="الانتقال لآخر الرسائل" title="آخر الرسائل">
+        <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        <span id="jump-bottom-count" class="jump-count hidden">0</span>
+      </button>
+
       <!-- Composer -->
       <div id="composer">
         <button class="icon" id="emoji-btn">
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
         </button>
-        <button class="icon" id="attach">
+        <button class="icon" id="attach" title="اختيار صورة / Choose image">
           <svg viewBox="0 0 24 24"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         </button>
+        <button class="icon camera-btn" id="camera-btn" title="فتح الكاميرا / Open camera" aria-label="فتح الكاميرا">
+          <svg viewBox="0 0 24 24"><path d="M14 4h-4l-2 3H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </button>
         <input type="file" id="file" accept="image/*" class="hidden">
+        <input type="file" id="camera-file" accept="image/*" capture="environment" class="hidden">
 
         <div id="rec-box" class="hidden">
           <span id="recinfo"><span class="rec-dot"></span><span id="rectime">0:00</span></span>
@@ -776,6 +1265,77 @@ svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-l
       </div>
     </div>
   </main>
+</div>
+
+<!-- Chat Details & Media Gallery -->
+<div id="chat-info-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="chat-info-title">
+  <div class="modal-box chat-info-box">
+    <div class="dialog-heading">
+      <h3 id="chat-info-title" data-i18n="chatInfoTitle">معلومات المحادثة</h3>
+      <button class="icon dialog-close" id="chat-info-close" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="chat-info-profile">
+      <div class="avatar chat-info-avatar" id="chat-info-avatar"></div>
+      <div class="chat-info-copy">
+        <strong id="chat-info-name">—</strong>
+        <span id="chat-info-username">@—</span>
+        <span id="chat-info-status">—</span>
+      </div>
+    </div>
+    <div class="chat-info-stats">
+      <div class="info-stat"><strong id="chat-info-total">0</strong><span data-i18n="messageCountLabel">رسالة</span></div>
+      <div class="info-stat"><strong id="chat-info-images">0</strong><span data-i18n="imageCountLabel">صورة</span></div>
+      <div class="info-stat"><strong id="chat-info-audio">0</strong><span data-i18n="audioCountLabel">صوت</span></div>
+    </div>
+    <div class="chat-info-actions">
+      <button class="btn alt" id="chat-mute-toggle" data-i18n="chatMuteAction">كتم إشعارات المحادثة</button>
+      <button class="btn alt" id="chat-wallpaper-open" data-i18n="chatWallpaperAction">تغيير خلفية الدردشة</button>
+      <button class="btn alt" id="chat-export-open" data-i18n="chatExportAction">تصدير المحادثة</button>
+    </div>
+    <div class="gallery-heading">
+      <strong data-i18n="mediaGalleryTitle">الوسائط في المحادثة</strong>
+      <span id="chat-gallery-count">0</span>
+    </div>
+    <div id="chat-media-grid" class="chat-media-grid"></div>
+    <p id="chat-media-empty" class="empty-note" data-i18n="noMediaLabel">لا توجد وسائط في هذه المحادثة بعد.</p>
+  </div>
+</div>
+
+<!-- Global Search Across Loaded Conversations -->
+<div id="global-search-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="global-search-title">
+  <div class="modal-box global-search-box">
+    <div class="dialog-heading">
+      <h3 id="global-search-title" data-i18n="globalSearchTitle">البحث في كل المحادثات</h3>
+      <button class="icon dialog-close" id="global-search-close" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div class="global-search-input-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="global-search-input" type="search" data-i18n-ph="globalSearchPlaceholder" placeholder="ابحث عن كلمة أو اسم مستخدم..." autocomplete="off">
+    </div>
+    <div class="search-scope-note" data-i18n="globalSearchScope">البحث يشمل الرسائل المحمّلة على هذا الجهاز حاليًا.</div>
+    <div id="global-search-results" class="global-search-results">
+      <div class="empty-note" data-i18n="globalSearchPrompt">اكتب كلمة للبحث في المحادثات.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Saved Messages -->
+<div id="saved-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="saved-title">
+  <div class="modal-box saved-box">
+    <div class="dialog-heading">
+      <h3 id="saved-title" data-i18n="savedMessagesTitle">الرسائل المحفوظة</h3>
+      <button class="icon dialog-close" id="saved-close" aria-label="إغلاق">
+        <svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <p class="search-scope-note" data-i18n="savedMessagesScope">الرسائل المحفوظة خاصة بهذا الحساب على هذا الجهاز.</p>
+    <div id="saved-list" class="saved-list"></div>
+    <p id="saved-empty" class="empty-note" data-i18n="savedMessagesEmpty">لم تحفظ أي رسالة بعد.</p>
+  </div>
 </div>
 
 <!-- Logout Confirmation Modal -->
@@ -843,6 +1403,19 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 const $ = id => document.getElementById(id);
 
+/* Keep the app aligned with the visible viewport when the mobile keyboard opens. */
+function syncChatyyViewport() {
+  const height = Math.max(280, Math.round(window.visualViewport?.height || window.innerHeight));
+  document.documentElement.style.setProperty("--chatyy-vh", `${height}px`);
+}
+syncChatyyViewport();
+window.addEventListener("resize", syncChatyyViewport, { passive: true });
+window.addEventListener("orientationchange", () => setTimeout(syncChatyyViewport, 120), { passive: true });
+window.addEventListener("pageshow", syncChatyyViewport, { passive: true });
+if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", syncChatyyViewport, { passive: true });
+}
+
 /* ---------- Localization (Arabic & English) ---------- */
 const I18N = {
   ar: {
@@ -901,7 +1474,30 @@ const I18N = {
     deletedMsg: "🚫 تم حذف هذه الرسالة",
     copiedToast: "تم نسخ النص 📋",
     noChatExport: "افتح محادثة أولاً لتصديرها",
-    exportedToast: "تم تصدير المحادثة بنجاح ✅"
+    exportedToast: "تم تصدير المحادثة بنجاح ✅",
+    backupJsonBtn: "تنزيل نسخة احتياطية JSON",
+    backupHelp: "النسخة الاحتياطية تشمل الرسائل المحمّلة حاليًا وروابط الوسائط، ولا تشمل كلمات المرور.",
+    chatInfoTitle: "معلومات المحادثة",
+    chatMuteAction: "كتم إشعارات المحادثة",
+    chatWallpaperAction: "تغيير خلفية الدردشة",
+    chatExportAction: "تصدير المحادثة",
+    mediaGalleryTitle: "الوسائط في المحادثة",
+    mediaCountLabel: "وسائط",
+    messageCountLabel: "رسالة",
+    imageCountLabel: "صورة",
+    audioCountLabel: "صوت",
+    noMediaLabel: "لا توجد وسائط في هذه المحادثة بعد.",
+    globalSearchTitle: "البحث في كل المحادثات",
+    globalSearchPlaceholder: "ابحث عن كلمة أو اسم مستخدم...",
+    globalSearchScope: "البحث يشمل الرسائل المحمّلة على هذا الجهاز حاليًا.",
+    globalSearchPrompt: "اكتب كلمة للبحث في المحادثات.",
+    globalSearchEmpty: "مفيش نتائج مطابقة.",
+    savedMessagesTitle: "الرسائل المحفوظة",
+    savedMessagesScope: "الرسائل المحفوظة خاصة بهذا الحساب على هذا الجهاز.",
+    savedMessagesEmpty: "لم تحفظ أي رسالة بعد.",
+    removeSavedTitle: "إزالة من المحفوظات",
+    imageMessageLabel: "صورة",
+    audioMessageLabel: "رسالة صوتية"
   },
   en: {
     authSub: "Fast & secure real-time username chat",
@@ -959,7 +1555,30 @@ const I18N = {
     deletedMsg: "🚫 This message was deleted",
     copiedToast: "Copied to clipboard 📋",
     noChatExport: "Open a chat first to export",
-    exportedToast: "Chat exported successfully ✅"
+    exportedToast: "Chat exported successfully ✅",
+    backupJsonBtn: "Download JSON backup",
+    backupHelp: "The backup includes messages currently loaded and media URLs. It does not include passwords.",
+    chatInfoTitle: "Chat information",
+    chatMuteAction: "Mute chat notifications",
+    chatWallpaperAction: "Change chat wallpaper",
+    chatExportAction: "Export conversation",
+    mediaGalleryTitle: "Media in this chat",
+    mediaCountLabel: "Media",
+    messageCountLabel: "Messages",
+    imageCountLabel: "Images",
+    audioCountLabel: "Audio",
+    noMediaLabel: "There is no media in this conversation yet.",
+    globalSearchTitle: "Search all conversations",
+    globalSearchPlaceholder: "Search a word or username...",
+    globalSearchScope: "Search includes messages currently loaded on this device.",
+    globalSearchPrompt: "Type a word to search your conversations.",
+    globalSearchEmpty: "No matching results.",
+    savedMessagesTitle: "Saved messages",
+    savedMessagesScope: "Saved messages are stored for this account on this device.",
+    savedMessagesEmpty: "You have not saved any messages yet.",
+    removeSavedTitle: "Remove from saved",
+    imageMessageLabel: "Image",
+    audioMessageLabel: "Voice message"
   }
 };
 
@@ -984,6 +1603,9 @@ function savePrefs() {
 function t(key) {
   return I18N[prefs.lang]?.[key] || I18N.ar[key] || key;
 }
+
+window.addEventListener("offline", () => showToast(prefs.lang === "ar" ? "انقطع اتصال الإنترنت" : "You are offline"));
+window.addEventListener("online", () => showToast(prefs.lang === "ar" ? "عاد اتصال الإنترنت" : "Connection restored"));
 
 function showToast(msg) {
   const elT = $("toast");
@@ -1529,10 +2151,19 @@ $("logout").onclick = () => $("logout-modal").classList.remove("hidden");
 $("cancel-logout").onclick = () => $("logout-modal").classList.add("hidden");
 $("confirm-logout").onclick = async () => {
   $("confirm-logout").disabled = true;
+  localStorage.removeItem("chatyy_saved_creds");
+  localStorage.removeItem("chatyy_prefs_password"); // legacy
   if (pollTimer) clearInterval(pollTimer);
-  await sb.from("profiles").update({ last_seen: new Date(Date.now() - 120000).toISOString() }).eq("id", me.id);
+  if (globalChannel) { try { await sb.removeChannel(globalChannel); } catch(e){} }
+  if (me) await sb.from("profiles").update({
+    last_seen: new Date(Date.now() - 120000).toISOString()
+  }).eq("id", me.id);
   await sb.auth.signOut();
   location.reload();
+};
+$("logout").onclick = () => {
+  $("confirm-logout").disabled = false;   // ← إعادة تفعيل
+  $("logout-modal").classList.remove("hidden");
 };
 
 /* ---------- Delivery & Read Receipts ---------- */
@@ -1572,7 +2203,7 @@ function applyIncomingMessage(m, playAlert = true) {
     if (active === m.sender && document.visibilityState === "visible" && prefs.readReceipts) {
       m.seen_at = now;
       sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
-    } else if (playAlert) {
+    } else if (playAlert && !isConversationMuted(m.sender)) {
       const senderName = profilesMap[m.sender]?.username || "Friend";
       const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
       showDesktopNotification(senderName, snippet);
@@ -1860,6 +2491,7 @@ function renderList() {
     const prof = profilesMap[id] || { username: "..." };
     const uCount = unreadCounts[id] || 0;
     const it = el("div", "item" + (id === active ? " active" : ""));
+    it.dataset.peerid = id;
 
     const avWrap = el("div", "av-wrap");
     const av = el("div", "avatar");
@@ -2060,6 +2692,10 @@ $("rb-close").onclick = clearReply;
 async function openChat(id) {
   const isNewChat = active !== id;
   active = id;
+  if (isNewChat) {
+    $("txt").value = readChatDraft(id);
+    toggleSendMic();
+  }
   clearReply();
   clearEdit();
   chatFilter = "";
@@ -2079,9 +2715,58 @@ async function openChat(id) {
   await markSeen(id);
   renderList();
   renderMsgs(isNewChat);
-  $("txt").focus();
+  if (!window.matchMedia("(max-width: 768px)").matches) $("txt").focus();
 }
-$("back").onclick = () => { $("app").classList.remove("open"); active = null; renderList(); };
+$("back").onclick = () => {
+  $("txt").blur();
+  $("app").classList.remove("open");
+  active = null;
+  renderList();
+};
+
+/* Edge-swipe back navigation on phones (right edge in Arabic, left in English). */
+let chatSwipeStart = null;
+$("chat").addEventListener("touchstart", e => {
+  if (!$("app").classList.contains("open") || !e.touches.length) return;
+  const x = e.touches[0].clientX;
+  const edge = prefs.lang === "ar" ? window.innerWidth - 26 : 26;
+  const fromEdge = prefs.lang === "ar" ? x >= edge : x <= edge;
+  chatSwipeStart = fromEdge ? { x, y: e.touches[0].clientY } : null;
+}, { passive: true });
+$("chat").addEventListener("touchend", e => {
+  if (!chatSwipeStart || !e.changedTouches.length) return;
+  const dx = e.changedTouches[0].clientX - chatSwipeStart.x;
+  const dy = e.changedTouches[0].clientY - chatSwipeStart.y;
+  const shouldGoBack = prefs.lang === "ar" ? dx > 85 : dx < -85;
+  if (shouldGoBack && Math.abs(dy) < 75) $("back").click();
+  chatSwipeStart = null;
+}, { passive: true });
+$("chat").addEventListener("touchcancel", () => { chatSwipeStart = null; }, { passive: true });
+
+/* Long-press a message on touch screens to reveal its action toolbar. */
+let messageHoldTimer = null;
+let heldMessage = null;
+$("msgs").addEventListener("pointerdown", e => {
+  if (!window.matchMedia("(max-width: 768px)").matches || e.pointerType === "mouse") return;
+  const wrap = e.target.closest(".msg-wrap");
+  if (!wrap || e.target.closest("button, a, img, audio, .react-pills")) return;
+  clearTimeout(messageHoldTimer);
+  heldMessage = wrap;
+  messageHoldTimer = setTimeout(() => {
+    wrap.classList.add("actions-open");
+    if (navigator.vibrate) navigator.vibrate(10);
+  }, 480);
+}, { passive: true });
+["pointerup", "pointercancel", "pointerleave"].forEach(type => {
+  $("msgs").addEventListener(type, () => { clearTimeout(messageHoldTimer); }, { passive: true });
+});
+document.addEventListener("pointerdown", e => {
+  if (e.target.closest(".msg-wrap")) return;
+  document.querySelectorAll(".msg-wrap.actions-open").forEach(node => node.classList.remove("actions-open"));
+}, { passive: true });
+$("msgs").addEventListener("contextmenu", e => {
+  if (window.matchMedia("(max-width: 768px)").matches && e.target.closest(".msg-wrap")) e.preventDefault();
+});
 
 function linkifyText(container, text) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -2150,7 +2835,17 @@ function bubble(m) {
     pBtn.innerHTML = ICONS.pin;
     pBtn.onclick = () => pinMessage(m);
 
-    actions.append(reactBtn, rBtn, pBtn);
+    const saveBtn = el("button", "act-btn save-action");
+    saveBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>`;
+    saveBtn.title = "حفظ الرسالة";
+    saveBtn.dataset.saveAction = "1";
+    saveBtn.classList.toggle("is-saved", isMessageSaved(m.id));
+    saveBtn.onclick = (e) => {
+      e.stopPropagation();
+      toggleSavedMessage(m);
+    };
+
+    actions.append(reactBtn, rBtn, pBtn, saveBtn);
 
     if (m.kind === "text") {
       const cBtn = el("button", "act-btn");
@@ -2211,7 +2906,9 @@ function bubble(m) {
   }
 
   const meta = el("div", "meta");
-  meta.append(document.createTextNode(fmtTime(m.created_at)));
+  const timeText = document.createTextNode(fmtTime(m.created_at));
+  meta.title = new Date(m.created_at).toLocaleString(prefs.lang === "ar" ? "ar-EG" : "en-US");
+  meta.append(timeText);
   if (isMe && !isDeleted) {
     const chk = el("span");
     chk.innerHTML = getTicksHTML(m);
@@ -2312,8 +3009,10 @@ $("txt").addEventListener("input", () => {
 
 async function sendMsg(fields) {
   if (!active) return;
-  const { data, error } = await sb.from("messages").insert({ receiver: active, ...fields }).select().single();
-  if (error) return alert("Failed: " + error.message);
+  const { data, error } = await sb.from("messages")
+    .insert({ sender: me.id, receiver: active, ...fields })
+    .select().single();
+  if (error) { showToast("Failed: " + error.message); return; }
   if (!all.some(x => String(x.id) === String(data.id))) all.push(data);
   renderList();
   renderMsgs(true);
@@ -2377,6 +3076,12 @@ function previewImageFile(f) {
 }
 
 $("attach").onclick = () => $("file").click();
+$("camera-btn").onclick = () => $("camera-file").click();
+$("camera-file").onchange = e => {
+  const f = e.target.files[0];
+  e.target.value = "";
+  previewImageFile(f);
+};
 $("file").onchange = e => {
   const f = e.target.files[0];
   e.target.value = "";
@@ -2488,6 +3193,638 @@ if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   });
 }
+
+
+/* =====================================================================
+   Chatyy Plus Feature Module
+   - Conversation details and media gallery
+   - Saved messages stored per signed-in account on this device
+   - Global search through the messages already loaded by the app
+   - Per-conversation notification mute
+   - Per-conversation draft persistence
+   - Camera capture, jump-to-latest and read-aloud helpers
+   - JSON backup and mobile keyboard shortcuts
+   ===================================================================== */
+
+const CHATYY_STORAGE = {
+  drafts: id => `chatyy_drafts_${id}`,
+  muted: id => `chatyy_muted_${id}`,
+  saved: id => `chatyy_saved_${id}`
+};
+
+function safeReadJSON(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return fallback;
+    const value = JSON.parse(raw);
+    return value ?? fallback;
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function safeWriteJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    showToast(prefs.lang === "ar" ? "مساحة التخزين ممتلئة أو غير متاحة" : "Local storage is unavailable or full");
+    return false;
+  }
+}
+
+function readChatDraft(peerId) {
+  if (!me || !peerId) return "";
+  const drafts = safeReadJSON(CHATYY_STORAGE.drafts(me.id), {});
+  return typeof drafts[peerId] === "string" ? drafts[peerId] : "";
+}
+
+function writeChatDraft(peerId, value) {
+  if (!me || !peerId) return;
+  const drafts = safeReadJSON(CHATYY_STORAGE.drafts(me.id), {});
+  const clean = String(value ?? "").slice(0, 12000);
+  if (clean.trim()) drafts[peerId] = clean;
+  else delete drafts[peerId];
+  safeWriteJSON(CHATYY_STORAGE.drafts(me.id), drafts);
+}
+
+function saveCurrentDraft() {
+  if (!me || !active || editingMsg) return;
+  writeChatDraft(active, $("txt").value);
+}
+
+$("txt").addEventListener("input", saveCurrentDraft);
+window.addEventListener("pagehide", saveCurrentDraft);
+window.addEventListener("beforeunload", saveCurrentDraft);
+
+function getMutedConversationIds() {
+  if (!me) return [];
+  const ids = safeReadJSON(CHATYY_STORAGE.muted(me.id), []);
+  return Array.isArray(ids) ? ids.map(String) : [];
+}
+
+function isConversationMuted(peerId) {
+  if (!me || !peerId) return false;
+  return getMutedConversationIds().includes(String(peerId));
+}
+
+function setConversationMuted(peerId, muted) {
+  if (!me || !peerId) return;
+  const ids = new Set(getMutedConversationIds());
+  if (muted) ids.add(String(peerId));
+  else ids.delete(String(peerId));
+  safeWriteJSON(CHATYY_STORAGE.muted(me.id), [...ids]);
+  updateChatInfoModal();
+  renderList();
+  showToast(muted
+    ? (prefs.lang === "ar" ? "تم كتم إشعارات المحادثة" : "Conversation muted")
+    : (prefs.lang === "ar" ? "تم إلغاء كتم المحادثة" : "Conversation unmuted"));
+}
+
+function getSavedMessages() {
+  if (!me) return [];
+  const saved = safeReadJSON(CHATYY_STORAGE.saved(me.id), []);
+  return Array.isArray(saved) ? saved : [];
+}
+
+function isMessageSaved(messageId) {
+  return getSavedMessages().some(item => String(item.id) === String(messageId));
+}
+
+function makeSavedMessageRecord(message) {
+  const peerId = otherOf(message);
+  const peer = profilesMap[peerId] || {};
+  const sender = profilesMap[message.sender] || {};
+  const summary = message.kind === "image"
+    ? t("imageMessageLabel")
+    : message.kind === "audio"
+      ? t("audioMessageLabel")
+      : getCleanBody(message.body || "");
+
+  return {
+    id: String(message.id),
+    peerId,
+    peerName: peer.username || "Unknown",
+    senderId: message.sender,
+    senderName: message.sender === me.id ? me.username : (sender.username || peer.username || "Unknown"),
+    kind: message.kind || "text",
+    body: message.body || "",
+    summary,
+    media_url: message.media_url || null,
+    created_at: message.created_at || new Date().toISOString(),
+    saved_at: new Date().toISOString()
+  };
+}
+
+function toggleSavedMessage(message) {
+  if (!me || !message) return;
+  const saved = getSavedMessages();
+  const index = saved.findIndex(item => String(item.id) === String(message.id));
+  if (index >= 0) {
+    saved.splice(index, 1);
+    showToast(prefs.lang === "ar" ? "تمت إزالة الرسالة من المحفوظات" : "Message removed from saved");
+  } else {
+    saved.unshift(makeSavedMessageRecord(message));
+    showToast(prefs.lang === "ar" ? "تم حفظ الرسالة" : "Message saved");
+  }
+  safeWriteJSON(CHATYY_STORAGE.saved(me.id), saved.slice(0, 500));
+  renderMsgs();
+  renderSavedMessages();
+}
+
+function formatSavedPreview(item) {
+  if (item.kind === "image") return prefs.lang === "ar" ? "🖼️ صورة" : "🖼️ Image";
+  if (item.kind === "audio") return prefs.lang === "ar" ? "🎤 رسالة صوتية" : "🎤 Voice message";
+  return getCleanBody(item.body || item.summary || "").replace(/\s+/g, " ").slice(0, 150);
+}
+
+function renderSavedMessages() {
+  const list = $("saved-list");
+  const empty = $("saved-empty");
+  if (!list || !empty) return;
+  list.replaceChildren();
+
+  const saved = getSavedMessages();
+  empty.textContent = t("savedMessagesEmpty");
+  empty.classList.toggle("hidden", saved.length > 0);
+
+  saved.forEach(item => {
+    const row = el("div", "saved-entry");
+    const main = el("button", "saved-entry-main");
+    main.type = "button";
+    const who = item.peerName || profilesMap[item.peerId]?.username || "Chat";
+    main.append(
+      el("strong", "", "@" + who),
+      el("span", "", formatSavedPreview(item))
+    );
+
+    const time = el("time", "", fmtTime(item.created_at));
+    time.title = new Date(item.created_at).toLocaleString();
+
+    const remove = el("button", "saved-remove");
+    remove.type = "button";
+    remove.title = t("removeSavedTitle");
+    remove.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>`;
+    remove.onclick = () => {
+      const next = getSavedMessages().filter(entry => String(entry.id) !== String(item.id));
+      safeWriteJSON(CHATYY_STORAGE.saved(me.id), next);
+      renderSavedMessages();
+      renderMsgs();
+    };
+
+    main.onclick = async () => {
+      $("saved-modal").classList.add("hidden");
+      await openChat(item.peerId);
+      requestAnimationFrame(() => {
+        const target = document.querySelector(`[data-msgid="${CSS.escape(String(item.id))}"]`);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+          target.classList.add("highlight");
+          setTimeout(() => target.classList.remove("highlight"), 1600);
+        } else {
+          showToast(prefs.lang === "ar" ? "الرسالة محفوظة، لكنها ليست ضمن الرسائل المحمّلة حاليًا" : "Saved, but this message is outside the currently loaded history");
+        }
+      });
+    };
+
+    row.append(main, time, remove);
+    list.append(row);
+  });
+}
+
+function openSavedMessages() {
+  renderSavedMessages();
+  $("saved-modal").classList.remove("hidden");
+}
+
+$("saved-open").onclick = openSavedMessages;
+$("saved-close").onclick = () => $("saved-modal").classList.add("hidden");
+$("saved-modal").addEventListener("click", event => {
+  if (event.target === $("saved-modal")) $("saved-modal").classList.add("hidden");
+});
+
+function messageSearchText(message) {
+  if (message.body === ">>DELETED<<") return "";
+  if (message.kind === "image") return prefs.lang === "ar" ? "صورة" : "image";
+  if (message.kind === "audio") return prefs.lang === "ar" ? "رسالة صوتية" : "voice message";
+  return getCleanBody(message.body || "");
+}
+
+function renderGlobalSearch(query) {
+  const results = $("global-search-results");
+  if (!results) return;
+  results.replaceChildren();
+
+  const term = String(query || "").trim().toLocaleLowerCase();
+  if (!term) {
+    results.append(el("div", "empty-note", t("globalSearchPrompt")));
+    return;
+  }
+
+  const matches = all
+    .filter(message => {
+      const peerId = otherOf(message);
+      const username = profilesMap[peerId]?.username || "";
+      const body = messageSearchText(message);
+      return body.toLocaleLowerCase().includes(term) || username.toLocaleLowerCase().includes(term);
+    })
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 60);
+
+  if (!matches.length) {
+    results.append(el("div", "empty-note", t("globalSearchEmpty")));
+    return;
+  }
+
+  matches.forEach(message => {
+    const peerId = otherOf(message);
+    const peer = profilesMap[peerId] || {};
+    const result = el("button", "search-result");
+    result.type = "button";
+
+    const avatar = el("div", "avatar");
+    avatar.style.width = "38px";
+    avatar.style.height = "38px";
+    avatar.style.flex = "0 0 38px";
+    avatar.style.fontSize = "14px";
+    renderAvatar(avatar, peer);
+
+    const main = el("span", "search-result-main");
+    main.append(
+      el("strong", "", "@" + (peer.username || "Unknown")),
+      el("span", "", messageSearchText(message).replace(/\s+/g, " ").slice(0, 130))
+    );
+
+    const time = el("time", "", fmtTime(message.created_at));
+    time.title = new Date(message.created_at).toLocaleString();
+    result.append(avatar, main, time);
+
+    result.onclick = async () => {
+      $("global-search-modal").classList.add("hidden");
+      await openChat(peerId);
+      requestAnimationFrame(() => {
+        const target = document.querySelector(`[data-msgid="${CSS.escape(String(message.id))}"]`);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+          target.classList.add("highlight");
+          setTimeout(() => target.classList.remove("highlight"), 1700);
+        }
+      });
+    };
+
+    results.append(result);
+  });
+}
+
+let globalSearchDebounce = null;
+function openGlobalSearch() {
+  $("global-search-modal").classList.remove("hidden");
+  $("global-search-input").value = "";
+  renderGlobalSearch("");
+  setTimeout(() => $("global-search-input").focus(), 60);
+}
+
+$("global-search-open").onclick = openGlobalSearch;
+$("global-search-close").onclick = () => $("global-search-modal").classList.add("hidden");
+$("global-search-modal").addEventListener("click", event => {
+  if (event.target === $("global-search-modal")) $("global-search-modal").classList.add("hidden");
+});
+$("global-search-input").addEventListener("input", event => {
+  clearTimeout(globalSearchDebounce);
+  globalSearchDebounce = setTimeout(() => renderGlobalSearch(event.target.value), 120);
+});
+
+function collectConversationMedia(peerId) {
+  return all
+    .filter(message => otherOf(message) === peerId && message.body !== ">>DELETED<<" && (message.kind === "image" || message.kind === "audio"))
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+}
+
+function renderConversationMedia(peerId) {
+  const grid = $("chat-media-grid");
+  const empty = $("chat-media-empty");
+  const media = collectConversationMedia(peerId);
+  grid.replaceChildren();
+  $("chat-gallery-count").textContent = String(media.length);
+  empty.classList.toggle("hidden", media.length > 0);
+
+  media.forEach(item => {
+    const tile = el("button", "media-tile" + (item.kind === "audio" ? " audio-tile" : ""));
+    tile.type = "button";
+    if (item.kind === "image") {
+      const image = el("img");
+      image.src = item.media_url;
+      image.alt = prefs.lang === "ar" ? "صورة مرسلة في المحادثة" : "Image shared in chat";
+      image.loading = "lazy";
+      tile.append(image);
+      tile.onclick = () => {
+        $("chat-info-modal").classList.add("hidden");
+        openLightbox(item.media_url);
+      };
+    } else {
+      tile.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v3m-4 0h8"/></svg>`;
+      tile.append(el("span", "", t("audioMessageLabel")));
+      tile.onclick = async () => {
+        $("chat-info-modal").classList.add("hidden");
+        await openChat(peerId);
+        requestAnimationFrame(() => {
+          const target = document.querySelector(`[data-msgid="${CSS.escape(String(item.id))}"]`);
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      };
+    }
+    const time = el("time", "", fmtTime(item.created_at));
+    tile.append(time);
+    grid.append(tile);
+  });
+}
+
+function updateChatInfoModal() {
+  if (!active || !me) return;
+  const profile = profilesMap[active] || { username: "..." };
+  renderAvatar($("chat-info-avatar"), profile);
+  $("chat-info-name").textContent = profile.username || "Unknown";
+  $("chat-info-username").textContent = "@" + (profile.username || "unknown");
+  $("chat-info-status").textContent = formatLastSeen(active);
+
+  const conversation = all.filter(message => otherOf(message) === active);
+  const images = conversation.filter(message => message.kind === "image" && message.body !== ">>DELETED<<");
+  const audios = conversation.filter(message => message.kind === "audio" && message.body !== ">>DELETED<<");
+  $("chat-info-total").textContent = String(conversation.length);
+  $("chat-info-images").textContent = String(images.length);
+  $("chat-info-audio").textContent = String(audios.length);
+
+  const muted = isConversationMuted(active);
+  $("chat-mute-toggle").textContent = muted
+    ? (prefs.lang === "ar" ? "إلغاء كتم الإشعارات" : "Unmute notifications")
+    : t("chatMuteAction");
+
+  renderConversationMedia(active);
+}
+
+function openChatInfo() {
+  if (!active) return;
+  updateChatInfoModal();
+  $("chat-info-modal").classList.remove("hidden");
+}
+
+$("chat-peer-trigger").addEventListener("click", openChatInfo);
+$("chat-peer-trigger").addEventListener("keydown", event => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    openChatInfo();
+  }
+});
+$("oav").addEventListener("click", openChatInfo);
+$("chat-info-close").onclick = () => $("chat-info-modal").classList.add("hidden");
+$("chat-info-modal").addEventListener("click", event => {
+  if (event.target === $("chat-info-modal")) $("chat-info-modal").classList.add("hidden");
+});
+$("chat-mute-toggle").onclick = () => {
+  if (!active) return;
+  setConversationMuted(active, !isConversationMuted(active));
+};
+$("chat-wallpaper-open").onclick = () => {
+  $("chat-info-modal").classList.add("hidden");
+  $("wall-modal").classList.remove("hidden");
+};
+$("chat-export-open").onclick = () => {
+  $("chat-info-modal").classList.add("hidden");
+  $("export-chat-btn").click();
+};
+
+function updateJumpToLatest() {
+  const box = $("msgs");
+  const button = $("jump-bottom-btn");
+  if (!box || !button || !active) {
+    button?.classList.add("hidden");
+    return;
+  }
+  const distance = box.scrollHeight - box.scrollTop - box.clientHeight;
+  button.classList.toggle("hidden", distance < 180);
+}
+
+$("msgs").addEventListener("scroll", updateJumpToLatest, { passive: true });
+$("jump-bottom-btn").onclick = () => {
+  $("msgs").scrollTo({ top: $("msgs").scrollHeight, behavior: "smooth" });
+};
+
+function speakMessage(message) {
+  if (!("speechSynthesis" in window)) {
+    showToast(prefs.lang === "ar" ? "قراءة النص غير مدعومة في هذا المتصفح" : "Text-to-speech is not supported in this browser");
+    return;
+  }
+  const text = getCleanBody(message.body || "").trim();
+  if (!text || message.kind !== "text") return;
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = /[\u0600-\u06FF]/.test(text) ? "ar" : "en-US";
+  utterance.rate = 1;
+  utterance.pitch = 1;
+  window.speechSynthesis.speak(utterance);
+}
+
+function addReadAloudAction(actions, message) {
+  if (message.kind !== "text" || !("speechSynthesis" in window)) return;
+  const button = el("button", "act-btn");
+  button.title = prefs.lang === "ar" ? "قراءة الرسالة بصوت" : "Read message aloud";
+  button.innerHTML = `<svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15 9a5 5 0 0 1 0 6M18 5a10 10 0 0 1 0 14"/></svg>`;
+  button.onclick = event => {
+    event.stopPropagation();
+    speakMessage(message);
+  };
+  actions.append(button);
+}
+
+function updateSavedActionStates() {
+  document.querySelectorAll(".msg-wrap").forEach(wrap => {
+    const id = wrap.dataset.msgid;
+    const button = wrap.querySelector("[data-save-action]");
+    if (button) button.classList.toggle("is-saved", isMessageSaved(id));
+  });
+}
+
+function exportAllMessagesAsJSON() {
+  if (!me) return;
+  const payload = {
+    app: "Chatyy",
+    format: "chatyy-backup-v1",
+    exported_at: new Date().toISOString(),
+    account: { id: me.id, username: me.username },
+    note: "Contains messages currently loaded by the app and their media URLs.",
+    messages: all.map(message => ({
+      id: message.id,
+      sender: message.sender,
+      receiver: message.receiver,
+      kind: message.kind,
+      body: message.body,
+      media_url: message.media_url || null,
+      created_at: message.created_at,
+      delivered_at: message.delivered_at || null,
+      seen_at: message.seen_at || null,
+      reactions: message.reactions || {}
+    }))
+  };
+
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = `Chatyy_Backup_${(me.username || "account").replace(/[^a-z0-9_-]/gi, "_")}.json`;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  showToast(prefs.lang === "ar" ? "تم تجهيز النسخة الاحتياطية" : "Backup file created");
+}
+
+$("export-json-btn").onclick = exportAllMessagesAsJSON;
+
+function closeTopmostChatyyDialog() {
+  const layers = [
+    "global-search-modal",
+    "saved-modal",
+    "chat-info-modal",
+    "lightbox",
+    "modal",
+    "wall-modal",
+    "logout-modal"
+  ];
+  for (const id of layers) {
+    const layer = $(id);
+    if (layer && !layer.classList.contains("hidden")) {
+      layer.classList.add("hidden");
+      return true;
+    }
+  }
+  if (!$('settings-drawer').classList.contains("hidden")) {
+    $("settings-drawer").classList.add("hidden");
+    return true;
+  }
+  if (!$('profile-drawer').classList.contains("hidden")) {
+    $("profile-drawer").classList.add("hidden");
+    return true;
+  }
+  if ($("emoji-picker") && !$('emoji-picker').classList.contains("hidden")) {
+    $("emoji-picker").classList.add("hidden");
+    return true;
+  }
+  return false;
+}
+
+document.addEventListener("keydown", event => {
+  const target = event.target;
+  const typing = target && (target.matches("input, textarea, select") || target.isContentEditable);
+  const command = event.ctrlKey || event.metaKey;
+
+  if (event.key === "Escape") {
+    if (closeTopmostChatyyDialog()) event.stopPropagation();
+    return;
+  }
+
+  if (command && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    openGlobalSearch();
+    return;
+  }
+
+  if (command && event.key.toLowerCase() === "f") {
+    if (active) {
+      event.preventDefault();
+      $("chat-search-bar").classList.remove("hidden");
+      $("chat-search-input").focus();
+    }
+    return;
+  }
+
+  if (command && event.key.toLowerCase() === "s") {
+    event.preventDefault();
+    openSavedMessages();
+    return;
+  }
+
+  if (!typing && event.key === "/" && active) {
+    event.preventDefault();
+    $("txt").focus();
+  }
+});
+
+const originalApplyLanguageForChatyyPlus = applyLanguage;
+applyLanguage = function (language) {
+  originalApplyLanguageForChatyyPlus(language);
+  if (!$('global-search-modal').classList.contains("hidden")) {
+    renderGlobalSearch($("global-search-input").value);
+  }
+  if (!$('saved-modal').classList.contains("hidden")) renderSavedMessages();
+  if (!$('chat-info-modal').classList.contains("hidden")) updateChatInfoModal();
+};
+
+function refreshMobileViewportState() {
+  if (active) updateJumpToLatest();
+  if (!$('chat-info-modal').classList.contains("hidden")) updateChatInfoModal();
+}
+
+window.addEventListener("resize", refreshMobileViewportState, { passive: true });
+window.addEventListener("orientationchange", () => setTimeout(refreshMobileViewportState, 150), { passive: true });
+
+/* Keep the conversation list informative without changing server-side data. */
+const originalRenderListForMuteMarker = renderList;
+renderList = function () {
+  originalRenderListForMuteMarker();
+  document.querySelectorAll("#list .item").forEach(item => {
+    const peerId = item.dataset.peerid;
+    if (!peerId || !isConversationMuted(peerId)) return;
+    const label = el("span", "muted-mark");
+    label.title = prefs.lang === "ar" ? "الإشعارات مكتومة" : "Notifications muted";
+    label.innerHTML = `<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/><path d="m3 3 18 18"/></svg>`;
+    item.querySelector(".u")?.append(label);
+  });
+};
+
+/* Extend the existing message toolbar with a read-aloud action. */
+const originalBubbleWithTools = bubble;
+bubble = function (message) {
+  const node = originalBubbleWithTools(message);
+  const actions = node.querySelector(".msg-actions");
+  if (actions) addReadAloudAction(actions, message);
+  const saveButton = actions?.querySelector("[data-save-action]");
+  if (saveButton) saveButton.classList.toggle("is-saved", isMessageSaved(message.id));
+  return node;
+};
+
+/* Keep list status and the details sheet fresh when realtime presence changes. */
+const originalUpdateActiveHeaderStatus = updateActiveHeaderStatus;
+updateActiveHeaderStatus = function () {
+  originalUpdateActiveHeaderStatus();
+  if (active && !$('chat-info-modal').classList.contains("hidden")) updateChatInfoModal();
+};
+
+/* A small guard for image URLs and camera input before previewing. */
+const originalPreviewImageFile = previewImageFile;
+previewImageFile = function (file) {
+  if (!file) return;
+  if (!file.type || !file.type.startsWith("image/")) {
+    showToast(prefs.lang === "ar" ? "الملف المحدد ليس صورة" : "The selected file is not an image");
+    return;
+  }
+  const maxBytes = 18 * 1024 * 1024;
+  if (file.size > maxBytes) {
+    showToast(prefs.lang === "ar" ? "حجم الصورة أكبر من 18 ميجابايت" : "Image is larger than 18 MB");
+    return;
+  }
+  originalPreviewImageFile(file);
+};
+
+/* Remove stale local drafts after the send handler clears the composer. */
+const originalSendTextForDrafts = sendText;
+sendText = async function () {
+  const before = $("txt").value;
+  await originalSendTextForDrafts();
+  if (active && before.trim() && !$("txt").value.trim()) writeChatDraft(active, "");
+};
+
+
 </script>
 </body>
 </html>
