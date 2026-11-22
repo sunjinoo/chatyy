@@ -1086,6 +1086,57 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
 .msg-video{width:min(300px,68vw);max-height:360px;border-radius:11px;background:#000;display:block}
 @media(max-width:520px){#chat-more-panel{inset-inline-start:6px;min-width:180px}.msg-attachment{min-width:185px}}
 
+
+/* Chatyy GIF browser — in-app GIPHY search, trending, categories and recents */
+.gif-provider-row{display:flex;align-items:center;justify-content:space-between;gap:10px;min-width:0;color:var(--muted);font-size:11px}
+.gif-powered{font-weight:600;letter-spacing:.02em}
+.gif-powered strong{color:var(--text);font-weight:900;letter-spacing:.08em}
+.gif-key-toggle{padding:6px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;white-space:nowrap}
+.gif-key-panel{display:grid;gap:8px;padding:12px;border:1px solid var(--line);background:var(--panel-alt);border-radius:12px}
+.gif-key-panel label{font-size:12px;font-weight:700}
+.gif-key-entry{display:flex;gap:7px;min-width:0}
+.gif-key-entry input{flex:1;min-width:0;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--panel);direction:ltr;text-align:left}
+.gif-key-entry .btn{flex:0 0 auto;padding:9px 15px}
+.gif-key-panel small{color:var(--muted);font-size:10px;line-height:1.6}
+.gif-key-panel a{color:var(--accent);font-size:11px;font-weight:700;text-decoration:none;width:max-content;max-width:100%}
+.gif-category-tabs{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.gif-category-tabs::-webkit-scrollbar{display:none}
+.gif-category{flex:0 0 auto;min-height:35px;padding:7px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:var(--panel-alt);font-size:11px;font-weight:700;white-space:nowrap}
+.gif-category.active{color:#fff;background:var(--accent);border-color:var(--accent)}
+.gif-status{min-height:19px;color:var(--muted);font-size:11px;line-height:1.6}
+.gif-status.error{color:#e05d5d}
+.gif-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;align-items:stretch;max-height:min(49vh,430px);overflow:auto;overscroll-behavior:contain;padding:1px 1px 5px}
+.gif-card{position:relative;display:block;min-width:0;aspect-ratio:1.18/1;overflow:hidden;border:2px solid transparent;border-radius:4px;background:var(--panel-alt);padding:0;cursor:pointer;isolation:isolate}
+.gif-card:hover,.gif-card:focus-visible{border-color:var(--accent);outline:none}
+.gif-card img{display:block;width:100%;height:100%;object-fit:cover;background:var(--panel-alt)}
+.gif-card span{position:absolute;inset:auto 0 0;padding:14px 5px 4px;color:white;font-size:9px;text-align:start;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:linear-gradient(transparent,rgba(0,0,0,.62));opacity:0;transition:opacity .15s}
+.gif-card:hover span,.gif-card:focus-visible span{opacity:1}
+.gif-card.is-sending{opacity:.45;pointer-events:none}
+/* A varied tile rhythm similar to modern in-chat GIF pickers. */
+.gif-card:nth-child(7n + 2){aspect-ratio:1.55/1}
+.gif-card:nth-child(7n + 4){aspect-ratio:1/1.16}
+.gif-card:nth-child(7n + 6){aspect-ratio:1.38/1}
+@media (max-width: 560px){
+  .gif-card:nth-child(7n + 2){aspect-ratio:1.32/1}
+  .gif-card:nth-child(7n + 4){aspect-ratio:1/1.08}
+}
+.gif-load-more{width:100%;min-height:39px;font-size:12px}
+.gif-empty{grid-column:1/-1;display:grid;place-items:center;gap:7px;min-height:115px;padding:20px 12px;color:var(--muted);text-align:center;font-size:12px;border:1px dashed var(--line);border-radius:12px}
+.gif-empty strong{color:var(--text);font-size:13px}
+.gif-direct-details{border-top:1px solid var(--line);padding-top:8px}
+.gif-direct-details summary{color:var(--muted);font-size:11px;cursor:pointer;padding:4px 0}
+.gif-direct-details .gif-search-row{margin-top:8px}
+.gif-direct-details #gif-url{direction:ltr;text-align:left}
+.profile-field-help{display:block;color:var(--muted);font-size:10px;line-height:1.7;margin-top:6px}
+#prof-display-name{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--panel-alt);outline:none}
+#prof-display-name:focus{border-color:var(--accent)}
+@media(max-width:430px){
+  #gif-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;max-height:45vh}
+  .gif-card{aspect-ratio:1.12/1}
+  .gif-category{min-height:38px;padding:8px 12px}
+  .gif-key-panel{padding:10px}
+}
+
 </style>
 </head>
 <body>
@@ -1245,6 +1296,12 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
             <span data-i18n="changePhoto">تغيير الصورة</span>
           </div>
           <input type="file" id="avatar-file" accept="image/*" class="hidden">
+        </div>
+
+        <div class="field-box">
+          <label for="prof-display-name" data-i18n="displayNameLabel">الاسم الظاهر</label>
+          <input type="text" id="prof-display-name" maxlength="32" autocomplete="name" placeholder="اكتب الاسم الذي يراه أصدقاؤك">
+          <small class="profile-field-help" data-i18n="displayNameHelp">هذا الاسم يظهر في المحادثات، بينما يظل اسم المستخدم ثابتًا لتسجيل الدخول والبحث.</small>
         </div>
 
         <div class="field-box">
@@ -1461,15 +1518,48 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid 
       <div id="sticker-grid"></div>
       <p class="gif-help">استورد ملفات WebP أو ملف ZIP لحزمة واتساب. الملصقات المستوردة تُحفظ على هذا الجهاز، وعند إرسالها تُرفع للسيرفر لتظهر للطرف الآخر.</p>
     </div>
-    <div id="gif-panel" class="hidden">
-      <div class="gif-search-row"><input id="gif-search" placeholder="ابحث عن GIF..." autocomplete="off"><button class="btn" id="gif-search-btn" type="button">بحث</button></div>
-      <p class="gif-help">افتح نتائج Tenor، ثم انسخ رابط GIF مباشر والصقه هنا، أو ارفع ملف GIF من جهازك. ملفات GIF تُرسل كصور متحركة عبر نفس مساحة الوسائط.</p>
-      <input id="gif-url" type="url" placeholder="https://... رابط GIF مباشر">
+    <div id="gif-panel" class="hidden" aria-label="GIF browser">
+      <div class="gif-search-row">
+        <input id="gif-search" type="search" placeholder="ابحث عن GIF من GIPHY..." autocomplete="off" maxlength="50" aria-label="البحث عن GIF">
+        <button class="btn" id="gif-search-btn" type="button">بحث</button>
+      </div>
+      <div class="gif-provider-row">
+        <span class="gif-powered">Powered by <strong>GIPHY</strong></span>
+        <button id="gif-key-open" type="button" class="gif-key-toggle">⚙️ إعداد المفتاح</button>
+      </div>
+      <div id="gif-key-panel" class="gif-key-panel hidden">
+        <label for="gif-api-key">مفتاح GIPHY API</label>
+        <div class="gif-key-entry">
+          <input id="gif-api-key" type="password" placeholder="الصق API Key هنا" autocomplete="off" spellcheck="false">
+          <button id="gif-api-save" class="btn" type="button">حفظ</button>
+        </div>
+        <small>أنشئ مفتاح GIPHY عامًّا من لوحة المطورين واحفظه لهذا الجهاز، أو ضعه في CHATYY_GIPHY_PUBLIC_API_KEY داخل الكود ليعمل مع كل أصدقائك. المفتاح العام ظاهر في المتصفح.</small>
+        <a href="https://developers.giphy.com/dashboard/" target="_blank" rel="noopener noreferrer">فتح لوحة GIPHY Developers</a>
+      </div>
+      <div id="gif-category-tabs" class="gif-category-tabs" aria-label="تصنيفات GIF">
+        <button type="button" class="gif-category active" data-gif-mode="trending">🔥 الشائع</button>
+        <button type="button" class="gif-category" data-gif-query="reaction">👍 ردود فعل</button>
+        <button type="button" class="gif-category" data-gif-query="love">❤️ حب</button>
+        <button type="button" class="gif-category" data-gif-query="laughing meme">😂 ضحك وميمز</button>
+        <button type="button" class="gif-category" data-gif-query="sad reaction">🥲 حزين</button>
+        <button type="button" class="gif-category" data-gif-query="hello wave">👋 تحية</button>
+        <button type="button" class="gif-category" data-gif-mode="recent">🕘 الأخيرة</button>
+      </div>
+      <div id="gif-status" class="gif-status" role="status" aria-live="polite">جاري تجهيز GIF...</div>
+      <div id="gif-grid" class="gif-grid" aria-live="polite"></div>
+      <button id="gif-load-more" class="btn alt gif-load-more hidden" type="button">عرض المزيد</button>
       <div class="gif-actions">
-        <button class="btn" id="gif-url-send" type="button">إرسال الرابط</button>
         <button class="btn alt" id="gif-upload-btn" type="button">رفع GIF من الجهاز</button>
         <input id="gif-file" type="file" accept="image/gif,.gif">
       </div>
+      <details class="gif-direct-details">
+        <summary>إرسال رابط GIF مباشر</summary>
+        <div class="gif-search-row">
+          <input id="gif-url" type="url" placeholder="https://... رابط GIF مباشر">
+          <button class="btn" id="gif-url-send" type="button">إرسال</button>
+        </div>
+      </details>
+      <p class="gif-help">اضغط على أي GIF لإرساله مباشرة داخل المحادثة. آخر GIFs التي استخدمتها تُحفظ في تبويب «الأخيرة» على هذا الجهاز.</p>
     </div>
   </div>
 </div>
@@ -1720,6 +1810,8 @@ const I18N = {
     profileTitle: "الملف الشخصي",
     changePhoto: "تغيير الصورة",
     usernameLabel: "اسم المستخدم (Username)",
+    displayNameLabel: "الاسم الظاهر",
+    displayNameHelp: "هذا الاسم يظهر في المحادثات، بينما يظل اسم المستخدم ثابتًا لتسجيل الدخول والبحث.",
     bioLabel: "الحالة / النبذة (Bio)",
     saveBtn: "حفظ التغييرات",
     searchUserPh: "ابحث عن يوزر لبدء محادثة...",
@@ -1801,6 +1893,8 @@ const I18N = {
     profileTitle: "Profile",
     changePhoto: "Change Photo",
     usernameLabel: "Username",
+    displayNameLabel: "Display name",
+    displayNameHelp: "This name appears in chats. Your username stays unchanged for login and search.",
     bioLabel: "Bio / Status",
     saveBtn: "Save Changes",
     searchUserPh: "Search username to start chat...",
@@ -1934,6 +2028,22 @@ const initial = n => (n || "?")[0];
 
 const DOMAIN = "@chatuser.app";
 let me = null, all = [], profilesMap = {}, active = null, pendingImg = null;
+
+/* Display names are intentionally separate from stable login usernames. */
+function chatyyDisplayName(profile) {
+  if (!profile) return "Unknown";
+  const remoteName = typeof profile.display_name === "string" ? profile.display_name.trim() : "";
+  if (remoteName) return remoteName;
+  const localKey = profile.id ? `chatyy_display_name_${profile.id}` : "";
+  if (localKey) {
+    try {
+      const localName = (localStorage.getItem(localKey) || "").trim();
+      if (localName) return localName;
+    } catch (error) {}
+  }
+  return profile.username || "Unknown";
+}
+
 let replyingTo = null, editingMsg = null, chatFilter = "", listFilter = "all";
 let onlineUsers = new Set(), typingUsers = new Set();
 let globalChannel = null, lastTypingSent = 0;
@@ -2048,7 +2158,7 @@ $("export-chat-btn").onclick = () => {
   if (!active) return showToast(t("noChatExport"));
   const prof = profilesMap[active] || { username: "chat" };
   const lines = all.filter(m => otherOf(m) === active && m.body !== ">>DELETED<<").map(m => {
-    const who = m.sender === me.id ? me.username : prof.username;
+    const who = m.sender === me.id ? chatyyDisplayName(me) : chatyyDisplayName(prof);
     const content = m.kind === "image" ? "[Image]" : m.kind === "audio" ? "[Voice Note]" : getCleanBody(m.body);
     return `[${new Date(m.created_at).toLocaleString()}] ${who}: ${content}`;
   });
@@ -2136,7 +2246,7 @@ function getAvatarColor(name) {
   return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
 }
 function renderAvatar(elTarget, prof) {
-  const name = prof?.username || "?";
+  const name = chatyyDisplayName(prof) || "?";
   if (prof?.avatar_url) {
     elTarget.textContent = "";
     elTarget.style.backgroundImage = `url(${prof.avatar_url})`;
@@ -2192,7 +2302,7 @@ function requestNotificationPermission() {
 function showDesktopNotification(senderName, text) {
   if ("Notification" in window && Notification.permission === "granted") {
     try {
-      new Notification(`Chatyy - @${senderName}`, {
+      new Notification(`Chatyy - ${senderName}`, {
         body: text,
         icon: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%2300a884'/%3E%3Cpath d='M45 31c0 7.2-6.3 13-14 13-2.4 0-4.7-.6-6.7-1.6L16 45l2.8-7.4C17.6 35.7 17 33.4 17 31c0-7.2 6.3-13 14-13s14 5.8 14 13z' fill='%23ffffff'/%3E%3Ccircle cx='26' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='31' cy='31' r='2' fill='%2300a884'/%3E%3Ccircle cx='36' cy='31' r='2' fill='%2300a884'/%3E%3C/svg%3E"
       });
@@ -2232,6 +2342,7 @@ function getDateLabel(dateStr) {
 /* ---------- Profile Customization ---------- */
 function openProfileDrawer() {
   $("prof-username").textContent = "@" + me.username;
+  $("prof-display-name").value = chatyyDisplayName(me);
   $("prof-bio").value = me.bio || "";
   renderAvatar($("prof-av-preview"), me);
   $("profile-drawer").classList.remove("hidden");
@@ -2260,15 +2371,39 @@ $("avatar-file").onchange = async (e) => {
 
 $("save-profile").onclick = async () => {
   const newBio = $("prof-bio").value.trim() || "Available";
-  $("save-profile").disabled = true;
-  const { error } = await sb.from("profiles").update({ bio: newBio }).eq("id", me.id);
-  $("save-profile").disabled = false;
-  if (!error) {
-    me.bio = newBio;
-    profilesMap[me.id] = me;
-    $("mebio").textContent = newBio;
-    $("profile-drawer").classList.add("hidden");
+  const newDisplayName = ($("prof-display-name").value || "").trim().replace(/\s+/g, " ").slice(0, 32) || me.username;
+  const saveButton = $("save-profile");
+  saveButton.disabled = true;
+  saveButton.textContent = prefs.lang === "ar" ? "جارٍ الحفظ..." : "Saving...";
+  const { error } = await sb.from("profiles").update({ display_name: newDisplayName, bio: newBio }).eq("id", me.id);
+  saveButton.disabled = false;
+  saveButton.textContent = t("saveBtn");
+
+  me.display_name = newDisplayName;
+  me.bio = newBio;
+  profilesMap[me.id] = me;
+  try { localStorage.setItem(`chatyy_display_name_${me.id}`, newDisplayName); } catch (storageError) {}
+  $("mename").textContent = newDisplayName;
+  $("mebio").textContent = newBio;
+
+  if (error) {
+    const bioResult = await sb.from("profiles").update({ bio: newBio }).eq("id", me.id);
+    const notice = prefs.lang === "ar"
+      ? "تم حفظ الاسم على هذا الجهاز فقط. شغّل ملف SQL المرفق لمزامنته مع أصدقائك."
+      : "The name is saved on this device only. Run the included SQL migration to sync it with friends.";
+    showToast(bioResult.error ? (prefs.lang === "ar" ? "تعذر حفظ النبذة على السيرفر" : "Could not save profile bio on the server") : notice);
+  } else {
+    showToast(prefs.lang === "ar" ? "تم تحديث الاسم والملف الشخصي" : "Display name and profile updated");
   }
+
+  if (active) {
+    const peer = profilesMap[active];
+    if (peer) $("oname").textContent = chatyyDisplayName(peer);
+    updateChatInfoModal();
+    renderMsgs();
+  }
+  renderList();
+  $("profile-drawer").classList.add("hidden");
 };
 
 /* ---------- Full Categorized Emoji Picker ---------- */
@@ -2479,7 +2614,7 @@ function applyIncomingMessage(m, playAlert = true) {
       m.seen_at = now;
       sb.from("messages").update({ delivered_at: now, seen_at: now }).eq("id", m.id).then();
     } else if (playAlert && !isConversationMuted(m.sender)) {
-      const senderName = profilesMap[m.sender]?.username || "Friend";
+      const senderName = chatyyDisplayName(profilesMap[m.sender]) || "Friend";
       const snippet = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice message" : getCleanBody(m.body);
       showDesktopNotification(senderName, snippet);
       playNotifySound();
@@ -2599,7 +2734,7 @@ async function boot() {
   profilesMap[me.id] = me;
   $("auth").classList.add("hidden");
   $("app").classList.remove("hidden");
-  $("mename").textContent = me.username;
+  $("mename").textContent = chatyyDisplayName(me);
   $("mebio").textContent = me.bio || "Available";
   renderAvatar($("meav"), me);
 
@@ -2684,9 +2819,16 @@ async function boot() {
         const updatedProf = p.new;
         profilesMap[updatedProf.id] = updatedProf;
         renderList();
+        if (updatedProf.id === me?.id) {
+          me = { ...me, ...updatedProf };
+          $("mename").textContent = chatyyDisplayName(me);
+          $("mebio").textContent = me.bio || "";
+        }
         if (active === updatedProf.id) {
+          $("oname").textContent = chatyyDisplayName(updatedProf);
           renderAvatar($("oav"), updatedProf);
           updateActiveHeaderStatus();
+          updateChatInfoModal();
         }
       })
     .subscribe(async (status) => {
@@ -2777,7 +2919,7 @@ function renderList() {
     const mid = el("div", "mid");
     const topRow = el("div", "top-row");
     const timeEl = el("div", "t" + (uCount ? " unread-t" : ""), fmtTime(m.created_at));
-    topRow.append(el("div", "u", prof.username), timeEl);
+    topRow.append(el("div", "u", chatyyDisplayName(prof)), timeEl);
 
     const botRow = el("div", "bot-row");
     const lastRow = el("div", "last");
@@ -2814,12 +2956,18 @@ let qTimer;
 $("q").oninput = () => {
   clearTimeout(qTimer);
   qTimer = setTimeout(async () => {
-    const q = $("q").value.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
+    const q = $("q").value.trim().slice(0, 32).replace(/[%_]/g, "");
     const box = $("results");
     box.replaceChildren();
     if (!q) return;
-    const { data } = await sb.from("profiles").select("*").ilike("username", "%" + q + "%").neq("id", me.id).limit(8);
-    (data || []).forEach(p => {
+    const [usernameSearch, displayNameSearch] = await Promise.all([
+      sb.from("profiles").select("*").ilike("username", "%" + q + "%").neq("id", me.id).limit(8),
+      sb.from("profiles").select("*").ilike("display_name", "%" + q + "%").neq("id", me.id).limit(8)
+    ]);
+    const mergedProfiles = new Map();
+    (usernameSearch.data || []).forEach(profile => mergedProfiles.set(profile.id, profile));
+    (displayNameSearch.data || []).forEach(profile => mergedProfiles.set(profile.id, profile));
+    [...mergedProfiles.values()].slice(0, 8).forEach(p => {
       profilesMap[p.id] = p;
       const it = el("div", "item");
       const avWrap = el("div", "av-wrap");
@@ -2829,7 +2977,7 @@ $("q").oninput = () => {
       if (isUserOnline(p.id)) avWrap.append(el("span", "online-dot"));
 
       const mid = el("div", "mid");
-      mid.append(el("div", "u", p.username), el("div", "last", p.bio || ""));
+      mid.append(el("div", "u", chatyyDisplayName(p)), el("div", "last", "@" + (p.username || "")));
       it.append(avWrap, mid);
       it.onclick = () => { $("q").value = ""; box.replaceChildren(); openChat(p.id); };
       box.append(it);
@@ -2953,7 +3101,7 @@ function setReply(m) {
   clearEdit();
   replyingTo = m;
   $("reply-bar").classList.remove("hidden");
-  $("rb-user").textContent = m.sender === me.id ? (prefs.lang === "ar" ? "أنت" : "You") : (profilesMap[m.sender]?.username || "");
+  $("rb-user").textContent = m.sender === me.id ? (prefs.lang === "ar" ? "أنت" : "You") : (chatyyDisplayName(profilesMap[m.sender]) || "");
   $("rb-msg").textContent = m.kind === "image" ? "🖼️ Image" : m.kind === "audio" ? "🎤 Voice" : getCleanBody(m.body);
   $("txt").focus();
 }
@@ -2982,7 +3130,7 @@ async function openChat(id) {
   $("empty").classList.add("hidden");
   $("chatbox").classList.remove("hidden");
   $("app").classList.add("open");
-  $("oname").textContent = prof.username;
+  $("oname").textContent = chatyyDisplayName(prof);
   renderAvatar($("oav"), prof);
   updateActiveHeaderStatus();
   updatePinnedBanner();
@@ -3326,7 +3474,7 @@ async function sendText() {
   }
 
   if (replyingTo) {
-    const rName = replyingTo.sender === me.id ? me.username : (profilesMap[replyingTo.sender]?.username || "");
+    const rName = replyingTo.sender === me.id ? chatyyDisplayName(me) : (chatyyDisplayName(profilesMap[replyingTo.sender]) || "");
     const rSnippet = replyingTo.kind === "image" ? "🖼️ Image" : replyingTo.kind === "audio" ? "🎤 Voice" : getCleanBody(replyingTo.body).slice(0, 40);
     msgText = `>>REPLY:${rName}|${rSnippet}\n${msgText}`;
     clearReply();
@@ -3636,8 +3784,7 @@ $("sticker-tab").onclick=()=>setStudioTab("sticker");$("gif-tab").onclick=()=>se
 $("sticker-import-btn").onclick=()=>$("sticker-import-files").click();
 $("sticker-import-files").onchange=async e=>{const files=e.target.files;e.target.value="";await importStickerFiles(files);};
 $("sticker-export-btn").onclick=exportStickerPack;
-$("gif-search-btn").onclick=()=>{const q=$("gif-search").value.trim();if(q)window.open("https://tenor.com/search/"+encodeURIComponent(q)+"-gifs","_blank","noopener,noreferrer");};
-$("gif-search").addEventListener("keydown",e=>{if(e.key==="Enter")$("gif-search-btn").click();});
+/* GIF search is wired by the in-app GIPHY browser below; no search-page redirect. */
 $("gif-url-send").onclick=async()=>{const raw=$("gif-url").value.trim();if(!active)return showToast(stickerText("افتح محادثة أولاً","Open a chat first"));let u;try{u=new URL(raw);}catch{return showToast(stickerText("الرابط غير صالح","Invalid URL"));}if(u.protocol!=="https:"&&u.protocol!=="http:")return showToast(stickerText("استخدم رابط HTTPS أو HTTP","Use an HTTPS or HTTP URL"));if(!/\.gif($|[?#])/i.test(u.href)&&!/format=gif|media=.*gif/i.test(u.search))return showToast(stickerText("لازم يكون رابط GIF مباشر وينتهي بـ .gif","Please use a direct .gif URL"));const btn=$("gif-url-send");btn.disabled=true;await sendMsg({kind:"image",media_url:u.href,body:"gif"});btn.disabled=false;$("gif-url").value="";$("sticker-studio").classList.add("hidden");};
 $("gif-upload-btn").onclick=()=>$("gif-file").click();
 $("gif-file").onchange=async e=>{const f=e.target.files?.[0];e.target.value="";if(!f||!active)return;if(f.type!=="image/gif"&&!/\.gif$/i.test(f.name))return showToast(stickerText("اختر ملف GIF فقط","Choose a GIF file"));if(f.size>15*1024*1024)return showToast(stickerText("حجم GIF يجب ألا يتجاوز 15 ميجابايت","GIF must be 15 MB or smaller"));const btn=$("gif-upload-btn");btn.disabled=true;const url=await upload(f,"gif","image/gif");if(url){await sendMsg({kind:"image",media_url:url,body:"gif"});$("sticker-studio").classList.add("hidden");}btn.disabled=false;};
@@ -3761,9 +3908,9 @@ function makeSavedMessageRecord(message) {
   return {
     id: String(message.id),
     peerId,
-    peerName: peer.username || "Unknown",
+    peerName: chatyyDisplayName(peer) || "Unknown",
     senderId: message.sender,
-    senderName: message.sender === me.id ? me.username : (sender.username || peer.username || "Unknown"),
+    senderName: message.sender === me.id ? chatyyDisplayName(me) : (chatyyDisplayName(sender) || chatyyDisplayName(peer) || "Unknown"),
     kind: message.kind || "text",
     body: message.body || "",
     summary,
@@ -3809,9 +3956,9 @@ function renderSavedMessages() {
     const row = el("div", "saved-entry");
     const main = el("button", "saved-entry-main");
     main.type = "button";
-    const who = item.peerName || profilesMap[item.peerId]?.username || "Chat";
+    const who = item.peerName || chatyyDisplayName(profilesMap[item.peerId]) || "Chat";
     main.append(
-      el("strong", "", "@" + who),
+      el("strong", "", who),
       el("span", "", formatSavedPreview(item))
     );
 
@@ -3881,9 +4028,11 @@ function renderGlobalSearch(query) {
   const matches = all
     .filter(message => {
       const peerId = otherOf(message);
-      const username = profilesMap[peerId]?.username || "";
+      const peer = profilesMap[peerId] || {};
+      const username = peer.username || "";
+      const displayName = chatyyDisplayName(peer);
       const body = messageSearchText(message);
-      return body.toLocaleLowerCase().includes(term) || username.toLocaleLowerCase().includes(term);
+      return body.toLocaleLowerCase().includes(term) || username.toLocaleLowerCase().includes(term) || displayName.toLocaleLowerCase().includes(term);
     })
     .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     .slice(0, 60);
@@ -3908,7 +4057,7 @@ function renderGlobalSearch(query) {
 
     const main = el("span", "search-result-main");
     main.append(
-      el("strong", "", "@" + (peer.username || "Unknown")),
+      el("strong", "", chatyyDisplayName(peer)),
       el("span", "", messageSearchText(message).replace(/\s+/g, " ").slice(0, 130))
     );
 
@@ -4000,7 +4149,7 @@ function updateChatInfoModal() {
   if (!active || !me) return;
   const profile = profilesMap[active] || { username: "..." };
   renderAvatar($("chat-info-avatar"), profile);
-  $("chat-info-name").textContent = profile.username || "Unknown";
+  $("chat-info-name").textContent = chatyyDisplayName(profile);
   $("chat-info-username").textContent = "@" + (profile.username || "unknown");
   $("chat-info-status").textContent = formatLastSeen(active);
 
@@ -4108,7 +4257,7 @@ function exportAllMessagesAsJSON() {
     app: "Chatyy",
     format: "chatyy-backup-v1",
     exported_at: new Date().toISOString(),
-    account: { id: me.id, username: me.username },
+    account: { id: me.id, username: me.username, display_name: chatyyDisplayName(me) },
     note: "Contains messages currently loaded by the app and their media URLs.",
     messages: all.map(message => ({
       id: message.id,
@@ -11190,6 +11339,429 @@ openMessageMenu = function(message, wrap, x, y) {
 
 try { chatyyBindMoreTools(); }
 catch (error) { console.error("Chatyy share tools failed to initialize", error); }
+
+
+/* ========================================================================
+   Chatyy GIF Explorer v2
+   - In-app GIPHY Trending and Search (no external search-page redirect)
+   - Category shortcuts, pagination, local recents, safe content rendering
+   - Sends the selected GIF URL through the existing messages table
+   - GIPHY API key is supplied by the app owner; never invent a key
+   ======================================================================== */
+
+/*
+ * App-wide GIPHY key:
+ * Paste your public GIPHY API key here if all Chatyy users should share the
+ * same configured integration. This key is visible in the browser source;
+ * use a public client key, never a private server secret.
+ * Leave empty to let each device add its own key in the GIF settings panel.
+ */
+const CHATYY_GIPHY_PUBLIC_API_KEY = "";
+const CHATYY_GIPHY_KEY_STORAGE = "chatyy_giphy_api_key_v1";
+const CHATYY_GIF_RECENTS_LIMIT = 36;
+const CHATYY_GIPHY_LIMIT = 30;
+let chatyyGifOffset = 0;
+let chatyyGifMode = "trending";
+let chatyyGifQuery = "";
+let chatyyGifLoading = false;
+let chatyyGifHasMore = false;
+let chatyyGifOpenToken = 0;
+let chatyyGifActiveController = null;
+let chatyyGifCache = new Map();
+
+function chatyyGifLang(ar, en) {
+  return prefs.lang === "ar" ? ar : en;
+}
+
+function chatyyGifGetKey() {
+  const appKey = String(CHATYY_GIPHY_PUBLIC_API_KEY || "").trim();
+  if (appKey) return appKey;
+  try { return (localStorage.getItem(CHATYY_GIPHY_KEY_STORAGE) || "").trim(); }
+  catch (error) { return ""; }
+}
+
+function chatyyGifRecentKey() {
+  return `chatyy_gif_recent_${me?.id || "guest"}`;
+}
+
+function chatyyGifReadRecent() {
+  const items = safeReadJSON(chatyyGifRecentKey(), []);
+  return Array.isArray(items) ? items.filter(item => item && item.url && item.preview) : [];
+}
+
+function chatyyGifSaveRecent(item) {
+  if (!item || !item.url || !item.preview) return;
+  const current = chatyyGifReadRecent();
+  const normalized = {
+    id: String(item.id || item.url),
+    title: String(item.title || "GIF").slice(0, 100),
+    preview: String(item.preview),
+    url: String(item.url),
+    usedAt: new Date().toISOString()
+  };
+  const next = [normalized, ...current.filter(old => old.url !== normalized.url)].slice(0, CHATYY_GIF_RECENTS_LIMIT);
+  safeWriteJSON(chatyyGifRecentKey(), next);
+}
+
+function chatyyGifSetStatus(message, type = "info") {
+  const status = $("gif-status");
+  if (!status) return;
+  status.className = "gif-status" + (type === "error" ? " error" : "");
+  status.textContent = message || "";
+}
+
+function chatyyGifCancelActiveRequest() {
+  chatyyGifOpenToken += 1;
+  if (chatyyGifActiveController) {
+    try { chatyyGifActiveController.abort(); } catch (error) {}
+  }
+  chatyyGifActiveController = null;
+  chatyyGifLoading = false;
+  if ($("gif-search-btn")) $("gif-search-btn").disabled = false;
+  if ($("gif-load-more")) $("gif-load-more").disabled = false;
+}
+
+function chatyyGifSetActiveTab(button) {
+  document.querySelectorAll("#gif-category-tabs .gif-category").forEach(tab => {
+    tab.classList.toggle("active", tab === button);
+    tab.setAttribute("aria-pressed", tab === button ? "true" : "false");
+  });
+}
+
+function chatyyGifShowEmpty(title, detail) {
+  const grid = $("gif-grid");
+  grid.replaceChildren();
+  const box = el("div", "gif-empty");
+  box.append(el("strong", "", title));
+  if (detail) box.append(el("span", "", detail));
+  grid.append(box);
+}
+
+function chatyyGifNormalize(item) {
+  /* Recently used entries are already normalized and stored locally. */
+  if (item && typeof item.url === "string" && typeof item.preview === "string") {
+    return {
+      id: String(item.id || item.url),
+      title: String(item.title || "GIF").trim().slice(0, 100),
+      preview: item.preview,
+      url: item.url
+    };
+  }
+  const images = item?.images || {};
+  const original = images.original || images.downsized_large || images.downsized || images.fixed_width || {};
+  const preview = images.fixed_width_small || images.fixed_width || images.downsized_small || images.preview_gif || original;
+  const url = original.url || "";
+  const previewUrl = preview.url || url;
+  if (!url || !previewUrl) return null;
+  return {
+    id: String(item.id || url),
+    title: String(item.title || item.slug || "GIF").trim().slice(0, 100),
+    preview: previewUrl,
+    url
+  };
+}
+
+function chatyyGifRender(items, append = false) {
+  const grid = $("gif-grid");
+  if (!append) grid.replaceChildren();
+  const safeItems = (items || []).map(chatyyGifNormalize).filter(Boolean);
+  if (!safeItems.length && !append) {
+    chatyyGifShowEmpty(
+      chatyyGifLang("مفيش GIFs ظاهرة حاليًا", "No GIFs found"),
+      chatyyGifLang("جرّب كلمة بحث مختلفة أو افتح التصنيفات.", "Try another search term or browse a category.")
+    );
+    return;
+  }
+  safeItems.forEach(item => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "gif-card";
+    card.title = item.title;
+    card.setAttribute("aria-label", chatyyGifLang(`إرسال GIF: ${item.title}`, `Send GIF: ${item.title}`));
+    const img = document.createElement("img");
+    img.src = item.preview;
+    img.alt = item.title;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.referrerPolicy = "no-referrer";
+    const label = document.createElement("span");
+    label.textContent = item.title;
+    card.append(img, label);
+    card.addEventListener("click", () => chatyyGifSendSelected(item, card));
+    grid.append(card);
+  });
+}
+
+async function chatyyGifSendSelected(item, card) {
+  if (!active) {
+    showToast(chatyyGifLang("افتح محادثة أولًا", "Open a chat first"));
+    return;
+  }
+  if (!item?.url) return;
+  card?.classList.add("is-sending");
+  const result = await sendMsg({ kind: "image", media_url: item.url, body: "gif" });
+  card?.classList.remove("is-sending");
+  if (!result) return;
+  chatyyGifSaveRecent(item);
+  showToast(chatyyGifLang("تم إرسال GIF", "GIF sent"));
+  $("sticker-studio").classList.add("hidden");
+}
+
+function chatyyGifRenderRecent() {
+  const recent = chatyyGifReadRecent();
+  chatyyGifSetStatus(
+    recent.length
+      ? chatyyGifLang(`آخر ${recent.length} GIF استخدمتها`, `${recent.length} recently used GIFs`)
+      : chatyyGifLang("لسه ما استخدمتش أي GIF", "You have not used any GIFs yet")
+  );
+  $("gif-load-more").classList.add("hidden");
+  chatyyGifRender(recent, false);
+}
+
+function chatyyGifShowKeyRequired() {
+  $("gif-key-panel").classList.remove("hidden");
+  const recent = chatyyGifReadRecent();
+  if (recent.length) {
+    chatyyGifRender(recent, false);
+    chatyyGifSetStatus(chatyyGifLang(
+      `أضف مفتاح GIPHY للبحث والتصفح؛ وتقدر تستخدم آخر ${recent.length} GIF من هنا.`,
+      `Add a GIPHY key to search and browse; your ${recent.length} recent GIFs are available below.`
+    ));
+  } else {
+    chatyyGifShowEmpty(
+      chatyyGifLang("معرض GIF جاهز للإعداد", "GIF browser is ready to set up"),
+      chatyyGifLang("أضف مفتاح GIPHY API لعرض الاقتراحات والبحث داخل Chatyy.", "Add a GIPHY API key to load suggestions and search inside Chatyy.")
+    );
+    chatyyGifSetStatus(chatyyGifLang("مفتاح GIPHY مطلوب لعرض النتائج المباشرة.", "A GIPHY key is required for live results."));
+  }
+  $("gif-load-more").classList.add("hidden");
+}
+
+async function chatyyGifFetch({ mode = "trending", query = "", offset = 0, append = false } = {}) {
+  const apiKey = chatyyGifGetKey();
+  if (!apiKey) {
+    chatyyGifCancelActiveRequest();
+    chatyyGifShowKeyRequired();
+    return;
+  }
+  chatyyGifCancelActiveRequest();
+  const controller = new AbortController();
+  chatyyGifActiveController = controller;
+  const token = ++chatyyGifOpenToken;
+  chatyyGifLoading = true;
+  chatyyGifSetStatus(chatyyGifLang("جاري تحميل GIFs...", "Loading GIFs..."));
+  $("gif-search-btn").disabled = true;
+  $("gif-load-more").disabled = true;
+  if (!append) $("gif-grid").replaceChildren();
+
+  const endpoint = mode === "trending"
+    ? "https://api.giphy.com/v1/gifs/trending"
+    : "https://api.giphy.com/v1/gifs/search";
+  const params = new URLSearchParams({
+    api_key: apiKey,
+    limit: String(CHATYY_GIPHY_LIMIT),
+    offset: String(offset),
+    rating: "pg-13",
+    lang: prefs.lang === "ar" ? "ar" : "en"
+  });
+  if (mode !== "trending") params.set("q", query || "reaction");
+  const cacheKey = `${endpoint}?${params.toString()}`;
+  const cached = chatyyGifCache.get(cacheKey);
+
+  try {
+    let payload;
+    if (cached && Date.now() - cached.savedAt < 180000) {
+      payload = cached.payload;
+    } else {
+      const response = await fetch(`${endpoint}?${params.toString()}`, {
+        method: "GET",
+        headers: { Accept: "application/json" },
+        cache: "no-store",
+        signal: controller.signal
+      });
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) throw new Error(chatyyGifLang("مفتاح GIPHY غير صحيح أو غير مفعّل.", "The GIPHY API key is invalid or not enabled."));
+        if (response.status === 429) throw new Error(chatyyGifLang("وصلت للحد المسموح من طلبات GIPHY. جرّب لاحقًا.", "GIPHY rate limit reached. Try again later."));
+        throw new Error(`GIPHY HTTP ${response.status}`);
+      }
+      payload = await response.json();
+      if (!payload || !Array.isArray(payload.data)) throw new Error(chatyyGifLang("استجابة GIPHY غير مكتملة.", "GIPHY returned an incomplete response."));
+      chatyyGifCache.set(cacheKey, { payload, savedAt: Date.now() });
+    }
+
+    if (token !== chatyyGifOpenToken) return;
+    const items = Array.isArray(payload.data) ? payload.data : [];
+    chatyyGifRender(items, append);
+    chatyyGifOffset = offset + items.length;
+    chatyyGifHasMore = items.length >= CHATYY_GIPHY_LIMIT && chatyyGifOffset <= 4999;
+    $("gif-load-more").classList.toggle("hidden", !chatyyGifHasMore);
+    chatyyGifSetStatus(
+      items.length
+        ? chatyyGifLang("اضغط على GIF لإرساله مباشرة", "Tap a GIF to send it")
+        : chatyyGifLang("مفيش نتائج. جرّب بحثًا تانيًا.", "No results. Try another search.")
+    );
+  } catch (error) {
+    if (token !== chatyyGifOpenToken || error?.name === "AbortError") return;
+    chatyyGifSetStatus(error?.message || chatyyGifLang("تعذر تحميل GIFs. راجع الاتصال ومفتاح API.", "Could not load GIFs. Check your connection and API key."), "error");
+    if (!append) chatyyGifShowEmpty(chatyyGifLang("تعذر تحميل النتائج", "Could not load results"), chatyyGifLang("راجع مفتاح GIPHY أو جرّب مرة أخرى.", "Check your GIPHY key or try again."));
+    $("gif-load-more").classList.add("hidden");
+  } finally {
+    if (token === chatyyGifOpenToken) {
+      chatyyGifLoading = false;
+      chatyyGifActiveController = null;
+      $("gif-search-btn").disabled = false;
+      $("gif-load-more").disabled = false;
+    }
+  }
+}
+
+function chatyyGifStartSearch(query, selectedTab = null) {
+  const clean = String(query || "").trim().slice(0, 50);
+  if (!clean) {
+    chatyyGifSetStatus(chatyyGifLang("اكتب كلمة للبحث عن GIF", "Type something to search for GIFs"));
+    return;
+  }
+  chatyyGifMode = "search";
+  chatyyGifQuery = clean;
+  chatyyGifOffset = 0;
+  chatyyGifSetActiveTab(selectedTab);
+  chatyyGifFetch({ mode: "search", query: clean, offset: 0, append: false });
+}
+
+function chatyyGifOpenBrowser() {
+  $("gif-api-key").value = chatyyGifGetKey();
+  const key = chatyyGifGetKey();
+  if (!key) {
+    chatyyGifShowKeyRequired();
+    return;
+  }
+  chatyyGifMode = "trending";
+  chatyyGifQuery = "";
+  chatyyGifOffset = 0;
+  const trendingTab = document.querySelector('#gif-category-tabs [data-gif-mode="trending"]');
+  if (trendingTab) chatyyGifSetActiveTab(trendingTab);
+  chatyyGifFetch({ mode: "trending", offset: 0, append: false });
+}
+
+$("gif-tab").onclick = () => {
+  setStudioTab("gif");
+  chatyyGifOpenBrowser();
+};
+
+$("gif-search-btn").onclick = () => chatyyGifStartSearch($("gif-search").value);
+$("gif-search").addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    chatyyGifStartSearch($("gif-search").value);
+  }
+});
+
+$("gif-category-tabs").addEventListener("click", event => {
+  const tab = event.target.closest(".gif-category");
+  if (!tab) return;
+  chatyyGifSetActiveTab(tab);
+  const mode = tab.dataset.gifMode;
+  if (mode === "recent") {
+    chatyyGifMode = "recent";
+    chatyyGifCancelActiveRequest();
+    chatyyGifRenderRecent();
+    return;
+  }
+  if (mode === "trending") {
+    chatyyGifMode = "trending";
+    chatyyGifQuery = "";
+    chatyyGifOffset = 0;
+    chatyyGifFetch({ mode: "trending", offset: 0, append: false });
+    return;
+  }
+  const query = tab.dataset.gifQuery || "reaction";
+  $("gif-search").value = query;
+  chatyyGifStartSearch(query, tab);
+});
+
+$("gif-load-more").onclick = () => {
+  if (!chatyyGifHasMore || chatyyGifLoading || chatyyGifMode === "recent") return;
+  chatyyGifFetch({
+    mode: chatyyGifMode === "trending" ? "trending" : "search",
+    query: chatyyGifQuery,
+    offset: chatyyGifOffset,
+    append: true
+  });
+};
+
+$("gif-key-open").onclick = () => {
+  $("gif-key-panel").classList.toggle("hidden");
+  $("gif-api-key").value = chatyyGifGetKey();
+  if (!$("gif-key-panel").classList.contains("hidden")) $("gif-api-key").focus();
+};
+
+$("gif-api-save").onclick = () => {
+  const value = $("gif-api-key").value.trim();
+  if (!value) {
+    try { localStorage.removeItem(CHATYY_GIPHY_KEY_STORAGE); } catch (error) {}
+    chatyyGifSetStatus(chatyyGifLang("تم حذف مفتاح GIPHY من هذا الجهاز.", "GIPHY key removed from this device."));
+    chatyyGifShowKeyRequired();
+    return;
+  }
+  if (value.length < 10 || /\s/.test(value)) {
+    showToast(chatyyGifLang("مفتاح API يبدو غير صحيح", "That API key does not look valid"));
+    return;
+  }
+  try { localStorage.setItem(CHATYY_GIPHY_KEY_STORAGE, value); }
+  catch (error) { showToast(chatyyGifLang("تعذر حفظ المفتاح على هذا الجهاز", "Could not save the key on this device")); return; }
+  $("gif-key-panel").classList.add("hidden");
+  chatyyGifCache.clear();
+  chatyyGifOpenBrowser();
+};
+
+$("gif-url-send").onclick = async () => {
+  const raw = $("gif-url").value.trim();
+  if (!active) return showToast(chatyyGifLang("افتح محادثة أولًا", "Open a chat first"));
+  let url;
+  try { url = new URL(raw); } catch (error) { return showToast(chatyyGifLang("الرابط غير صالح", "Invalid URL")); }
+  if (!/^https?:$/.test(url.protocol)) return showToast(chatyyGifLang("استخدم رابط HTTP أو HTTPS", "Use an HTTP or HTTPS URL"));
+  const result = await sendMsg({ kind: "image", media_url: url.href, body: "gif" });
+  if (result) {
+    const item = { id: url.href, title: "GIF", preview: url.href, url: url.href };
+    chatyyGifSaveRecent(item);
+    $("gif-url").value = "";
+    $("sticker-studio").classList.add("hidden");
+  }
+};
+
+$("gif-upload-btn").onclick = () => $("gif-file").click();
+$("gif-file").onchange = async event => {
+  const file = event.target.files?.[0];
+  event.target.value = "";
+  if (!file || !active) return;
+  if (file.type !== "image/gif" && !/\.gif$/i.test(file.name)) return showToast(chatyyGifLang("اختر ملف GIF فقط", "Choose a GIF file"));
+  if (file.size > 15 * 1024 * 1024) return showToast(chatyyGifLang("حجم GIF يجب ألا يتجاوز 15 ميجابايت", "GIF must be 15 MB or smaller"));
+  const button = $("gif-upload-btn");
+  button.disabled = true;
+  const url = await upload(file, "gif", "image/gif");
+  if (url) {
+    const result = await sendMsg({ kind: "image", media_url: url, body: "gif" });
+    if (result) {
+      const item = { id: url, title: file.name || "GIF", preview: url, url };
+      chatyyGifSaveRecent(item);
+      $("sticker-studio").classList.add("hidden");
+    }
+  }
+  button.disabled = false;
+};
+
+/* Keep a safe fallback display name for older rows after loading profiles. */
+const chatyyOriginalLoadProfiles = loadProfiles;
+loadProfiles = async function(ids) {
+  await chatyyOriginalLoadProfiles(ids);
+  if (me?.id && profilesMap[me.id]) {
+    const localName = (() => { try { return localStorage.getItem(`chatyy_display_name_${me.id}`); } catch (error) { return null; } })();
+    if (!profilesMap[me.id].display_name && localName) profilesMap[me.id].display_name = localName;
+    me = { ...me, ...profilesMap[me.id] };
+    const ownName = $("mename");
+    if (ownName) ownName.textContent = chatyyDisplayName(me);
+  }
+};
 
 </script>
 </body>
